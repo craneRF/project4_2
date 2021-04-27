@@ -6,3 +6,6 @@
 
 # srcフォルダ許可
 !src/*
+
+# srcフォルダ許可
+!.gitignore
