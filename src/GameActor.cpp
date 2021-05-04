@@ -75,6 +75,7 @@ void GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
 		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
 		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
 	};
+
 }
 
 void GameActor::update() {
