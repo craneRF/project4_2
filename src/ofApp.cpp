@@ -1,18 +1,36 @@
 #include "ofApp.h"
 
+ofApp* ofApp::instance = nullptr;
+
+ofApp* ofApp::getInstance() {
+	assert(instance);
+	return instance;
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+	instance = this;
+	hierarchyRoot_ = make_unique<GameActor>();
+	hierarchyRoot_->m_parent = nullptr;
+	hierarchyRoot_->initialize({ 0,0 }, "World");
+	GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,500 });
 
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	hierarchyRoot_->update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+	hierarchyRoot_->draw();
+	//ofPushMatrix();
+	//ofSetColor(ofColor::white);
+	//for (auto c : draworderset_) {
+	//	c->draw();
+	//}
+	//ofPopMatrix();
 }
 
 //--------------------------------------------------------------
