@@ -4,6 +4,7 @@
 
 GameActor::GameActor(string _name) :
 	m_pos(ofVec3f(0, 0, 0))
+	, m_rotAngle(0)
 	, m_scale({ 1,1,1 })
 	, drawfunc([]() {})
 {
@@ -71,7 +72,8 @@ void GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
 	//auto moveCpnt = actor->addComponent<MoveComponent>();
 	actor->drawfunc = [=]() {
 		ofSetColor(ofColor::green);
-		ofDrawRectangle(actor->Pos(), 30, 30);
+		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
+		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
 	};
 }
 
@@ -105,9 +107,6 @@ void GameActor::update() {
 void GameActor::draw()
 {
 	ofPushMatrix();
-	//ofTranslate(m_pos);
-	//ofRotateDeg(-m_rotAngle);
-	//ofScale(m_scale);
 	ofTranslate(m_worldPos);
 	ofRotateDeg(-m_worldRotAngle);
 	ofScale(m_worldScale);

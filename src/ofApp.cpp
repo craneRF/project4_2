@@ -13,7 +13,7 @@ void ofApp::setup(){
 	hierarchyRoot_ = make_unique<GameActor>();
 	hierarchyRoot_->m_parent = nullptr;
 	hierarchyRoot_->initialize({ 0,0 }, "World");
-	GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,500 });
+	GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,0 });
 
 }
 
