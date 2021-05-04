@@ -73,6 +73,7 @@ void GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
 		ofSetColor(ofColor::green);
 		ofDrawRectangle(actor->Pos(), 30, 30);
 	};
+
 }
 
 void GameActor::update() {
