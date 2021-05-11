@@ -46,6 +46,30 @@
     <ClCompile Include="src\MoveComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameMainCtrlComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FontRendererComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionObj.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoundManager.cpp">
+      <Filter>ResoceMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadCSVFile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -59,6 +83,9 @@
     </Filter>
     <Filter Include="addons\ofxGui\src">
       <UniqueIdentifier>{645E9533-4DCD-6179-1CDF-CB65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResoceMgr">
+      <UniqueIdentifier>{e12a5367-4ecb-407f-9938-66fba6b15b08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,7 +140,33 @@
     <ClInclude Include="src\MoveComponent.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\stdComponent.h" />
+    <ClInclude Include="src\FontRendererComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameMainCtrlComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameState.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stdComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionObj.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SoundManager.h">
+      <Filter>ResoceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadCSVFile.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
