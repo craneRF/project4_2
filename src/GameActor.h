@@ -1,6 +1,7 @@
 #pragma once
 #include"ofMain.h"
 #include "Component.h"
+#include "stdComponent.h"
 
 class GameActor
 {
@@ -25,7 +26,6 @@ public:
 	virtual ~GameActor();
 
 	ofVec3f& Pos();
-
 	const ofVec3f& WorldPos();
 	float& RotAngle();
 	ofVec3f& Scale();
@@ -38,16 +38,20 @@ public:
 	void update();	//åpè≥ÇµÇ»Ç¢
 	void draw();	//åpè≥ÇµÇ»Ç¢
 
+
 	void initialize(ofVec3f _pos, string _name);
 
 	GameActor* m_parent;
 	GameActor* addChild();
 
-	static void createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
+	void RemoveAllChild();
+
+	static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
 	static void createEnemy(GameActor* _parent, ofVec3f _pos, string _name = "Enemy");
 
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
+	void onCollision(CollisionComponent* _other);
 	template <typename T>
 	T* addComponent() {
 		auto tmp = make_unique<T>(this);
@@ -66,4 +70,3 @@ public:
 		return nullptr;
 	}
 };
-

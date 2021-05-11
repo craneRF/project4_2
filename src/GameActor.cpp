@@ -1,10 +1,10 @@
-#include "GameActor.h"
 #include "ofApp.h"
-#include "stdComponent.h"
+#include "GameActor.h"
 
 GameActor::GameActor(string _name) :
 	m_pos(ofVec3f(0, 0, 0))
 	, m_rotAngle(0)
+	, m_worldRotAngle(0)
 	, m_scale({ 1,1,1 })
 	, drawfunc([]() {})
 {
@@ -65,22 +65,62 @@ GameActor* GameActor::addChild()
 	return res;
 }
 
-void GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
+void GameActor::RemoveAllChild()
+{
+	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queueの全消し
+	for (auto& c : m_childList) {
+		c->waitforErase_ = true;
+	}
+}
+
+GameActor* GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
 {
 	auto actor = _parent->addChild();
 	actor->initialize(_pos, _name);
-	//auto moveCpnt = actor->addComponent<MoveComponent>();
+	auto moveCpnt = actor->addComponent<MoveComponent>();
+	//moveCpnt->setMoveVec({1,0,0});
+	actor->drawfunc = [=]() {
+		ofSetColor(ofColor::green);
+		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
+		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
+	};
+	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
+	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
+	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
+
+	return actor;
+}
+
+void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
+{
+	auto actor = _parent->addChild();
+	actor->initialize(_pos, _name);
+	auto moveCpnt = actor->addComponent<MoveComponent>();
+	moveCpnt->setMoveVec({ 1,0,0 });
+
 	actor->drawfunc = [=]() {
 		ofSetColor(ofColor::green);
 		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
 		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
 	};
 
+	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
+	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_BULLET);
+	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
 }
 
 void GameActor::update() {
 	caluculateWorldTransform();
 
+	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
+
+	//if (true) {
+	//	m_rotAngle++;
+	//	if (m_rotAngle>360)
+	//	{
+	//		m_rotAngle = 0.f;
+	//	}
+	//}
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
 		c->update();
@@ -114,9 +154,19 @@ void GameActor::draw()
 
 	assert(drawfunc != nullptr);
 	drawfunc();
+	ofPopMatrix();
+
 	for (auto& c : m_childList) {
 		c->draw();
 	}
 
-	ofPopMatrix();
+}
+
+void GameActor::onCollision(CollisionComponent* _other)
+{
+	drawfunc = [=]() {
+		ofSetColor(ofColor::pink);
+		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
+		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
+	};
 }

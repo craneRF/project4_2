@@ -3,6 +3,10 @@
 #include "ofMain.h"
 #include "Define.h"
 #include "GameActor.h"
+#include "CollisionManager.h"
+
+
+class GameMainCtrlComponent;
 
 class ofApp : public ofBaseApp {
 private:
@@ -27,5 +31,11 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+	ofTrueTypeFont myFont;
+
 	unique_ptr<GameActor> hierarchyRoot_;
+
+	unique_ptr< CollisionManager> mp_collisionManager;
+
+	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 };
