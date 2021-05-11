@@ -10,6 +10,7 @@ public:
 	virtual void exit() = 0;
 	
 	GameActor* mp_actor;
+	GameActor* mp_actor1;
 };
 
 class GameStateTitle final : public GameState {

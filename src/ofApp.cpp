@@ -54,7 +54,11 @@ void ofApp::draw() {
 	//}
 	//ofPopMatrix();
 }
-
+void ofApp::exit()
+{
+	hierarchyRoot_.reset();
+	mp_collisionManager.reset();
+}
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 
