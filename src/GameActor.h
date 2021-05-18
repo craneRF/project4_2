@@ -30,6 +30,8 @@ public:
 	float& RotAngle();
 	ofVec3f& Scale();
 
+	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
+
 	string& Name();
 
 	void caluculateWorldTransform();
@@ -41,7 +43,7 @@ public:
 
 	void initialize(ofVec3f _pos, string _name);
 
-	GameActor* m_parent;
+	GameActor* mp_parent;
 	GameActor* addChild();
 
 	void RemoveAllChild();
@@ -52,6 +54,8 @@ public:
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
 	void onCollision(CollisionComponent* _other);
+
+
 	template <typename T>
 	T* addComponent() {
 		auto tmp = make_unique<T>(this);

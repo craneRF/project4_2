@@ -11,10 +11,17 @@ ofApp* ofApp::getInstance() {
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+
 	instance = this;
-	hierarchyRoot_ = make_unique<GameActor>();
+
 	mp_collisionManager = make_unique<CollisionManager>();
-	hierarchyRoot_->m_parent = nullptr;
+	
+	mp_imageManager = make_unique<ResourceManager<ofImage>>();
+	mp_imageManager->loadContentFromFile("ImageRes.txt");
+ 
+
+	hierarchyRoot_ = make_unique<GameActor>();
+	hierarchyRoot_->mp_parent = nullptr;
 	hierarchyRoot_->initialize({ 0,0 }, "World");
 
 	/*GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,50 });

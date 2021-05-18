@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "Define.h"
 #include "GameActor.h"
-#include "CollisionManager.h"
+#include "stdMgr.h"
 
 
 class GameMainCtrlComponent;
@@ -37,6 +37,6 @@ public:
 	unique_ptr<GameActor> hierarchyRoot_;
 
 	unique_ptr< CollisionManager> mp_collisionManager;
-
+	unique_ptr<ResourceManager<ofImage>> mp_imageManager;
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 };

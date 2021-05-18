@@ -11,6 +11,7 @@ public:
 	
 	GameActor* mp_actor;
 	GameActor* mp_actor1;
+	GameActor* mp_actor2;
 };
 
 class GameStateTitle final : public GameState {

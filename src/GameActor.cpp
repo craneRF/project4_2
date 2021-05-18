@@ -31,17 +31,24 @@ ofVec3f& GameActor::Scale() {
 	return m_scale;
 }
 
+void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
+{
+	Pos() = _pos;
+	Scale() = _scale;
+	RotAngle() = _angle;
+}
+
 string& GameActor::Name() {
 	return m_name;
 }
 
 void GameActor::caluculateWorldTransform() {
-	if (m_parent != nullptr) {
-		m_worldScale = m_parent->m_worldScale * m_scale;
-		m_worldRotAngle = m_parent->m_worldRotAngle + m_rotAngle;
-		m_worldPos = m_parent->m_worldPos +
-			m_pos.getRotated(-m_parent->m_worldRotAngle, ofVec3f(0, 0, 1)) *
-			m_parent->m_worldScale;
+	if (mp_parent != nullptr) {
+		m_worldScale = mp_parent->m_worldScale * m_scale;
+		m_worldRotAngle = mp_parent->m_worldRotAngle + m_rotAngle;
+		m_worldPos = mp_parent->m_worldPos +
+			m_pos.getRotated(-mp_parent->m_worldRotAngle, ofVec3f(0, 0, 1)) *
+			mp_parent->m_worldScale;
 	}
 	else {
 		m_worldScale = m_scale;
@@ -56,12 +63,14 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	m_name = _name;
 }
 
+
+
 GameActor* GameActor::addChild()
 {
 	auto actor = make_unique<GameActor>();
 	auto res = actor.get();
 	m_childAddQue.push(move(actor));
-	res->m_parent = this;
+	res->mp_parent = this;
 	return res;
 }
 
@@ -114,13 +123,13 @@ void GameActor::update() {
 
 	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
 
-	//if (true) {
-	//	m_rotAngle++;
-	//	if (m_rotAngle>360)
-	//	{
-	//		m_rotAngle = 0.f;
-	//	}
-	//}
+	if (mp_parent) {
+		m_rotAngle++;
+		if (m_rotAngle > 360)
+		{
+			m_rotAngle = 0.f;
+		}
+	}
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
 		c->update();

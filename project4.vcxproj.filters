@@ -70,6 +70,9 @@
     <ClCompile Include="src\LoadCSVFile.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\SpriteComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -165,6 +168,15 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\SoundManager.h">
+      <Filter>ResoceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>ResoceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stdMgr.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpriteComponent.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
