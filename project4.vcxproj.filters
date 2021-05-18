@@ -161,10 +161,10 @@
     <ClInclude Include="src\CollisionObj.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SoundManager.h">
-      <Filter>ResoceMgr</Filter>
-    </ClInclude>
     <ClInclude Include="src\LoadCSVFile.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SoundManager.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
 
-//class GameActor;
+class GameActor;
 class CollisionComponent;
 enum CollisionType;
 
