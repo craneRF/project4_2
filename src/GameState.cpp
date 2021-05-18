@@ -12,8 +12,7 @@ void GameStateTitle::enter()
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(ofGetFrameRate()), { 100,100 }, ofColor::white);
-
+		initialize(ofApp::getInstance()->myFont, ofToString(ofGetLastFrameTime()), { 100,100 }, ofColor::white);
 	string u0 = u8"hello";
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor1->addComponent<FontRendererComponent>()->
@@ -21,18 +20,18 @@ void GameStateTitle::enter()
 
 	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
-	vector<vector<string>> hololivemembertable;
-	LoadCSVFile csv("3Šú¶ƒzƒƒƒ“.csv", hololivemembertable);
+	/*vector<vector<string>> hololivemembertable;
+	LoadCSVFile csv("data/3Šú¶ƒzƒƒƒ“.csv", hololivemembertable);
 
 	for (int r = 0; r < hololivemembertable.size(); r++)
 	{
 		for (int i = 0; i < hololivemembertable.at(r).size(); i++)
 		{
-			mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
+			GameActor* mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 			mp_actor->addComponent<FontRendererComponent>()->
-				initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 50.f * i,100.f * r }, ofColor::white);
+				initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 150.f * (i + 1),50.f * (r + 1) }, ofColor::white);
 		}
-	}
+	}*/
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	//actor1->Pos() = { 200,300,0 };
 	//auto spr1 = actor1->addComponent<SpriteComponent>();
@@ -57,9 +56,9 @@ void GameStateTitle::enter()
 	//actor3->addComponent<TileMapComponent>()->initialize("TileData/TileDef01.txt", "MapData/map02.csv");
 }
 
-GameState* GameStateTitle::update()
+GameState* GameStateTitle::update(float _deltatime)
 {
-	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetFrameRate());
+	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 
 	//if (ofApp::getInstance()->inputManager_->getButtonDown("Start")) {
 	//	return &GameMainCtrlComponent::gameStateMain_;

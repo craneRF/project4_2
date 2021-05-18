@@ -6,7 +6,7 @@ public:
 	GameState() {};
 	virtual ~GameState() {};
 	virtual void enter() = 0;
-	virtual GameState* update() = 0;
+	virtual GameState* update(float _deltatime) = 0;
 	virtual void exit() = 0;
 	
 	GameActor* mp_actor;
@@ -16,6 +16,6 @@ public:
 class GameStateTitle final : public GameState {
 public:
 	virtual void enter();
-	virtual GameState* update();
+	virtual GameState* update(float _deltatime);
 	virtual void exit();
 };

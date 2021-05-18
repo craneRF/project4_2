@@ -12,6 +12,9 @@ ofApp* ofApp::getInstance() {
 //--------------------------------------------------------------
 void ofApp::setup() {
 	instance = this;
+
+	m_deltaTime = 0.0f;
+
 	hierarchyRoot_ = make_unique<GameActor>();
 	mp_collisionManager = make_unique<CollisionManager>();
 	hierarchyRoot_->m_parent = nullptr;
@@ -40,13 +43,21 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	hierarchyRoot_->update();
+
+	//while (!ofGetLastFrameTime() < (1 / ofGetFrameRate()));
+
+	m_deltaTime = ofGetLastFrameTime();
+	if (m_deltaTime > 0.5f) {
+		m_deltaTime = 0.5f;
+	}
+
+	hierarchyRoot_->update(m_deltaTime);
 	mp_collisionManager->CaluculateCollision();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	hierarchyRoot_->draw();
+	hierarchyRoot_->draw(m_deltaTime);
 	//ofPushMatrix();
 	//ofSetColor(ofColor::white);
 	//for (auto c : draworderset_) {

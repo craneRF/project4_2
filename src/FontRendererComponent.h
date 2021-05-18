@@ -17,7 +17,7 @@ public:
 	FontRendererComponent(GameActor* _gactor);
 	virtual ~FontRendererComponent();
 	void initialize(ofTrueTypeFont _font, string _str, ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::black);
-	virtual void update();
+	virtual void update(float _deltatime);
 	virtual void draw();
 	string& String();
 	ofColor& Color();

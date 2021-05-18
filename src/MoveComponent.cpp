@@ -11,9 +11,9 @@ MoveComponent::~MoveComponent()
 
 }
 
-void MoveComponent::update()
+void MoveComponent::update(float _deltatime)
 {
-	mp_gActor->Pos() += m_movevec;
+	mp_gActor->Pos() += m_movevec * _deltatime;
 }
 
 void MoveComponent::setMoveVec(ofVec3f _vec)
