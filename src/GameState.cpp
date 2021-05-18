@@ -14,23 +14,23 @@ void GameStateTitle::enter()
 	mp_actor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, ofToString(ofGetFrameRate()), { 100,100 }, ofColor::white);
 
-	string u0 = u8"hello";
-	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, u0, { 0,100 }, ofColor::white);
+	//string u0 = u8"hello";
+	//mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
+	//mp_actor1->addComponent<FontRendererComponent>()->
+	//	initialize(ofApp::getInstance()->myFont, u0, { 0,100 }, ofColor::white);
 
 	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
 	vector<vector<string>> hololivemembertable;
-	LoadCSVFile csv("3Šú¶ƒzƒƒƒ“.csv", hololivemembertable);
+	LoadCSVFile csv("data/3Šú¶ƒzƒƒƒ“.csv", hololivemembertable);
 
 	for (int r = 0; r < hololivemembertable.size(); r++)
 	{
 		for (int i = 0; i < hololivemembertable.at(r).size(); i++)
 		{
-			mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
-			mp_actor->addComponent<FontRendererComponent>()->
-				initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 50.f * i,100.f * r }, ofColor::white);
+			mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
+			mp_actor1->addComponent<FontRendererComponent>()->
+				initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white);
 		}
 	}
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
