@@ -20,6 +20,9 @@ void ofApp::setup() {
 	mp_imageManager->loadContentFromFile("ImageRes.txt");
  
 
+
+	m_deltaTime = 0.0f;
+
 	hierarchyRoot_ = make_unique<GameActor>();
 	hierarchyRoot_->mp_parent = nullptr;
 	hierarchyRoot_->initialize({ 0,0 }, "World");
@@ -47,13 +50,21 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	hierarchyRoot_->update();
+
+	//while (!ofGetLastFrameTime() < (1 / ofGetFrameRate()));
+
+	m_deltaTime = ofGetLastFrameTime();
+	if (m_deltaTime > 0.5f) {
+		m_deltaTime = 0.5f;
+	}
+
+	hierarchyRoot_->update(m_deltaTime);
 	mp_collisionManager->CaluculateCollision();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	hierarchyRoot_->draw();
+	hierarchyRoot_->draw(m_deltaTime);
 	//ofPushMatrix();
 	//ofSetColor(ofColor::white);
 	//for (auto c : draworderset_) {

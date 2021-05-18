@@ -14,7 +14,7 @@ public:
 		return mp_gActor;
 	}
 
-	virtual void update() = 0;
+	virtual void update(float _deltatime) = 0;
 
 	Component(GameActor* _gactor, string _name = "") :mp_gActor(_gactor), m_componentName(_name) {}
 	virtual ~Component() {}

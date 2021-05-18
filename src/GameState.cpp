@@ -12,7 +12,7 @@ void GameStateTitle::enter()
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(ofGetFrameRate()), { 100,100 }, ofColor::white);
+
 
 	string u0 = u8"hello";
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
@@ -21,12 +21,11 @@ void GameStateTitle::enter()
 
 	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
+
 	vector<vector<string>> hololivemembertable;
 	LoadCSVFile csv("data/3Šú¶ƒzƒƒƒ“ unntf-8.csv", hololivemembertable);
 
 	auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	//mp_actor2->Pos() = { 200,300,0 };
-	//mp_actor2->Scale() = { 0.2f,0.2f };
 
 	mp_actor2->setParam({ 100,100,0 }, { 0.2f,0.2f }, 180.0);
 	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
@@ -67,9 +66,9 @@ void GameStateTitle::enter()
 	//actor3->addComponent<TileMapComponent>()->initialize("TileData/TileDef01.txt", "MapData/map02.csv");
 }
 
-GameState* GameStateTitle::update()
+GameState* GameStateTitle::update(float _deltatime)
 {
-	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetFrameRate());
+	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 
 	//if (ofApp::getInstance()->inputManager_->getButtonDown("Start")) {
 	//	return &GameMainCtrlComponent::gameStateMain_;

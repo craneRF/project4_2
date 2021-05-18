@@ -32,6 +32,9 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+	float m_deltaTime;
+	uint32_t m_TicksCount;
+
 	ofTrueTypeFont myFont;
 
 	unique_ptr<GameActor> hierarchyRoot_;

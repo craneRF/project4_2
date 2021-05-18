@@ -18,7 +18,7 @@ public:
 	virtual ~ GameMainCtrlComponent();
 
 	void GameStateStart();
-	void update();
+	void update(float _deltatime);
 	bool m_isGameover;
 	//int m_playerScore;
 };

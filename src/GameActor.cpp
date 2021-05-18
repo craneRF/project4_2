@@ -105,7 +105,7 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	auto actor = _parent->addChild();
 	actor->initialize(_pos, _name);
 	auto moveCpnt = actor->addComponent<MoveComponent>();
-	moveCpnt->setMoveVec({ 1,0,0 });
+	moveCpnt->setMoveVec({ 100.0f,0,0 });
 
 	actor->drawfunc = [=]() {
 		ofSetColor(ofColor::green);
@@ -118,7 +118,7 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
 }
 
-void GameActor::update() {
+void GameActor::update(float _deltatime) {
 	caluculateWorldTransform();
 
 	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
@@ -132,7 +132,7 @@ void GameActor::update() {
 	}
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
-		c->update();
+		c->update(_deltatime);
 	}
 	//DrawOrder
 	//ofApp::getInstance()->draworderset_.insert(this);
@@ -149,12 +149,12 @@ void GameActor::update() {
 	}
 	//子ゲームアクターの全件処理
 	for (auto& c : m_childList) {
-		c->update();
+		c->update(_deltatime);
 	}
 }
 
 
-void GameActor::draw()
+void GameActor::draw(float _deltatime)
 {
 	ofPushMatrix();
 	ofTranslate(m_worldPos);
@@ -166,7 +166,7 @@ void GameActor::draw()
 	ofPopMatrix();
 
 	for (auto& c : m_childList) {
-		c->draw();
+		c->draw(_deltatime);
 	}
 
 }

@@ -19,7 +19,7 @@ void FontRendererComponent::initialize(ofTrueTypeFont _font, string _str, ofVec3
 	mp_gActor->drawfunc = std::bind(&FontRendererComponent::draw, this);
 }
 
-void FontRendererComponent::update()
+void FontRendererComponent::update(float _deltatime)
 {
 }
 

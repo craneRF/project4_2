@@ -9,7 +9,7 @@ private:
 public:
 	MoveComponent(GameActor* _gator);
 	virtual ~MoveComponent();
-	virtual void update();
+	virtual void update(float _deltatime);
 
 	void setMoveVec(ofVec3f _vec);
 	void setAngle(float _degree, float _speed);
