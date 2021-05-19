@@ -11,7 +11,9 @@ void GameStateTitle::enter()
 		initialize(ofApp::getInstance()->myFont, "SHOOTING GAME", { 100,100 }, ofColor::black);*/
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
+	mp_actor->Pos() = { 1000,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, ofToString(ofGetFrameRate()), { }, ofColor::white);
 
 
 	string u0 = u8"hello";

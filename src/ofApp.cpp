@@ -15,11 +15,9 @@ void ofApp::setup() {
 	instance = this;
 
 	mp_collisionManager = make_unique<CollisionManager>();
-	
+
 	mp_imageManager = make_unique<ResourceManager<ofImage>>();
 	mp_imageManager->loadContentFromFile("ImageRes.txt");
- 
-
 
 	m_deltaTime = 0.0f;
 
@@ -51,14 +49,16 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 
-	//while (!ofGetLastFrameTime() < (1 / ofGetFrameRate()));
-
 	m_deltaTime = ofGetLastFrameTime();
-	if (m_deltaTime > 0.5f) {
-		m_deltaTime = 0.5f;
+
+	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
+	if (m_deltaTime <= 1 / 60) { m_deltaTime = 1 / 60; }
+
+	for (int i = 0; i <= (int)(60 * m_deltaTime); i++) {
+		hierarchyRoot_->update(m_deltaTime);
 	}
 
-	hierarchyRoot_->update(m_deltaTime);
+	//hierarchyRoot_->update(m_deltaTime);
 	mp_collisionManager->CaluculateCollision();
 }
 

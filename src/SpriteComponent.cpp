@@ -11,7 +11,7 @@ SpriteComponent::~SpriteComponent()
 {
 }
 
-void SpriteComponent::update()
+void SpriteComponent::update(float _deltatime)
 {
 }
 

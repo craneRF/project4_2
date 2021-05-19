@@ -11,7 +11,7 @@ private:
 public:
 	SpriteComponent(GameActor* _gactor);
 	virtual ~SpriteComponent();
-	virtual void update();
+	virtual void update(float _deltatime);
 
 	void draw();
 	void setImage(ofImage* _img);

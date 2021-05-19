@@ -105,7 +105,7 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	auto actor = _parent->addChild();
 	actor->initialize(_pos, _name);
 	auto moveCpnt = actor->addComponent<MoveComponent>();
-	moveCpnt->setMoveVec({ 100.0f,0,0 });
+	moveCpnt->setMoveVec({ 150.0f,0,0 });
 
 	actor->drawfunc = [=]() {
 		ofSetColor(ofColor::green);
