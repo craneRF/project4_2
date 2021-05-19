@@ -52,9 +52,9 @@ void ofApp::update() {
 	m_deltaTime = ofGetLastFrameTime();
 
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
-	if (m_deltaTime <= 1 / 60) { m_deltaTime = 1 / 60; }
+	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
 
-	for (int i = 0; i <= (int)(60 * m_deltaTime); i++) {
+	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
 		hierarchyRoot_->update(m_deltaTime);
 	}
 
