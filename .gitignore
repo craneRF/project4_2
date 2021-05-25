@@ -6,7 +6,9 @@
 
 # srcフォルダ許可
 !src/*
-!bin/data/*
 
+# binフォルダ許可
+!bin/data/*
+!bin/data/sounds
 # gitignore変更許可
 !.gitignore
