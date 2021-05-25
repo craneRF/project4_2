@@ -9,6 +9,7 @@
 
 # binフォルダ許可
 !bin/data/*
-!bin/data/sounds
+!bin/data/sounds/*
+
 # gitignore変更許可
 !.gitignore
