@@ -1,7 +1,6 @@
 #pragma once
 #include"ofMain.h"
 #include "Component.h"
-#include "stdComponent.h"
 
 class GameActor
 {
@@ -53,7 +52,7 @@ public:
 
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
-	void onCollision(CollisionComponent* _other);
+	void onCollision(class CollisionComponent* _other);
 
 
 	template <typename T>

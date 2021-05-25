@@ -3,3 +3,4 @@
 #include "CollisionComponent.h"
 #include "FontRendererComponent.h"
 #include "SpriteComponent.h"
+#include "GameMainCtrlComponent.h"

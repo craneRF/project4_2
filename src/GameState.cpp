@@ -9,6 +9,8 @@ void GameStateTitle::enter()
 	/*auto actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	actor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, "SHOOTING GAME", { 100,100 }, ofColor::black);*/
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 1.f);
+	ofApp::getInstance()->mp_soundManager->loop(0);
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->Pos() = { 1000,100 };
@@ -35,15 +37,15 @@ void GameStateTitle::enter()
 	spr1->AlignPivotCenter();
 	auto move1 = mp_actor2->addComponent<MoveComponent>();
 
-	for (int r = 0; r < hololivemembertable.size(); r++)
-	{
-		for (int i = 0; i < hololivemembertable.at(r).size(); i++)
-		{
+	for (int r = 0; r < hololivemembertable.size(); r++) {
+		for (int i = 0; i < hololivemembertable.at(r).size(); i++) {
 			//mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 			//mp_actor1->addComponent<FontRendererComponent>()->
 			//	initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white);
 		}
 	}
+
+
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	//actor1->Pos() = { 200,300,0 };
 	//auto spr1 = actor1->addComponent<SpriteComponent>();
@@ -72,13 +74,17 @@ GameState* GameStateTitle::update(float _deltatime)
 {
 	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 
-	//if (ofApp::getInstance()->inputManager_->getButtonDown("Start")) {
-	//	return &GameMainCtrlComponent::gameStateMain_;
-	//}
+	/*if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+		return &GameMainCtrlComponent::m_gameStateMain;
+	}*/
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+		//ofApp::getInstance()->mp_soundManager->play(0);
+	}
 	return nullptr;
 }
 
 void GameStateTitle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
+	ofApp::getInstance()->mp_soundManager->stop(0);
 }

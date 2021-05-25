@@ -2,10 +2,8 @@
 #include "SoundManager.h"
 
 const string SoundManager::soundList[] = {
-	"BGM01.mp3",
-	"effect01.mp3",
-	"shotse.wav",
-	"explosion.mp3",
+	"UnicornBGM.mp3",
+	"スネーク発見音.mp3"
 };
 
 SoundManager::SoundManager()

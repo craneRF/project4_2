@@ -15,6 +15,8 @@ void ofApp::setup() {
 	instance = this;
 
 	mp_collisionManager = make_unique<CollisionManager>();
+	mp_soundManager = make_unique<SoundManager>();
+	mp_inputManager = make_unique<InputManager>();
 
 	mp_imageManager = make_unique<ResourceManager<ofImage>>();
 	mp_imageManager->loadContentFromFile("ImageRes.txt");
@@ -49,17 +51,16 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 
-	m_deltaTime = ofGetLastFrameTime();
+	mp_collisionManager->CaluculateCollision();
+	mp_inputManager->update();
 
+	m_deltaTime = ofGetLastFrameTime();
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
 	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
-
 	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
 		hierarchyRoot_->update(m_deltaTime);
 	}
-
 	//hierarchyRoot_->update(m_deltaTime);
-	mp_collisionManager->CaluculateCollision();
 }
 
 //--------------------------------------------------------------
@@ -76,6 +77,8 @@ void ofApp::exit()
 {
 	hierarchyRoot_.reset();
 	mp_collisionManager.reset();
+	mp_soundManager.reset();
+	mp_inputManager.reset();
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {

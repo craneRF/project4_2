@@ -5,7 +5,6 @@
 #include "GameActor.h"
 #include "stdMgr.h"
 
-
 class GameMainCtrlComponent;
 
 class ofApp : public ofBaseApp {
@@ -40,6 +39,9 @@ public:
 	unique_ptr<GameActor> hierarchyRoot_;
 
 	unique_ptr< CollisionManager> mp_collisionManager;
-	unique_ptr<ResourceManager<ofImage>> mp_imageManager;
+	unique_ptr< SoundManager> mp_soundManager;
+	unique_ptr< InputManager> mp_inputManager;
+
+	unique_ptr< ResourceManager<ofImage>> mp_imageManager;
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 };

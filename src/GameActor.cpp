@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "GameActor.h"
+#include "stdComponent.h"
 
 GameActor::GameActor(string _name) :
 	m_pos(ofVec3f(0, 0, 0))
