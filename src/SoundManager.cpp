@@ -1,14 +1,15 @@
 #include "ofMain.h"
 #include "SoundManager.h"
 
+//ファイル名が日本語だと読み込まない
 const string SoundManager::soundList[] = {
-	"UnicornBGM.mp3",
-	"スネーク発見音.mp3"
+		"UnicornBGM.mp3",
+		"SnakeBeep.mp3",
 };
 
 SoundManager::SoundManager()
 {
-	for (auto& snd : soundList) {
+	for (auto & snd : soundList) {
 		ofSoundPlayer p;
 		p.load("sounds\\" + snd);
 		soundResources.push_back(p);

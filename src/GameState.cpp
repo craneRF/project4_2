@@ -9,7 +9,8 @@ void GameStateTitle::enter()
 	/*auto actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	actor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, "SHOOTING GAME", { 100,100 }, ofColor::black);*/
-	ofApp::getInstance()->mp_soundManager->setVolume(0, 1.f);
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
 	ofApp::getInstance()->mp_soundManager->loop(0);
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
@@ -78,7 +79,7 @@ GameState* GameStateTitle::update(float _deltatime)
 		return &GameMainCtrlComponent::m_gameStateMain;
 	}*/
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		//ofApp::getInstance()->mp_soundManager->play(0);
+		ofApp::getInstance()->mp_soundManager->play(1);
 	}
 	return nullptr;
 }
