@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "GameActor.h"
 #include "PlayerActor.h"
+#include "EnemyActor.h"
 #include "stdComponent.h"
 #include "LoadCSVFile.h"
 
@@ -25,7 +26,7 @@ void GameStateTitle::enter(Parameter _inportprm)
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
 
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
+	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
 }
 
 GameState* GameStateTitle::update(float _deltatime)
@@ -74,9 +75,8 @@ GameState* GameStateMap::update(float _deltatime)
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateTitle;
-		//}
-		return nullptr;
 	}
+	return nullptr;
 }
 
 void GameStateMap::exit(Parameter& _reprm)
