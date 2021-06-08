@@ -4,4 +4,5 @@
 #include "FontRendererComponent.h"
 #include "SpriteComponent.h"
 #include "GameMainCtrlComponent.h"
+#include "MapComponent.h"
 #include "PlayerComponent.h"
