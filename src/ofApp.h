@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "Define.h"
+#include "Parameter.h"
 #include "GameActor.h"
 #include "stdMgr.h"
 

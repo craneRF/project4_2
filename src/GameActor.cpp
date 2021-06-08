@@ -64,8 +64,6 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	m_name = _name;
 }
 
-
-
 GameActor* GameActor::addChild()
 {
 	auto actor = make_unique<GameActor>();
@@ -81,24 +79,6 @@ void GameActor::RemoveAllChild()
 	for (auto& c : m_childList) {
 		c->waitforErase_ = true;
 	}
-}
-
-GameActor* GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
-{
-	auto actor = _parent->addChild();
-	actor->initialize(_pos, _name);
-	auto moveCpnt = actor->addComponent<MoveComponent>();
-	//moveCpnt->setMoveVec({1,0,0});
-	actor->drawfunc = [=]() {
-		ofSetColor(ofColor::green);
-		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
-	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
-	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
-	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
-
-	return actor;
 }
 
 void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
@@ -119,18 +99,37 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
 }
 
+GameActor * GameActor::findActor(GameActor * _current, std::string _name)
+{
+	if (_current->m_name == _name) return _current;
+	for (auto& actor : _current->m_childList) {
+		auto tmp = findActor(actor.get(), _name);
+		if (tmp != nullptr) { return tmp; }
+	}
+	return nullptr;
+}
+
+list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, list<GameActor*>&& _list)
+{
+	if (_current->m_name == _name) { _list.push_back(_current); }
+	for (auto& actor : _current->m_childList) {
+		_list = findActors(actor.get(), _name, move(_list));
+	}
+	return move(_list);
+}
+
 void GameActor::update(float _deltatime) {
 	caluculateWorldTransform();
 
 	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
 
-	if (mp_parent) {
-		m_rotAngle++;
-		if (m_rotAngle > 360)
-		{
-			m_rotAngle = 0.f;
-		}
-	}
+	//if (mp_parent) {
+	//	m_rotAngle++;
+	//	if (m_rotAngle > 360)
+	//	{
+	//		m_rotAngle = 0.f;
+	//	}
+	//}
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
 		c->update(_deltatime);
@@ -154,7 +153,6 @@ void GameActor::update(float _deltatime) {
 	}
 }
 
-
 void GameActor::draw(float _deltatime)
 {
 	ofPushMatrix();
@@ -174,9 +172,9 @@ void GameActor::draw(float _deltatime)
 
 void GameActor::onCollision(CollisionComponent* _other)
 {
-	drawfunc = [=]() {
-		ofSetColor(ofColor::pink);
-		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
+	//drawfunc = [=]() {
+	//	ofSetColor(ofColor::pink);
+	//	//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
+	//	ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
+	//};
 }

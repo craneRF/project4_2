@@ -1,18 +1,20 @@
 #pragma once
 #include "Component.h"
+#include "Parameter.h"
 
 class GameState;
 class GameMainCtrlComponent final : public Component
 {
 	friend class GameStateTitle;
-	friend class GameStateMain;
+	friend class GameStateMap;
 	friend class GameStateGameOver;
 
 private:
+	Parameter m_playerprm;
 	GameState* mp_gameState;
 	static GameStateTitle m_gameStateTitle;
-	static GameStateMain m_gameStateMain;
-	static GameStateMain m_gameStateGameOver;
+	static GameStateMap m_gameStateMap;
+	static GameStateGameOver m_gameStateGameOver;
 public:
 	 GameMainCtrlComponent(GameActor*m_gActor);
 	virtual ~ GameMainCtrlComponent();

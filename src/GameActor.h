@@ -47,9 +47,10 @@ public:
 
 	void RemoveAllChild();
 
-	static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
+	//static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
 	static void createEnemy(GameActor* _parent, ofVec3f _pos, string _name = "Enemy");
 
+	static GameActor* findActor(GameActor* _current, std::string _name);
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
 	void onCollision(class CollisionComponent* _other);

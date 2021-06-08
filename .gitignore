@@ -10,6 +10,7 @@
 # binフォルダ許可
 !bin/data/*
 !bin/data/sounds/*
+!bin/data/images/*
 
 # gitignore変更許可
 !.gitignore

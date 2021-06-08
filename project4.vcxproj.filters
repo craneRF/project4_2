@@ -64,9 +64,6 @@
     <ClCompile Include="src\CollisionObj.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SoundManager.cpp">
-      <Filter>ResoceMgr</Filter>
-    </ClCompile>
     <ClCompile Include="src\LoadCSVFile.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -74,6 +71,24 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\InputManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimSeq.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoundManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Parameter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,9 +104,6 @@
     </Filter>
     <Filter Include="addons\ofxGui\src">
       <UniqueIdentifier>{645E9533-4DCD-6179-1CDF-CB65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ResoceMgr">
-      <UniqueIdentifier>{e12a5367-4ecb-407f-9938-66fba6b15b08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -170,12 +182,6 @@
     <ClInclude Include="src\LoadCSVFile.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SoundManager.h">
-      <Filter>ResoceMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ResourceManager.h">
-      <Filter>ResoceMgr</Filter>
-    </ClInclude>
     <ClInclude Include="src\stdMgr.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -183,6 +189,27 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\InputManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimSeq.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SoundManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerActor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Parameter.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
