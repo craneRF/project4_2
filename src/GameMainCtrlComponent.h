@@ -7,20 +7,19 @@ class GameMainCtrlComponent final : public Component
 {
 	friend class GameStateTitle;
 	friend class GameStateMap;
-	friend class GameStateGameOver;
+	friend class GameStateBattle;
 
 private:
 	Parameter m_playerprm;
 	GameState* mp_gameState;
 	static GameStateTitle m_gameStateTitle;
 	static GameStateMap m_gameStateMap;
-	static GameStateGameOver m_gameStateGameOver;
+	static GameStateBattle m_gameStateBattle;
 public:
-	 GameMainCtrlComponent(GameActor*m_gActor);
-	virtual ~ GameMainCtrlComponent();
+	GameMainCtrlComponent(GameActor*m_gActor);
+	virtual ~GameMainCtrlComponent();
 
 	void GameStateStart();
 	void update(float _deltatime);
 	bool m_isGameover;
-	//int m_playerScore;
 };

@@ -62,6 +62,8 @@ void GameStateMap::enter(Parameter _inportprm)
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
 
+	//mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
+	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
 }
 
 GameState* GameStateMap::update(float _deltatime)
@@ -76,7 +78,22 @@ GameState* GameStateMap::update(float _deltatime)
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateTitle;
 	}
+
+	//auto kind = mp_mapActor->getComponent<MapComponent>()->GetResKind();
+	//switch (kind)
+	//{
+	//case MapComponent::StepKind::EVENT:
+	//	break;
+	//case MapComponent::StepKind::BATTLE:
+	//	return &GameMainCtrlComponent::m_gameStateBattle;
+	//case MapComponent::StepKind::GOAL:
+	//	break;
+	//default:
+	//	break;
+	//}
+
 	return nullptr;
+	
 }
 
 void GameStateMap::exit(Parameter& _reprm)
