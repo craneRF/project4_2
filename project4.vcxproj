@@ -180,6 +180,11 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Parameter.cpp" />
+    <ClCompile Include="src\PlayerActor.cpp" />
+    <ClCompile Include="src\PlayerComponent.cpp" />
+    <ClCompile Include="src\AnimationComponent.cpp" />
+    <ClCompile Include="src\AnimSeq.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\CollisionManager.cpp" />
@@ -207,7 +212,12 @@
     <ClCompile Include="src\SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Parameter.h" />
+    <ClInclude Include="src\PlayerActor.h" />
+    <ClInclude Include="src\AnimationComponent.h" />
+    <ClInclude Include="src\AnimSeq.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\PlayerComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\CollisionComponent.h" />
     <ClInclude Include="src\CollisionManager.h" />

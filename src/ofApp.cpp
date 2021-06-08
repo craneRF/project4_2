@@ -21,21 +21,12 @@ void ofApp::setup() {
 	mp_imageManager = make_unique<ResourceManager<ofImage>>();
 	mp_imageManager->loadContentFromFile("ImageRes.txt");
 
+
 	m_deltaTime = 0.0f;
 
 	hierarchyRoot_ = make_unique<GameActor>();
 	hierarchyRoot_->mp_parent = nullptr;
 	hierarchyRoot_->initialize({ 0,0 }, "World");
-
-	/*GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,50 });
-	GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });*/
-
-	//auto act1 = GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 300,50 });
-	//auto movevcpnt = act1->getComponent<MoveComponent>();
-	//movevcpnt->setMoveVec({ 1,0,0 });
-	//auto colcpnt = act1->getComponent<CollisionComponent>();
-	//colcpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_OBJECT);
-	//GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });
 
 	//auto fontsettings = ofTrueTypeFontSettings("mplus-1p-regular.ttf", 16);
 	auto fontsettings = ofTrueTypeFontSettings("keifont.ttf", 16);

@@ -49,7 +49,7 @@ public:
 	GameActor* getChild(int _index) const;
 	int getChildCount() { return m_childList.size(); }
 
-	static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
+	//static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
 	static void createEnemy(GameActor* _parent, ofVec3f _pos, string _name = "Enemy");
 	static GameActor* createMap(GameActor* _parent, ofVec3f _pos, string _name = "Map");
 

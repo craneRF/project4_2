@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Parameter.h"
 
 class GameState;
 class GameMainCtrlComponent final : public Component
@@ -9,6 +10,7 @@ class GameMainCtrlComponent final : public Component
 	friend class GameStateBattle;
 
 private:
+	Parameter m_playerprm;
 	GameState* mp_gameState;
 	static GameStateTitle m_gameStateTitle;
 	static GameStateMap m_gameStateMap;
@@ -20,5 +22,4 @@ public:
 	void GameStateStart();
 	void update(float _deltatime);
 	bool m_isGameover;
-	//int m_playerScore;
 };

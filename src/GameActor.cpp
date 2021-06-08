@@ -64,8 +64,6 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	m_name = _name;
 }
 
-
-
 GameActor* GameActor::addChild()
 {
 	auto actor = make_unique<GameActor>();
@@ -108,23 +106,6 @@ list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, lis
 	return move(_list);
 }
 
-GameActor* GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
-{
-	auto actor = _parent->addChild();
-	actor->initialize(_pos, _name);
-	auto moveCpnt = actor->addComponent<MoveComponent>();
-	//moveCpnt->setMoveVec({1,0,0});
-	actor->drawfunc = [=]() {
-		ofSetColor(ofColor::green);
-		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
-	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
-	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
-	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
-
-	return actor;
-}
 
 void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 {
@@ -181,7 +162,6 @@ void GameActor::update(float _deltatime) {
 	}
 }
 
-
 void GameActor::draw(float _deltatime)
 {
 	ofPushMatrix();
@@ -201,9 +181,9 @@ void GameActor::draw(float _deltatime)
 
 void GameActor::onCollision(CollisionComponent* _other)
 {
-	drawfunc = [=]() {
-		ofSetColor(ofColor::pink);
-		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
+	//drawfunc = [=]() {
+	//	ofSetColor(ofColor::pink);
+	//	//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
+	//	ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
+	//};
 }
