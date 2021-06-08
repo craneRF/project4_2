@@ -46,10 +46,14 @@ public:
 	GameActor* addChild();
 
 	void RemoveAllChild();
+	GameActor* getChild(int _index) const;
+	int getChildCount() { return m_childList.size(); }
 
 	static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
 	static void createEnemy(GameActor* _parent, ofVec3f _pos, string _name = "Enemy");
+	static GameActor* createMap(GameActor* _parent, ofVec3f _pos, string _name = "Map");
 
+	static GameActor * findActor(GameActor * _current, string _name);
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
 	void onCollision(class CollisionComponent* _other);

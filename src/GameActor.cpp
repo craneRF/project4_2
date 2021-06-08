@@ -83,6 +83,31 @@ void GameActor::RemoveAllChild()
 	}
 }
 
+GameActor* GameActor::getChild(int _index) const
+{
+	return m_childList[_index].get();
+}
+
+GameActor * GameActor::findActor(GameActor* _current, string _name)
+{
+	if (_current->m_name == _name) return _current;
+	for (auto & actor : _current->m_childList) {
+		auto tmp = findActor(actor.get(), _name);
+		if (tmp != nullptr) return tmp;
+	}
+	return nullptr;
+}
+
+list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, list<GameActor*>&&
+	_list)
+{
+	if (_current->m_name == _name) _list.push_back(_current);
+	for (auto & actor : _current->m_childList) {
+		_list = findActors(actor.get(), _name, move(_list));
+	}
+	return move(_list);
+}
+
 GameActor* GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
 {
 	auto actor = _parent->addChild();
@@ -119,18 +144,20 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
 }
 
+GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
+{
+	auto mapActor = _parent->addChild();
+	mapActor->initialize(_pos, _name);
+	mapActor->addComponent<MapComponent>();
+
+	return mapActor;
+}
+
 void GameActor::update(float _deltatime) {
 	caluculateWorldTransform();
 
 	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
 
-	if (mp_parent) {
-		m_rotAngle++;
-		if (m_rotAngle > 360)
-		{
-			m_rotAngle = 0.f;
-		}
-	}
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
 		c->update(_deltatime);
