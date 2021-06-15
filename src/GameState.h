@@ -46,8 +46,17 @@ public:
 };
 
 // 戦闘シーン
+class BattleComponent;
 class GameStateBattle final : public GameState {
 private:
+	// プレイヤー
+	GameActor* mp_Player;
+	// エネミー配列
+	vector<GameActor*> m_EnemyList;
+	// 戦闘システムアクター
+	BattleComponent* mp_BattleComp;
+	//GameActor* mp_BattleActor;
+
 
 public:
 	virtual void enter(Parameter _inportprm);

@@ -182,6 +182,8 @@
   <ItemGroup>
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
+    <ClCompile Include="src\BattleComponent.cpp" />
+    <ClCompile Include="src\MapComponent.cpp" />
     <ClCompile Include="src\Parameter.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\PlayerComponent.cpp" />
@@ -216,6 +218,8 @@
   <ItemGroup>
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />
+    <ClInclude Include="src\BattleComponent.h" />
+    <ClInclude Include="src\MapComponent.h" />
     <ClInclude Include="src\Parameter.h" />
     <ClInclude Include="src\PlayerActor.h" />
     <ClInclude Include="src\AnimationComponent.h" />

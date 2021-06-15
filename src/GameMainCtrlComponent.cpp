@@ -16,7 +16,8 @@ GameMainCtrlComponent::~GameMainCtrlComponent()
 
 void GameMainCtrlComponent::GameStateStart()
 {
-	mp_gameState = &m_gameStateTitle;
+	mp_gameState = &m_gameStateBattle;
+	//mp_gameState = &m_gameStateTitle;
 	mp_gameState->enter(m_playerprm);
 }
 
