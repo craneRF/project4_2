@@ -102,16 +102,44 @@ void GameStateMap::exit(Parameter& _reprm)
 	_reprm = m_prmInState;
 }
 
-//戦闘シーン
 void GameStateBattle::enter(Parameter _inportprm)
 {
+	m_prmInState = _inportprm;
+	m_prmInState.getPlayerParam("HP");
+
+	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
+	mp_actor2->Pos() = { 500,300 };
+	mp_actor2->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, ofToString(0), { }, ofColor::white);
+
+	// 戦闘システム初期化
+	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild()->addComponent<BattleComponent>();
+	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild();
+	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild());
+	mp_BattleComp->SetPlayer(mp_Player);
+	mp_BattleComp->SetEnemy(m_EnemyList);
 }
 
 GameState * GameStateBattle::update(float _deltatime)
 {
+	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
+
+	// 勝敗の結果に応じてシーン遷移
+	auto result = mp_BattleComp->GetResult();
+	switch (result)
+	{
+	case BattleComponent::Result::WIN:
+		return &GameMainCtrlComponent::m_gameStateTitle;
+
+	default:
+		break;
+	}
+
 	return nullptr;
 }
 
 void GameStateBattle::exit(Parameter & _reprm)
 {
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
+	_reprm = m_prmInState;
 }
