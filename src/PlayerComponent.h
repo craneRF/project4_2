@@ -2,14 +2,13 @@
 #include "Component.h"
 
 class GameActor;
-class EnemtyObj;
 class CollisionComponent;
 class SpriteComponent;
 
 class PlayerComponent :public Component
 {
 private:
-	EnemtyObj * mp_eobj;
+
 	SpriteComponent * mp_sprCpnt;
 
 public:

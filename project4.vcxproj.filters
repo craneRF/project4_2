@@ -103,6 +103,15 @@
     <ClCompile Include="src\BattleComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BattleComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -234,6 +243,15 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\BattleComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MapComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyObject.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

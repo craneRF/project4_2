@@ -18,7 +18,6 @@ void GameStateTitle::enter(Parameter _inportprm)
 	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
 	ofApp::getInstance()->mp_soundManager->loop(0);
-
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->Pos() = { 500,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
@@ -30,7 +29,7 @@ void GameStateTitle::enter(Parameter _inportprm)
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
 
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
+	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
 }
 
 GameState* GameStateTitle::update(float _deltatime)
