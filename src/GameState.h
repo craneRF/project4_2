@@ -27,7 +27,7 @@ class GameStateTitle final : public GameState {
 private:
 
 public:
-	virtual void enter();
+	virtual void enter(Parameter _inportprm);
 	virtual GameState* update(float _deltatime);
 	virtual void exit(Parameter& _reprm);
 };

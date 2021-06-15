@@ -55,6 +55,8 @@ public:
 	static GameActor * findActor(GameActor * _current, string _name);
 	static list<GameActor*>&& findActors(GameActor* _current, string _name, list<GameActor*>&& _list = list<GameActor*>());
 
+	GameActor * createMap(GameActor * _parent, ofVec3f _pos, string _name);
+
 	void onCollision(class CollisionComponent* _other);
 
 
