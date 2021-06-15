@@ -180,6 +180,8 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BattleComponent.cpp" />
+    <ClCompile Include="src\MapComponent.cpp" />
     <ClCompile Include="src\Parameter.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\PlayerComponent.cpp" />
@@ -212,6 +214,8 @@
     <ClCompile Include="src\SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BattleComponent.h" />
+    <ClInclude Include="src\MapComponent.h" />
     <ClInclude Include="src\Parameter.h" />
     <ClInclude Include="src\PlayerActor.h" />
     <ClInclude Include="src\AnimationComponent.h" />

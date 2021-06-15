@@ -27,7 +27,7 @@ class GameStateTitle final : public GameState {
 private:
 
 public:
-	virtual void enter();
+	virtual void enter(Parameter _inportprm);
 	virtual GameState* update(float _deltatime);
 	virtual void exit(Parameter& _reprm);
 };
@@ -44,8 +44,17 @@ public:
 };
 
 // 戦闘シーン
+class BattleComponent;
 class GameStateBattle final : public GameState {
 private:
+	// プレイヤー
+	GameActor* mp_Player;
+	// エネミー配列
+	vector<GameActor*> m_EnemyList;
+	// 戦闘システムアクター
+	BattleComponent* mp_BattleComp;
+	//GameActor* mp_BattleActor;
+
 
 public:
 	virtual void enter(Parameter _inportprm);
