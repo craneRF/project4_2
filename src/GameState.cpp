@@ -29,7 +29,7 @@ void GameStateTitle::enter(Parameter _inportprm)
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
 
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
+	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
 }
 
 GameState* GameStateTitle::update(float _deltatime)
