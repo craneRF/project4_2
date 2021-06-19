@@ -29,7 +29,7 @@ void GameStateTitle::enter(Parameter _inportprm)
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
 
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
+	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
 }
 
 GameState* GameStateTitle::update(float _deltatime)
@@ -43,7 +43,7 @@ GameState* GameStateTitle::update(float _deltatime)
 		m_prmInState.setPlayerParam("HP", 100);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		return &GameMainCtrlComponent::m_gameStateMap;
+		return &GameMainCtrlComponent::m_gameStateBattle;
 	}
 	return nullptr;
 }
@@ -90,6 +90,7 @@ void GameStateMap::exit(Parameter& _reprm)
 	_reprm = m_prmInState;
 }
 
+
 void GameStateBattle::enter(Parameter _inportprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild();
@@ -97,22 +98,6 @@ void GameStateBattle::enter(Parameter _inportprm)
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, u8"í“¬ƒV[ƒ“", { }, ofColor::white);
 
-}
-
-GameState * GameStateBattle::update(float _deltatime)
-{
-	return nullptr;
-}
-
-void GameStateBattle::exit(Parameter& _reprm)
-{
-	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
-	ofApp::getInstance()->mp_soundManager->stop(0);
-	_reprm = m_prmInState;
-}
-
-void GameStateBattle::enter(Parameter _inportprm)
-{
 	m_prmInState = _inportprm;
 	m_prmInState.getPlayerParam("HP");
 
@@ -147,8 +132,9 @@ GameState * GameStateBattle::update(float _deltatime)
 	return nullptr;
 }
 
-void GameStateBattle::exit(Parameter & _reprm)
+void GameStateBattle::exit(Parameter& _reprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
+	ofApp::getInstance()->mp_soundManager->stop(0);
 	_reprm = m_prmInState;
 }

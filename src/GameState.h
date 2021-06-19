@@ -40,7 +40,7 @@ private:
 public:
 	virtual void enter(Parameter _inportprm);
 	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _reprm) = 0;
+	virtual void exit(Parameter& _reprm);
 	
 
 };
