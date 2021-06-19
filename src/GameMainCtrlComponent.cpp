@@ -3,6 +3,7 @@
 
 GameStateTitle GameMainCtrlComponent::m_gameStateTitle;
 GameStateMap GameMainCtrlComponent::m_gameStateMap;
+GameStateBattle GameMainCtrlComponent::m_gameStateBattle;
 
 GameMainCtrlComponent::GameMainCtrlComponent(GameActor* _gActor) :
 	Component(_gActor, "GameMainCtrlComponent")
@@ -15,7 +16,8 @@ GameMainCtrlComponent::~GameMainCtrlComponent()
 
 void GameMainCtrlComponent::GameStateStart()
 {
-	mp_gameState = &m_gameStateTitle;
+	mp_gameState = &m_gameStateBattle;
+	//mp_gameState = &m_gameStateTitle;
 	mp_gameState->enter(m_playerprm);
 }
 
