@@ -6,3 +6,5 @@
 #include "MapComponent.h"
 #include "GameMainCtrlComponent.h"
 #include "PlayerComponent.h"
+#include "EnemyComponent.h"
+#include "BattleComponent.h"

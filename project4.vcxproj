@@ -180,6 +180,11 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\EnemyComponent.cpp" />
+    <ClCompile Include="src\EnemyActor.cpp" />
+    <ClCompile Include="src\BattleComponent.cpp" />
+    <ClCompile Include="src\EnemyObject.cpp" />
+    <ClCompile Include="src\MapComponent.cpp" />
     <ClCompile Include="src\Parameter.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\PlayerComponent.cpp" />
@@ -197,21 +202,16 @@
     <ClCompile Include="src\LoadCSVFile.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
     <ClCompile Include="src\MoveComponent.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\EnemyComponent.h" />
+    <ClInclude Include="src\EnemyActor.h" />
+    <ClInclude Include="src\BattleComponent.h" />
+    <ClInclude Include="src\EnemyObject.h" />
+    <ClInclude Include="src\MapComponent.h" />
     <ClInclude Include="src\Parameter.h" />
     <ClInclude Include="src\PlayerActor.h" />
     <ClInclude Include="src\AnimationComponent.h" />
@@ -230,18 +230,6 @@
     <ClInclude Include="src\GameState.h" />
     <ClInclude Include="src\LoadCSVFile.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="src\MoveComponent.h" />
     <ClInclude Include="src\SoundManager.h" />
     <ClInclude Include="src\SpriteComponent.h" />

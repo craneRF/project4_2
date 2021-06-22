@@ -1,1 +1,2 @@
 images/Idling/marine_icon.png
+images/Idling/zeni.png

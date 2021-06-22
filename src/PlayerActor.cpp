@@ -4,7 +4,7 @@
 GameActor* PlayerActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name) {
 	auto actor = _parent->addChild();
 	actor->initialize(_pos, _name);
-	actor->setParam({ 500,500,0 }, { 0.1f,0.1f }, 180.0);
+	actor->setParam(_pos, { 0.1f,0.1f }, 0.0);
 
 	auto playerCpnt = actor->addComponent<PlayerComponent>();
 
