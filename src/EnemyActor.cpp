@@ -1,12 +1,13 @@
 #include "EnemyActor.h"
 #include "stdComponent.h"
 
-void EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
+void EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, int _enemytype, string _name)
 {
 	auto actor = _parent->addChild();
-	actor->initialize(_pos, _name);
-	actor->setParam(_pos, { 0.5,0.5 });
 	auto enemyCpnt = actor->addComponent<EnemyComponent>();
+
+	actor->initialize(_pos, _name);
+	actor->setParam(_pos, enemyCpnt->getScale(Nomal));
 
 	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
 	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_BULLET);

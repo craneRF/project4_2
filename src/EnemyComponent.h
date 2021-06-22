@@ -10,7 +10,6 @@ class EnemyComponent  final : public Component
 {
 	friend class NomalEnemy;
 private:
-	//EnemtyObj * mp_eobj;
 	SpriteComponent * mp_sprCpnt;
 
 	static NomalEnemy m_nomalEnemy;
@@ -20,4 +19,7 @@ public:
 
 	virtual void update(float _deltatime);
 	void onCollision(CollisionComponent*);
+
+	ofVec3f getScale(int _enemytype);
+	void discriminantEnemyType(int _enemytype);
 };

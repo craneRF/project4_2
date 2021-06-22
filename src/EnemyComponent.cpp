@@ -24,3 +24,13 @@ void EnemyComponent::update(float _deltatime)
 void EnemyComponent::onCollision(CollisionComponent *)
 {
 }
+
+ofVec3f EnemyComponent::getScale(int _enemytype)
+{
+	return m_nomalEnemy.m_eParam.scale;
+}
+
+void EnemyComponent::discriminantEnemyType(int _enemytype)
+{
+	
+}

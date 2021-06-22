@@ -1,9 +1,22 @@
 #pragma once
 #include "ofMain.h"
 
+enum  EnemyType
+{
+	Nomal,
+	Small,
+	Big
+};
+
 struct EnemySkill {
 	int attackpower;
 	string attackStatement;
+};
+
+struct EnemyParam
+{
+	EnemySkill eSkill;
+	ofVec3f scale;
 };
 
 class EnemyObject
@@ -22,6 +35,8 @@ public:
 
 	void setEnemySkill(string key, int val);
 	EnemySkill getEnemySkill(string key) const;
+
+	EnemyParam m_eParam;
 private:
 	map<string, int> m_enemyStatus;
 	map<string, EnemySkill> m_enemySkill;

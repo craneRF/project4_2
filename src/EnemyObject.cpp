@@ -39,5 +39,6 @@ NomalEnemy::NomalEnemy() {
 
 void NomalEnemy::initialize()
 {
-	setEnemySkill("NomalAttack",10);
+	m_eParam.scale = { 0.5,0.5 };
+	setEnemySkill("NomalAttack", 10);
 }

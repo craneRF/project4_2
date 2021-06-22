@@ -111,6 +111,8 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild()->addComponent<BattleComponent>();
 	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild();
 	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild());
+	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
+	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
 	mp_BattleComp->SetPlayer(m_prmInState);
 	mp_BattleComp->SetEnemy(m_EnemyList);
 }

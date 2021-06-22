@@ -1,4 +1,5 @@
 #include "BattleComponent.h"
+#include "GameActor.h"
 #include "ofApp.h"
 
 BattleComponent::BattleComponent(GameActor* _gactor) :
@@ -12,12 +13,10 @@ BattleComponent::~BattleComponent() {
 
 void BattleComponent::update(float _deltatime)
 {
-	if (m_result != Result::NONE)
-	{
+	if (m_result != Result::NONE) {
 		return;
 	}
-	if (mp_Command)
-	{
+	if (mp_Command) {
 		return;
 	}
 
@@ -25,8 +24,7 @@ void BattleComponent::update(float _deltatime)
 	// 決定
 	if (start)
 	{
-		if (!m_IsStart)
-		{
+		if (!m_IsStart) {
 			m_IsStart = true;
 			return;
 		}
@@ -119,6 +117,8 @@ void BattleComponent::ExcuteCommand()
 
 	// 数値処理
 	hp += mp_Command->commandval;
+
+	//プレイヤーのHPの増減
 	if (mp_Command->toIdenx == 0) {
 		m_Player->setPlayerParam("HP", hp);
 	}
