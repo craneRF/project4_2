@@ -15,6 +15,7 @@ public:
 	T* getContents(string _key);
 	void clearContents();
 	void unloadContentFromFile(string _filename);
+	const unordered_map<string, T> getMap();
 };
 
 template<typename T>
@@ -40,7 +41,7 @@ inline void ResourceManager<T>::loadContentFromFile(string _filename)
 }
 
 template<typename T>
-inline T * ResourceManager<T>::getContents(string _key)
+inline T* ResourceManager<T>::getContents(string _key)
 {
 	return &mp_contents[_key];
 }
@@ -61,3 +62,8 @@ inline void ResourceManager<T>::unloadContentFromFile(string _filename)
 	}
 }
 
+template<typename T>
+const inline unordered_map<string, T> ResourceManager<T>::getMap()
+{
+	return mp_contents;
+}

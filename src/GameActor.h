@@ -1,12 +1,13 @@
 #pragma once
 #include"ofMain.h"
+#include "Actor.h"
 #include "Component.h"
 
-class GameActor
+class GameActor : public Actor
 {
 private:
 protected:
-	ofVec3f m_pos;
+	/*ofVec3f m_pos;
 	ofVec3f m_worldPos;
 
 	float m_rotAngle;
@@ -14,9 +15,9 @@ protected:
 
 	ofVec3f m_scale;
 	ofVec3f m_worldScale;
+	string m_name;*/
 
 	vector<unique_ptr<Component>> mp_componentList;
-	string m_name;
 	vector<unique_ptr<GameActor>> m_childList;
 	queue<unique_ptr<GameActor>> m_childAddQue;
 public:
@@ -24,23 +25,24 @@ public:
 	GameActor(string _name = "");
 	virtual ~GameActor();
 
-	ofVec3f& Pos();
+	/*ofVec3f& Pos();
 	const ofVec3f& WorldPos();
 	float& RotAngle();
 	ofVec3f& Scale();
+	string& Name();*/
 
-	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
+	//void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
 
-	string& Name();
+	
 
-	void caluculateWorldTransform();
-	function<void()> drawfunc;
+	void caluculateWorldTransform() override;
+	//function<void()> drawfunc;
 
 	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
 	void draw(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
 
 
-	void initialize(ofVec3f _pos, string _name);
+	//void initialize(ofVec3f _pos, string _name);
 
 	GameActor* mp_parent;
 	GameActor* addChild();

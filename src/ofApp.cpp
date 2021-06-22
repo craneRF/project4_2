@@ -14,12 +14,12 @@ void ofApp::setup() {
 
 	instance = this;
 
+	mp_font = make_unique<Font>();
+	mp_texture = make_unique<Texture>();
+
 	mp_collisionManager = make_unique<CollisionManager>();
 	mp_soundManager = make_unique<SoundManager>();
 	mp_inputManager = make_unique<InputManager>();
-
-	mp_imageManager = make_unique<ResourceManager<ofImage>>();
-	mp_imageManager->loadContentFromFile("ImageRes.txt");
 
 	m_deltaTime = 0.0f;
 
@@ -36,12 +36,6 @@ void ofApp::setup() {
 	//auto colcpnt = act1->getComponent<CollisionComponent>();
 	//colcpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_OBJECT);
 	//GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });
-
-	//auto fontsettings = ofTrueTypeFontSettings("mplus-1p-regular.ttf", 16);
-	auto fontsettings = ofTrueTypeFontSettings("keifont.ttf", 16);
-	fontsettings.addRanges(ofAlphabet::Latin);
-	fontsettings.addRanges(ofAlphabet::Japanese);
-	myFont.load(fontsettings);
 
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
 	//mp_gameMainCtrlComponent->playerScore_ = 0;
@@ -61,11 +55,34 @@ void ofApp::update() {
 		hierarchyRoot_->update(m_deltaTime);
 	}
 	//hierarchyRoot_->update(m_deltaTime);
+
+	for (auto& ui : m_UIStack)
+	{
+		if (ui->GetUIActorState() != UIActor::UIActorState::EDrew && ui->GetUIActorState() != UIActor::UIActorState::EClosing) {
+			if (ui->GetUIActorState() == UIActor::UIActorState::EActive) {
+				ui->input(m_deltaTime);  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
+			}
+			ui->update(m_deltaTime);  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+		}
+	}
+
+	for (auto iter = m_UIStack.begin(); iter != m_UIStack.end();) {
+		if ((*iter)->GetUIActorState() == UIActor::UIActorState::EClosing) {
+			iter = m_UIStack.erase(iter);
+		}
+		else {
+			++iter;
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	hierarchyRoot_->draw(m_deltaTime);
+
+	for (auto& ui : m_UIStack) {
+		ui->draw(m_deltaTime);
+	}
 	//ofPushMatrix();
 	//ofSetColor(ofColor::white);
 	//for (auto c : draworderset_) {

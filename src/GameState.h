@@ -19,4 +19,7 @@ public:
 	virtual void enter();
 	virtual GameState* update(float _deltatime);
 	virtual void exit();
+
+	float m_angle;
+	class MoveComponent* m_move;
 };

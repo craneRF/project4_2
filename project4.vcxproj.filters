@@ -64,16 +64,31 @@
     <ClCompile Include="src\CollisionObj.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SoundManager.cpp">
-      <Filter>ResoceMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LoadCSVFile.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\SpriteComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\InputManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoundManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIScreen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Actor.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,9 +104,6 @@
     </Filter>
     <Filter Include="addons\ofxGui\src">
       <UniqueIdentifier>{645E9533-4DCD-6179-1CDF-CB65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ResoceMgr">
-      <UniqueIdentifier>{e12a5367-4ecb-407f-9938-66fba6b15b08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -170,12 +182,6 @@
     <ClInclude Include="src\LoadCSVFile.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SoundManager.h">
-      <Filter>ResoceMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ResourceManager.h">
-      <Filter>ResoceMgr</Filter>
-    </ClInclude>
     <ClInclude Include="src\stdMgr.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -183,6 +189,30 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\InputManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Font.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SoundManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIActor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIScreen.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Actor.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

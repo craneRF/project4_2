@@ -14,35 +14,38 @@ void GameStateTitle::enter()
 	ofApp::getInstance()->mp_soundManager->loop(0);
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor->Pos() = { 1000,100 };
+	mp_actor->Pos() = { 700,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(ofGetFrameRate()), { }, ofColor::white);
-
+		initialize(ofToString(ofGetFrameRate()), 28, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
+	//"keifont.ttf"
 
 	string u0 = u8"hello";
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
+	mp_actor1->Pos() = { 50, 100 };
 	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, u0, { 0,100 }, ofColor::white);
+		initialize(/*ofToString(*/mp_actor->getComponent<FontRendererComponent>()->String(), 18, { 0,100,0 }, ofColor::red, {1, 1, 1}, "keifont.ttf");
 
 	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
+	
+	//auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();"Images/Idling/marine_icon.png"
 
-	vector<vector<string>> hololivemembertable;
-	LoadCSVFile csv("data/3Šú¶ƒzƒƒƒ“ unntf-8.csv", hololivemembertable);
-
-	auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-
+	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor2->setParam({ 100,100,0 }, { 0.2f,0.2f }, 180.0);
 	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
-	spr1->setImage(ofApp::getInstance()->mp_imageManager->getContents("Images/Idling/marine_icon.png"));
+	spr1->initialize("marine_icon.png");
 	spr1->AlignPivotCenter();
-	auto move1 = mp_actor2->addComponent<MoveComponent>();
+	m_move = mp_actor2->addComponent<MoveComponent>();
 
+	vector<vector<string>> hololivemembertable;
+	LoadCSVFile::SetTable("data/3Šú¶ƒzƒƒƒ“.csv", hololivemembertable);
+
+	auto mp_actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	for (int r = 0; r < hololivemembertable.size(); r++) {
 		for (int i = 0; i < hololivemembertable.at(r).size(); i++) {
-			//mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
-			//mp_actor1->addComponent<FontRendererComponent>()->
-			//	initialize(ofApp::getInstance()->myFont, hololivemembertable.at(r).at(i), { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white);
+			mp_actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
+			mp_actor3->addComponent<FontRendererComponent>()->
+				initialize(hololivemembertable.at(r).at(i), 8, { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white, {2, 2, 2});
 		}
 	}
 
@@ -74,7 +77,13 @@ void GameStateTitle::enter()
 GameState* GameStateTitle::update(float _deltatime)
 {
 	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
+	mp_actor->getComponent<FontRendererComponent>()->Scale() = ofVec3f(ofGetLastFrameTime() * 100, ofGetLastFrameTime() * 100, 1);
 
+	m_angle += 1.0f;
+	if (m_angle >= 360.0f) {
+		m_angle = 0.0f;
+	}
+	m_move->setAngle(m_angle, 0.0f);
 	/*if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateMain;
 	}*/
@@ -88,4 +97,6 @@ void GameStateTitle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
 	ofApp::getInstance()->mp_soundManager->stop(0);
+
+	delete m_move;
 }

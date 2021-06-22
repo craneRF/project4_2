@@ -3,11 +3,12 @@
 #include "stdComponent.h"
 
 GameActor::GameActor(string _name) :
-	m_pos(ofVec3f(0, 0, 0))
+	Actor(_name)
+	/*m_pos(ofVec3f(0, 0, 0))
 	, m_rotAngle(0)
 	, m_worldRotAngle(0)
 	, m_scale({ 1,1,1 })
-	, drawfunc([]() {})
+	, drawfunc([]() {})*/
 {
 
 }
@@ -16,32 +17,32 @@ GameActor::~GameActor()
 {
 }
 
-ofVec3f& GameActor::Pos() {
-	return m_pos;
-}
-
-const ofVec3f& GameActor::WorldPos() {
-	return m_worldPos;
-}
-
-float& GameActor::RotAngle() {
-	return m_rotAngle;
-}
-
-ofVec3f& GameActor::Scale() {
-	return m_scale;
-}
-
-void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
-{
-	Pos() = _pos;
-	Scale() = _scale;
-	RotAngle() = _angle;
-}
-
-string& GameActor::Name() {
-	return m_name;
-}
+//ofVec3f& GameActor::Pos() {
+//	return m_pos;
+//}
+//
+//const ofVec3f& GameActor::WorldPos() {
+//	return m_worldPos;
+//}
+//
+//float& GameActor::RotAngle() {
+//	return m_rotAngle;
+//}
+//
+//ofVec3f& GameActor::Scale() {
+//	return m_scale;
+//}
+//
+//string& GameActor::Name() {
+//	return m_name;
+//}
+//
+//void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
+//{
+//	Pos() = _pos;
+//	Scale() = _scale;
+//	RotAngle() = _angle;
+//}
 
 void GameActor::caluculateWorldTransform() {
 	if (mp_parent != nullptr) {
@@ -52,17 +53,15 @@ void GameActor::caluculateWorldTransform() {
 			mp_parent->m_worldScale;
 	}
 	else {
-		m_worldScale = m_scale;
-		m_worldRotAngle = m_rotAngle;
-		m_worldPos = m_pos.getRotated(-m_rotAngle, ofVec3f(0, 0, 1)) * m_scale;
+		Actor::caluculateWorldTransform();
 	}
 }
 
-void GameActor::initialize(ofVec3f _pos, string _name) {
-	m_pos = _pos;
-	caluculateWorldTransform();
-	m_name = _name;
-}
+//void GameActor::initialize(ofVec3f _pos, string _name) {
+//	m_pos = _pos;
+//	caluculateWorldTransform();
+//	m_name = _name;
+//}
 
 
 
@@ -119,21 +118,21 @@ void GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
 	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
 }
 
-void GameActor::update(float _deltatime) {
+void GameActor::update(float _deltaTime) {
 	caluculateWorldTransform();
 
 	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
 
-	if (mp_parent) {
+	/*if (mp_parent) {
 		m_rotAngle++;
 		if (m_rotAngle > 360)
 		{
 			m_rotAngle = 0.f;
 		}
-	}
+	}*/
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {
-		c->update(_deltatime);
+		c->update(_deltaTime);
 	}
 	//DrawOrder
 	//ofApp::getInstance()->draworderset_.insert(this);
@@ -150,24 +149,26 @@ void GameActor::update(float _deltatime) {
 	}
 	//子ゲームアクターの全件処理
 	for (auto& c : m_childList) {
-		c->update(_deltatime);
+		c->update(_deltaTime);
 	}
 }
 
 
-void GameActor::draw(float _deltatime)
+void GameActor::draw(float _deltaTime)
 {
-	ofPushMatrix();
+	/*ofPushMatrix();
 	ofTranslate(m_worldPos);
 	ofRotateDeg(-m_worldRotAngle);
 	ofScale(m_worldScale);
 
 	assert(drawfunc != nullptr);
 	drawfunc();
-	ofPopMatrix();
+	ofPopMatrix();*/
+
+	Actor::draw();
 
 	for (auto& c : m_childList) {
-		c->draw(_deltatime);
+		c->draw(_deltaTime);
 	}
 
 }

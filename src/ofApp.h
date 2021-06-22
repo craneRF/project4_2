@@ -4,6 +4,9 @@
 #include "Define.h"
 #include "GameActor.h"
 #include "stdMgr.h"
+#include "Font.h"
+#include "Texture.h"
+#include "UIActor.h"
 
 class GameMainCtrlComponent;
 
@@ -32,9 +35,10 @@ public:
 	void gotMessage(ofMessage msg);
 
 	float m_deltaTime;
-	uint32_t m_TicksCount;
 
-	ofTrueTypeFont myFont;
+	unique_ptr<Font> mp_font;
+	unique_ptr<Texture> mp_texture;
+	
 
 	unique_ptr<GameActor> hierarchyRoot_;
 
@@ -42,6 +46,10 @@ public:
 	unique_ptr< SoundManager> mp_soundManager;
 	unique_ptr< InputManager> mp_inputManager;
 
-	unique_ptr< ResourceManager<ofImage>> mp_imageManager;
+
+	std::vector<shared_ptr<UIActor>> m_UIStack;  //hierarchyRoot_ÇÃUIî≈Çäiî[Ç∑ÇÈïœêî
+	const std::vector<shared_ptr<UIActor>>& GetUIStack() { return m_UIStack; }
+	void PushUI(shared_ptr<UIActor> screen);
+
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 };
