@@ -3,17 +3,18 @@
 #include "GameActor.h"
 #include "PlayerActor.h"
 #include "EnemyActor.h"
+#include "Parameter.h"
 #include "stdComponent.h"
 #include "LoadCSVFile.h"
 
 //GameStateTitle
-void GameStateTitle::enter(Parameter _inportprm)
+void GameStateTitle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, u8"タイトルシーン", { }, ofColor::white);
-	m_prmInState = _inportprm;
+	*m_prmInState = _pprm;
 
 	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
@@ -26,7 +27,7 @@ void GameStateTitle::enter(Parameter _inportprm)
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor1->Pos() = { 500,300 };
 	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState.getPlayerParam("HP")), { }, ofColor::white);
+		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState->getPlayerParam("HP")), { }, ofColor::white);
 
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
@@ -35,12 +36,12 @@ void GameStateTitle::enter(Parameter _inportprm)
 GameState* GameStateTitle::update(float _deltatime)
 {
 	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
-	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(m_prmInState.getPlayerParam("HP"));
+	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(m_prmInState->getPlayerParam("HP"));
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire")) {
-		m_prmInState.setPlayerParam("HP", 50);
+		m_prmInState->setPlayerParam("HP", 50);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Bomb")) {
-		m_prmInState.setPlayerParam("HP", 100);
+		m_prmInState->setPlayerParam("HP", 100);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateBattle;
@@ -48,14 +49,14 @@ GameState* GameStateTitle::update(float _deltatime)
 	return nullptr;
 }
 
-void GameStateTitle::exit(Parameter& _reprm)
+void GameStateTitle::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
 	ofApp::getInstance()->mp_soundManager->stop(0);
-	_reprm = m_prmInState;
+	_pprm = *m_prmInState;
 }
 
-void GameStateMap::enter(Parameter _inportprm)
+void GameStateMap::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
@@ -64,7 +65,7 @@ void GameStateMap::enter(Parameter _inportprm)
 
 	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
-	m_prmInState = _inportprm;
+	*m_prmInState = _pprm;
 
 }
 GameState * GameStateMap::update(float _deltatime)
@@ -84,22 +85,22 @@ GameState * GameStateMap::update(float _deltatime)
 	return nullptr;
 }
 
-void GameStateMap::exit(Parameter& _reprm)
+void GameStateMap::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
-	_reprm = m_prmInState;
+	_pprm = *m_prmInState;
 }
 
 
-void GameStateBattle::enter(Parameter _inportprm)
+void GameStateBattle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, u8"戦闘シーン", { }, ofColor::white);
 
-	m_prmInState = _inportprm;
-	m_prmInState.getPlayerParam("HP");
+	*m_prmInState = _pprm;
+	m_prmInState->getPlayerParam("HP");
 
 	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor2->Pos() = { 500,300 };
@@ -110,7 +111,7 @@ void GameStateBattle::enter(Parameter _inportprm)
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild()->addComponent<BattleComponent>();
 	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild();
 	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild());
-	mp_BattleComp->SetPlayer(mp_Player);
+	mp_BattleComp->SetPlayer(m_prmInState);
 	mp_BattleComp->SetEnemy(m_EnemyList);
 }
 
@@ -124,7 +125,8 @@ GameState * GameStateBattle::update(float _deltatime)
 	{
 	case BattleComponent::Result::WIN:
 		return &GameMainCtrlComponent::m_gameStateTitle;
-
+	case BattleComponent::Result::LOSE:
+		return &GameMainCtrlComponent::m_gameStateTitle;
 	default:
 		break;
 	}
@@ -132,9 +134,9 @@ GameState * GameStateBattle::update(float _deltatime)
 	return nullptr;
 }
 
-void GameStateBattle::exit(Parameter& _reprm)
+void GameStateBattle::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
 	ofApp::getInstance()->mp_soundManager->stop(0);
-	_reprm = m_prmInState;
+	_pprm = *m_prmInState;
 }

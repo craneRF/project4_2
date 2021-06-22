@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+//#include "Parameter.h"
 
 class Parameter;
 class BattleComponent :public Component
@@ -30,11 +31,11 @@ private:
 	Result m_result = Result::NONE;
 
 	// 戦闘キャラ
-	GameActor* m_Player;
+	shared_ptr<Parameter> m_Player;
 	vector<GameActor*> m_EnemyList;
 
 	// 仮HP(実際は戦闘キャラが持っているHPを使う)
-	int m_PlayerHP = 10;
+	//int m_PlayerHP = 10;
 	int m_EnemyHP = 5;
 
 	// 動作確認文字列
@@ -48,7 +49,7 @@ public:
 	virtual ~BattleComponent();
 	virtual void update(float _deltatime);
 
-	void SetPlayer(GameActor* _player) { m_Player = _player; }
+	void SetPlayer(shared_ptr<Parameter> _player) { m_Player = _player; }
 	void SetEnemy(vector<GameActor*> _enemyList) { m_EnemyList = _enemyList; }
 	Result GetResult() { return m_result; }
 	string GetInfo() { return m_stateInfo; }

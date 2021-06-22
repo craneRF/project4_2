@@ -1,25 +1,26 @@
 #pragma once
-#include "Parameter.h"
+#include "ofMain.h"
 
+class Parameter;
 class GameState
 {
 private:
 
 protected:
 	GameActor* mp_fontActor;
-
-public:
-	GameState() {};
-	virtual ~GameState() {};
-	virtual void enter(Parameter _inportprm) = 0;
-	virtual GameState* update(float _deltatime) = 0;
-	virtual void exit(Parameter& _reprm) = 0;
-
 	GameActor* mp_actor;
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
 
-	Parameter m_prmInState;
+public:
+	GameState() {};
+	virtual ~GameState() {};
+	virtual void enter(Parameter _pprm) = 0;
+	virtual GameState* update(float _deltatime) = 0;
+	virtual void exit(Parameter& _pprm) = 0;
+
+
+	shared_ptr<Parameter> m_prmInState = make_shared<Parameter>();
 };
 
 // タイトルシーン
@@ -27,9 +28,9 @@ class GameStateTitle final : public GameState {
 private:
 
 public:
-	virtual void enter(Parameter _inportprm);
+	virtual void enter(Parameter _pprm);
 	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _reprm);
+	virtual void exit(Parameter& _pprm);
 };
 
 // マップシーン
@@ -38,9 +39,9 @@ private:
 	GameActor* mp_mapActor;
 
 public:
-	virtual void enter(Parameter _inportprm);
+	virtual void enter(Parameter _pprm);
 	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _reprm);
+	virtual void exit(Parameter& _pprm);
 	
 
 };
@@ -59,8 +60,8 @@ private:
 
 
 public:
-	virtual void enter(Parameter _inportprm);
+	virtual void enter(Parameter _pprm);
 	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _reprm);
+	virtual void exit(Parameter& _pprm);
 };
 

@@ -2,13 +2,11 @@
 #include "ofApp.h"
 
 BattleComponent::BattleComponent(GameActor* _gactor) :
-	Component(_gactor, "BattleComponent")
-{
+	Component(_gactor, "BattleComponent") {
 
 }
 
-BattleComponent::~BattleComponent()
-{
+BattleComponent::~BattleComponent() {
 
 }
 
@@ -65,17 +63,16 @@ void BattleComponent::update(float _deltatime)
 
 void BattleComponent::CheckResult()
 {
-	if (m_PlayerHP <= 0)
+	if (m_Player->getPlayerParam("HP") <= 0)
 	{
 		m_result = Result::LOSE;
 	}
 	else if (m_EnemyHP <= 0)
-	//else if (m_EnemyList.size() <= 0)
+		//else if (m_EnemyList.size() <= 0)
 	{
 		m_result = Result::WIN;
 	}
-	else
-	{
+	else {
 		m_result = Result::NONE;
 	}
 }
@@ -89,48 +86,45 @@ void BattleComponent::ExcuteCommand()
 	}
 
 	// 変化させるHPのポインタ
-	int* hp = nullptr;
+	int hp = 0;
 	// 文字列初期化
 	m_stateInfo = "";
 	// だれが
-	if (mp_Command->fromIndex == 0)
-	{
+	if (mp_Command->fromIndex == 0) {
 		m_stateInfo += u8"プレイヤーが";
 	}
-	else
-	{
+	else {
 		m_stateInfo += u8"エネミーが";
 	}
 
 	// だれに
-	if (mp_Command->toIdenx == 0)
-	{
+	if (mp_Command->toIdenx == 0) {
 		m_stateInfo += u8"プレイヤーのHPを";
-		hp = &m_PlayerHP;
+		hp = m_Player->getPlayerParam("HP");
 	}
-	else
-	{
+	else {
 		m_stateInfo += u8"エネミーのHPを";
-		hp = &m_EnemyHP;
+		hp = m_EnemyHP;
 	}
 
 	// 何をした
 	m_stateInfo += to_string(mp_Command->commandval);
-	if (mp_Command->commandType == 0)
-	{
+	if (mp_Command->commandType == 0) {
 		m_stateInfo += u8"減らした";
 		mp_Command->commandval *= -1;
 	}
-	else
-	{
+	else {
 		m_stateInfo += u8"回復させた";
 	}
 
 	// 数値処理
-	*hp += mp_Command->commandval;
+	hp += mp_Command->commandval;
+	if (mp_Command->toIdenx == 0) {
+		m_Player->setPlayerParam("HP", hp);
+	}
 
 	//	現在のHP表示
-	m_stateInfo += u8"\nエネミー：" + std::to_string(m_EnemyHP) + u8", プレイヤー：" + std::to_string(m_PlayerHP);
+	m_stateInfo += u8"\nエネミー：" + std::to_string(m_EnemyHP) + u8", プレイヤー：" + std::to_string(m_Player->getPlayerParam("HP"));
 
 	// コマンドのリセット
 	mp_Command.reset();

@@ -20,15 +20,14 @@ public:
 	void setEnemyStatus(string key, int val);
 	int getEnemyStatus(string key) const;
 
-	void setEnemySkill(string key,int val);
+	void setEnemySkill(string key, int val);
 	EnemySkill getEnemySkill(string key) const;
 private:
 	map<string, int> m_enemyStatus;
-protected:
 	map<string, EnemySkill> m_enemySkill;
 };
 
-class NomalEnemy : public EnemyObject
+class NomalEnemy final : public EnemyObject
 {
 public:
 	NomalEnemy();
