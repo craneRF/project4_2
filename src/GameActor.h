@@ -43,10 +43,10 @@ public:
 	void initialize(ofVec3f _pos, string _name);
 
 	GameActor* mp_parent;
-	GameActor* addChild();
-
-	void RemoveAllChild();
-	GameActor* getChild(int _index) const;
+	
+	//virtual GameActor* addChild();
+	//void RemoveAllChild();
+	//GameActor* getChild(int _index) const;
 	int getChildCount() { return m_childList.size(); }
 
 	//static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
@@ -77,5 +77,27 @@ public:
 			}
 		}
 		return nullptr;
+	}
+
+	template <typename T>
+	T* addChild() {
+		auto actor = make_unique<T>();
+		auto res = actor.get();
+		m_childAddQue.push(move(actor));
+		res->mp_parent = this;
+		return res;
+	}
+
+	template <typename T>
+	void RemoveAllChild() {
+		queue<unique_ptr<T>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
+		for (auto& c : m_childList) {
+			c->waitforErase_ = true;
+		}
+	}
+
+	template <typename T>
+	T* getChild(int _index) const {
+		return dynamic_cast<T*>(m_childList[_index].get());
 	}
 };

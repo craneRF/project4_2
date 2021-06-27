@@ -64,27 +64,27 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	m_name = _name;
 }
 
-GameActor* GameActor::addChild()
-{
-	auto actor = make_unique<GameActor>();
-	auto res = actor.get();
-	m_childAddQue.push(move(actor));
-	res->mp_parent = this;
-	return res;
-}
+//GameActor* GameActor::addChild()
+//{
+//	auto actor = make_unique<GameActor>();
+//	auto res = actor.get();
+//	m_childAddQue.push(move(actor));
+//	res->mp_parent = this;
+//	return res;
+//}
 
-void GameActor::RemoveAllChild()
-{
-	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
-	for (auto& c : m_childList) {
-		c->waitforErase_ = true;
-	}
-}
-
-GameActor* GameActor::getChild(int _index) const
-{
-	return m_childList[_index].get();
-}
+//void GameActor::RemoveAllChild()
+//{
+//	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
+//	for (auto& c : m_childList) {
+//		c->waitforErase_ = true;
+//	}
+//}
+//
+//GameActor* GameActor::getChild(int _index) const
+//{
+//	return m_childList[_index].get();
+//}
 
 GameActor * GameActor::findActor(GameActor* _current, string _name)
 {
@@ -108,7 +108,7 @@ list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, lis
 
 GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
 {
-	auto mapActor = _parent->addChild();
+	auto mapActor = _parent->addChild<GameActor>();
 	mapActor->initialize(_pos, _name);
 	mapActor->addComponent<MapComponent>();
 

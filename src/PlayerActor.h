@@ -3,6 +3,6 @@
 class PlayerActor :	public GameActor
 {
 public:
-	static GameActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
+	static PlayerActor* createPlayer(GameActor* _parent, ofVec3f _pos, string _name = "Player");
 };
 

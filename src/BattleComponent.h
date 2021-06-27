@@ -1,5 +1,8 @@
 #pragma once
 #include "Component.h"
+#include "EnemyActor.h"
+#include"EnemyObject.h"
+#include"EnemyComponent.h"
 //#include "Parameter.h"
 
 class Parameter;
@@ -32,11 +35,11 @@ private:
 
 	// 戦闘キャラ
 	shared_ptr<Parameter> m_Player;
-	vector<GameActor*> m_EnemyList;
+	vector<EnemyActor*> m_EnemyList;
 
 	// 仮HP(実際は戦闘キャラが持っているHPを使う)
 	//int m_PlayerHP = 10;
-	int m_EnemyHP = 5;
+	int m_EnemyHP =10;
 
 	// 動作確認文字列
 	string m_stateInfo = "";
@@ -50,7 +53,7 @@ public:
 	virtual void update(float _deltatime);
 
 	void SetPlayer(shared_ptr<Parameter> _player) { m_Player = _player; }
-	void SetEnemy(vector<GameActor*> _enemyList) { m_EnemyList = _enemyList; }
+	void SetEnemy(vector<EnemyActor*> _enemyList);
 	Result GetResult() { return m_result; }
 	string GetInfo() { return m_stateInfo; }
 

@@ -48,15 +48,20 @@ void BattleComponent::update(float _deltatime)
 		}
 
 		++m_currentChara;
-		if (m_currentChara > m_EnemyList.size())
+		if (m_currentChara > m_EnemyList.size() - 1)
 		{
 			m_currentChara = 0;
 		}
-
-		CheckResult();
 	}
-
 	ExcuteCommand();
+	CheckResult();
+}
+
+void BattleComponent::SetEnemy(vector <EnemyActor*> _enemyList)
+{
+	m_EnemyList = _enemyList;
+	auto enemyCpnt = m_EnemyList[Nomal]->getComponent<EnemyComponent>();
+	m_EnemyHP = enemyCpnt->getEnemy(Nomal).HP;
 }
 
 void BattleComponent::CheckResult()
@@ -123,6 +128,10 @@ void BattleComponent::ExcuteCommand()
 		m_Player->setPlayerParam("HP", hp);
 	}
 
+	//敵のHPの増減
+	if (mp_Command->toIdenx == 1) {
+		m_EnemyHP = hp;
+	}
 	//	現在のHP表示
 	m_stateInfo += u8"\nエネミー：" + std::to_string(m_EnemyHP) + u8", プレイヤー：" + std::to_string(m_Player->getPlayerParam("HP"));
 

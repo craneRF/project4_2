@@ -4,12 +4,11 @@
 #include "EnemyObject.h"
 
 NomalEnemy EnemyComponent::m_nomalEnemy;
+SmallEnemy EnemyComponent::m_smallEnemy;
 
-EnemyComponent::EnemyComponent(GameActor * _gactor):Component(_gactor,"Enemy")
+EnemyComponent::EnemyComponent(GameActor * _gactor) :Component(_gactor, "Enemy")
 {
 	mp_sprCpnt = mp_gActor->addComponent<SpriteComponent>();
-	mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/zeni.png"));
-	mp_sprCpnt->AlignPivotCenter();
 }
 
 EnemyComponent::~EnemyComponent()
@@ -25,12 +24,22 @@ void EnemyComponent::onCollision(CollisionComponent *)
 {
 }
 
-ofVec3f EnemyComponent::getScale(int _enemytype)
+EnemyParam EnemyComponent::getEnemy(int _enemytype)
 {
-	return m_nomalEnemy.m_eParam.scale;
+	switch (_enemytype)
+	{
+	case Nomal:
+		mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/zeni.png"));
+		mp_sprCpnt->AlignPivotCenter();
+		return m_nomalEnemy.m_eParam;
+	case Small:
+		mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/zeni.png"));
+		mp_sprCpnt->AlignPivotCenter();
+		return m_smallEnemy.m_eParam;
+	}
 }
 
 void EnemyComponent::discriminantEnemyType(int _enemytype)
 {
-	
+
 }

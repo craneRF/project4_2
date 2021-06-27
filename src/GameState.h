@@ -1,5 +1,7 @@
 #pragma once
 #include "ofMain.h"
+#include "PlayerActor.h"
+#include "EnemyActor.h"
 
 class Parameter;
 class GameState
@@ -51,9 +53,9 @@ class BattleComponent;
 class GameStateBattle final : public GameState {
 private:
 	// プレイヤー
-	GameActor* mp_Player;
+	PlayerActor* mp_Player;
 	// エネミー配列
-	vector<GameActor*> m_EnemyList;
+	vector<EnemyActor*> m_EnemyList;
 	// 戦闘システムアクター
 	BattleComponent* mp_BattleComp;
 	//GameActor* mp_BattleActor;

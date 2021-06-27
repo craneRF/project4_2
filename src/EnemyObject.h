@@ -3,6 +3,7 @@
 
 enum  EnemyType
 {
+	NONE,
 	Nomal,
 	Small,
 	Big
@@ -17,6 +18,8 @@ struct EnemyParam
 {
 	EnemySkill eSkill;
 	ofVec3f scale;
+	int HP;
+	int Def;
 };
 
 class EnemyObject
@@ -46,5 +49,12 @@ class NomalEnemy final : public EnemyObject
 {
 public:
 	NomalEnemy();
+	virtual void initialize();
+};
+
+class SmallEnemy final : public EnemyObject
+{
+public:
+	SmallEnemy();
 	virtual void initialize();
 };

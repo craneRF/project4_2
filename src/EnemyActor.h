@@ -1,15 +1,14 @@
 #pragma once
 #include "GameActor.h"
-enum  EnemyType
-{
-	Nomal,
-	Small,
-	Big
-};
+#include "EnemyObject.h"
 
 class EnemyActor : public GameActor
 {
 public:
-	static void createEnemy(GameActor* _parent, ofVec3f _pos, int _enemytype = Nomal, string _name = "Enemy");
+	
+	static EnemyActor* createEnemy(GameActor* _parent, ofVec3f _pos, int _enemytype = Nomal, string _name = "Enemy");
+	
+	int getEnemyHP(int _enemytype);
+	string getEnemySkill(int _enemytype);
 };
 
