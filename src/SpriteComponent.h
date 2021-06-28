@@ -9,11 +9,6 @@ public:
 	SpriteComponent(GameActor* _gactor);
 	virtual ~SpriteComponent();
 
-	enum class SpriteState {
-		EVisibled
-		, EInVisibled
-	};
-
 	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = { 1, 1, 1 });
 	virtual void update(float _deltatime);
 	void draw();	
@@ -21,8 +16,10 @@ public:
 	void AlignPivotCenter();
 
 private:
+	ofVec3f m_offset;
+	ofColor m_col;
+	ofVec3f m_scale;
 	string m_texName;
-	SpriteState m_spriteState;
 
 	//update中にサイズとフォントネームが変化された時用の変数
 	string m_texNameBuffer;         //現在の画像名格納変数
@@ -32,23 +29,19 @@ private:
 public:
 	inline ofVec3f& Offset() 
 	{ 
-		return mp_TexRenderer->Offset();
+		return m_offset;
 	}
 	inline ofColor& Color()
 	{ 
-		return mp_TexRenderer->Color();
+		return m_col;
 	}
 	inline ofVec3f& Scale() 
 	{ 
-		return mp_TexRenderer->Scale();
+		return m_scale;
 	}
 
 	inline string& TexName()
 	{
 		return m_texName;
-	}
-	inline SpriteState& SpriteState() 
-	{
-		return m_spriteState; 
 	}
 };

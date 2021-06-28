@@ -5,14 +5,24 @@
 class MoveComponent :public Component
 {
 private:
+	ofVec3f m_movePos;
+	float m_moveDeg;
 
 public:
 	MoveComponent(GameActor* _gator);
 	virtual ~MoveComponent();
 	virtual void update(float _deltatime);
 
-	void setMoveVec(ofVec3f _vec);
-	void setAngle(float _degree, float _speed);
+	void FrontMove(float _speed = 1.0f);
 
-	ofVec3f m_movevec;
+
+public:
+	inline void AddMovePos(ofVec3f _add)
+	{
+		m_movePos += _add;
+	}
+	inline void AddMoveAngle(float _add)
+	{
+		m_moveDeg += _add;
+	}
 };

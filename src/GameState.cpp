@@ -4,6 +4,30 @@
 #include "stdComponent.h"
 #include "LoadCSVFile.h"
 
+/*
+* 1.hierarchyRoot_のGameMainCtrlComponent内でシーン制御をし、アクターの生成を行うことから、
+*   GameMainCtrlComponentは常にActive状態であり、update()を行わなければならない。(hierarchyRoot_自体はActive状態でなくても良い)
+* 2.GameMainCtrlComponentのupdate()内に存在するGameStateも常に行われるため、GameStateのupdate()も常に行われる。
+* 3.GameStateのupdate()内で行われる「GameActor」・「UIActor」・「Coponentが持つインスタンス」のプロパティ(Actorでいうm_posやm_rotAngle、Pos()など)
+*   に対する処理はそれぞれがどんな状態だろうが問答無用で行われる。
+* 
+* 以上の3点とGameActor・UIActor・Component それぞれのState処理の都合上、
+* GameStateのupdate()内では
+* 「GameActor」・「UIActor」・「Coponentが持つインスタンス」のプロパティ(Actorでいうm_posやm_rotAngle、Pos()など)を変えないでください。
+* もし変更が必要になったなら、直接的に変えるのではなく、それぞれのプロパティに影響のない変数を作って、そこから間接的にプロパティを変化させるようにしてください。
+* 間接的に変更するのは面倒くさいし、ややこしくなるので非推奨。
+
+* 例：
+	・GameActorのプロパティの場合、それ専用のComponentを作り、そのComponentのupdate()内で変更する。
+	・UIActorのプロパティの場合、それが存在しているUIScreenのupdate()内で変更する。
+	・Componentが持つインスタンスのプロパティの場合、そのupdate()内で変更するか
+	 もしくはそのComponentを持つGameActorのupdate()で変更する。
+
+	※最終的に何が言いたいかというと、
+	GameStateのupdate()内は極力シーン制御のみにし、
+	例に書かれているような設計にしてください、ということです。
+*/
+
 void GameStateTitle::enter()
 {
 	/*auto actor = ofApp::getInstance()->hierarchyRoot_->addChild();
@@ -16,22 +40,22 @@ void GameStateTitle::enter()
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->Pos() = { 700,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
-		initialize(ofToString(ofGetFrameRate()), 28, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
+		initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 	//"keifont.ttf"
 
-	string u0 = u8"hello";
-	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor1->Pos() = { 50, 100 };
-	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(/*ofToString(*/mp_actor->getComponent<FontRendererComponent>()->String(), 18, { 0,100,0 }, ofColor::red, {1, 1, 1}, "keifont.ttf");
+	//string u0 = u8"hello";
+	//mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
+	//mp_actor1->Pos() = { 50, 100 };
+	//mp_actor1->addComponent<FontRendererComponent>()->
+	//	initialize(/*ofToString(*/mp_actor->getComponent<FontRendererComponent>()->String(), 18, { 0,100,0 }, ofColor::red, {1, 1, 1}, "keifont.ttf");
 
 	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
+	mp_Enemy = GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
 	
 	//auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();"Images/Idling/marine_icon.png"
 
 	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor2->setParam({ 100,100,0 }, { 0.2f,0.2f }, 180.0);
+	mp_actor2->setParam({ 700,450,0 }, { 0.05f,0.05f }, 0.0f);
 	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
 	spr1->initialize("marine_icon.png");
 	spr1->AlignPivotCenter();
@@ -45,7 +69,7 @@ void GameStateTitle::enter()
 		for (int i = 0; i < hololivemembertable.at(r).size(); i++) {
 			mp_actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
 			mp_actor3->addComponent<FontRendererComponent>()->
-				initialize(hololivemembertable.at(r).at(i), 8, { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white, {2, 2, 2});
+				initialize(hololivemembertable.at(r).at(i), 18, { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white, {1, 1, 1});
 		}
 	}
 
@@ -76,19 +100,34 @@ void GameStateTitle::enter()
 
 GameState* GameStateTitle::update(float _deltatime)
 {
-	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
+	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime());
 	mp_actor->getComponent<FontRendererComponent>()->Scale() = ofVec3f(ofGetLastFrameTime() * 100, ofGetLastFrameTime() * 100, 1);
 
-	m_angle += 1.0f;
+	mp_Enemy->getComponent<MoveComponent>()->AddMovePos({ 20.0f, 0.0f, 0.0f });
+
+	/*m_angle += 1.0f;
 	if (m_angle >= 360.0f) {
 		m_angle = 0.0f;
 	}
-	m_move->setAngle(m_angle, 0.0f);
+	m_move->setAngle(m_angle, 0.0f);*/
+	m_move->AddMoveAngle(180.0f);
+	//m_move->AddMovePos({ 0.0f, 0.0f, 0.0f });
+	//m_move->FrontMove(20.0f);
+
 	/*if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateMain;
 	}*/
-	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		ofApp::getInstance()->mp_soundManager->play(1);
+	if (ofApp::getInstance()->mp_inputManager->getButtonHold("Start")) {
+		/*ofApp::getInstance()->mp_soundManager->play(1);
+		if (mp_actor2->GetActorState() == Actor::ActorState::EPause) {
+			mp_actor2->StateActive();
+			mp_actor2->StateAllCpntActive();
+		}
+		else {
+			mp_actor2->StatePause();
+			mp_actor2->StateAllCpntPause();
+		}*/
+		m_move->FrontMove(100.0f);
 	}
 	return nullptr;
 }

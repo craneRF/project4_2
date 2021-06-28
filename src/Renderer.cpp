@@ -1,11 +1,8 @@
 #include "Renderer.h"
+#include "ofApp.h"
 
 FontRenderer::FontRenderer()
-	:m_str("Not String")
-	,m_size(18)
-	,m_offset(ofVec3f{ 0, 0, 0 })
-	,m_col(ofColor::white)
-	,m_scale(ofVec3f{ 1, 1, 1 })
+	:m_size(18)
 	,m_fontName("keifont.ttf")
 	,mp_currentFont(nullptr)
 {
@@ -17,21 +14,29 @@ FontRenderer::~FontRenderer()
 {
 }
 
-void FontRenderer::FontDraw()
+void FontRenderer::SetSize(int _size)
 {
-	ofTranslate(m_offset);
-	ofSetColor(m_col);
-	ofScale(m_scale);
-	mp_currentFont->drawString(m_str, 0, 0);
+	m_size = _size;
+	mp_currentFont = ofApp::getInstance()->mp_font->GetFontMap().find(m_fontName)->second.find(m_size)->second;
 }
 
+void FontRenderer::SetFontName(const string & _fontname)
+{
+	m_fontName = _fontname;
+	mp_currentFont = ofApp::getInstance()->mp_font->GetFontMap().find(m_fontName)->second.find(m_size)->second;
+}
+
+void FontRenderer::FontDraw(string _str, ofVec3f _offset, ofColor _col, ofVec3f _scale)
+{
+	ofTranslate(_offset);
+	ofSetColor(_col);
+	ofScale(_scale);
+	mp_currentFont->drawString(_str, 0, 0);
+}
 
 //--------------------------------------------------------------
 TextureRenderer::TextureRenderer()
-	:m_offset(ofVec3f{ 0, 0, 0 })
-	,m_col(ofColor::white)
-	,m_scale(ofVec3f{ 1, 1, 1 })
-	,m_texName("")
+	:m_texName("NoSearch.png")
 {
 }
 
@@ -39,9 +44,15 @@ TextureRenderer::~TextureRenderer()
 {
 }
 
-void TextureRenderer::TextureDraw()
+void TextureRenderer::SetTexture(const string & _texname)
 {
-	ofSetColor(m_col);
-	ofScale(m_scale);
-	mp_image->draw(m_offset);
+	m_texName = _texname;
+	mp_image = ofApp::getInstance()->mp_texture->GetImage("images/" + m_texName);
+}
+
+void TextureRenderer::TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale)
+{
+	ofSetColor(_col);
+	ofScale(_scale);
+	mp_image->draw(_offset);
 }

@@ -25,26 +25,26 @@ private:
 public:
 	FontRendererComponent(GameActor* _gactor);
 	virtual ~FontRendererComponent();
-	void initialize(const string& _str = "Not String", int _size = 12, ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = {1, 1, 1}, const string& _fontname = "keifont.ttf");
+	void initialize(const string& _str = "Not String", int _size = 18, ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = {1, 1, 1}, const string& _fontname = "keifont.ttf");
 	virtual void update(float _deltatime);
 	virtual void draw();
 
 
 	inline string& String()
 	{ 
-		return mp_fontRenderer->String();
+		return m_str;
 	}
 	inline ofVec3f& Offset() 
 	{ 
-		return mp_fontRenderer->OffSet();
+		return m_offset;
 	}
 	inline ofColor& Color() 
 	{ 
-		return mp_fontRenderer->Color();
+		return m_col;
 	}
 	inline ofVec3f& Scale() 
 	{ 
-		return mp_fontRenderer->Scale();
+		return m_scale;
 	}
 
 	inline int& Size() 

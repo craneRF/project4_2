@@ -6,7 +6,7 @@
 #include "stdMgr.h"
 #include "Font.h"
 #include "Texture.h"
-#include "UIActor.h"
+#include "UIScreen.h"
 
 class GameMainCtrlComponent;
 
@@ -41,15 +41,20 @@ public:
 	
 
 	unique_ptr<GameActor> hierarchyRoot_;
+	vector<unique_ptr<UIScreen>> m_UIScreenStack;  //hierarchyRoot_‚ÌUI”Å‚ğŠi”[‚·‚é”z—ñ
 
 	unique_ptr< CollisionManager> mp_collisionManager;
 	unique_ptr< SoundManager> mp_soundManager;
 	unique_ptr< InputManager> mp_inputManager;
 
-
-	std::vector<shared_ptr<UIActor>> m_UIStack;  //hierarchyRoot_‚ÌUI”Å‚ğŠi”[‚·‚é•Ï”
-	const std::vector<shared_ptr<UIActor>>& GetUIStack() { return m_UIStack; }
-	void PushUI(shared_ptr<UIActor> screen);
-
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
+
+	inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack() 
+	{ 
+		return m_UIScreenStack; 
+	}
+	inline void PushUIScreen(UIScreen* _screen)
+	{
+		m_UIScreenStack.emplace_back(_screen);
+	}
 };

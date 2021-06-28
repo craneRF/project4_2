@@ -57,6 +57,15 @@ bool InputManager::getButtonUp(string _keyName)
 		keyStatus_[keylist_[_keyName]].nowValue == 0;
 }
 
+bool InputManager::getButtonHold(string _keyName)
+{
+	//¡ó‘Ô == ‘Oó‘Ô && ‰Ÿ‚µ‚Ä‚¢‚é
+	return
+		(keyStatus_[keylist_[_keyName]].nowValue ==
+			keyStatus_[keylist_[_keyName]].backValue) &&
+		keyStatus_[keylist_[_keyName]].nowValue == 1;
+}
+
 bool InputManager::getButton(string _keyName)
 {
 	return 1 == keyStatus_[keylist_[_keyName]].nowValue;

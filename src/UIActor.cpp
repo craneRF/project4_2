@@ -2,24 +2,17 @@
 
 UIActor::UIActor(string _name)
 	:Actor(_name)
-	/*m_pos(ofVec3f(0, 0, 0))
-	, m_rotAngle(0)
-	, m_worldRotAngle(0)
-	, m_scale({ 1,1,1 })
-	, drawfunc([]() {})*/
+	, mp_UIparent(nullptr)
+	, mp_UIScreen(nullptr)
 {
+	m_UIchildList.clear();
+	mp_fontRenderer = make_unique<FontRenderer>();
+	mp_TexRenderer = make_unique<TextureRenderer>();
 }
 
 UIActor::~UIActor()
 {
 }
-
-//void UIActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
-//{
-//	Pos() = _pos;
-//	Scale() = _scale;
-//	RotAngle() = _angle;
-//} 
 
 void UIActor::caluculateWorldTransform()
 {
@@ -35,13 +28,6 @@ void UIActor::caluculateWorldTransform()
 	}
 }
 
-//void UIActor::initialize(ofVec3f _pos, string _name)
-//{
-//	m_pos = _pos;
-//	caluculateWorldTransform();
-//	m_name = _name;
-//}
-
 void UIActor::update(float _deltaTime)
 {
 	caluculateWorldTransform();
@@ -49,7 +35,7 @@ void UIActor::update(float _deltaTime)
 	//削除予定UIアクターの削除
 	m_UIchildList.erase(
 		remove_if(m_UIchildList.begin(), m_UIchildList.end(),
-			[](const auto& a) {return a->GetUIActorState() == UIActor::UIActorState::EClosing; }),
+			[](const auto& uic) {return uic->GetActorState() == ActorState::EErace; }),
 		m_UIchildList.end()
 	);
 
@@ -59,57 +45,40 @@ void UIActor::update(float _deltaTime)
 		m_UIchildAddQue.pop();
 	}
 	//子UIアクターの全件処理
-	for (auto& uiac : m_UIchildList)
+	for (auto& uic : m_UIchildList)
 	{
-		if (uiac->GetUIActorState() != UIActor::UIActorState::EDrew && uiac->GetUIActorState() != UIActor::UIActorState::EClosing) {
-			if (uiac->GetUIActorState() == UIActor::UIActorState::EActive) {
-				uiac->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
-			}
-			uiac->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+		if (uic->GetActorState() != ActorState::EPause) {
+			uic->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
 		}
 	}
 }
 
 void UIActor::input(float _deltaTime)
 {
+	for (auto& uic : m_UIchildList)
+	{
+		if (uic->GetActorState() == ActorState::EActive) {
+			uic->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+		}
+	}
 }
 
 void UIActor::draw(float _deltaTime)
 {
-	/*ofPushMatrix();
-	ofTranslate(m_worldPos);
-	ofRotateDeg(-m_worldRotAngle);
-	ofScale(m_worldScale);
-
-	assert(drawfunc != nullptr);
-	drawfunc();
-	ofPopMatrix();*/
-
 	Actor::draw();
 
-	for (auto& c : m_UIchildList) {
-		c->draw(_deltaTime);
+	for (auto& uic : m_UIchildList) {
+		if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
+			uic->draw(_deltaTime);
+		}
 	}
 
-}
-
-void UIActor::Close()
-{
-}
-
-UIActor * UIActor::addUIChild()
-{
-	auto actor = make_unique<UIActor>();
-	auto res = actor.get();
-	m_UIchildAddQue.push(move(actor));
-	res->mp_UIparent = this;
-	return res;
 }
 
 void UIActor::RemoveAllChild()
 {
 	queue<unique_ptr<UIActor>>().swap(m_UIchildAddQue);	//queueの全消し
-	for (auto& c : m_UIchildList) {
-		c->Close();
+	for (auto& uic : m_UIchildList) {
+		uic->StateErace();
 	}
 }

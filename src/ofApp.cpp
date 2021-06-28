@@ -48,30 +48,34 @@ void ofApp::update() {
 	mp_collisionManager->CaluculateCollision();
 	mp_inputManager->update();
 
+	hierarchyRoot_->getComponent<GameMainCtrlComponent>()->StateCpntActive();  //GameMainCtrlComponentは常にActive状態
+
 	m_deltaTime = ofGetLastFrameTime();
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
 	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
 	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
 		hierarchyRoot_->update(m_deltaTime);
-	}
-	//hierarchyRoot_->update(m_deltaTime);
+		hierarchyRoot_->input(m_deltaTime);
 
-	for (auto& ui : m_UIStack)
-	{
-		if (ui->GetUIActorState() != UIActor::UIActorState::EDrew && ui->GetUIActorState() != UIActor::UIActorState::EClosing) {
-			if (ui->GetUIActorState() == UIActor::UIActorState::EActive) {
-				ui->input(m_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+		if (!m_UIScreenStack.empty()) {
+			for (auto& ui : m_UIScreenStack)
+			{
+				if (ui->GetUIScreenState() != UIScreen::UIScreenState::EPause) {
+					if (ui->GetUIScreenState() == UIScreen::UIScreenState::EActive) {
+						ui->input(m_deltaTime);  //操作処理はEActive状態の時しか行わない
+					}
+					ui->update(m_deltaTime);  //操作処理以外はEActive状態とEUnControl状態の時に行う
+				}
 			}
-			ui->update(m_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
-		}
-	}
 
-	for (auto iter = m_UIStack.begin(); iter != m_UIStack.end();) {
-		if ((*iter)->GetUIActorState() == UIActor::UIActorState::EClosing) {
-			iter = m_UIStack.erase(iter);
-		}
-		else {
-			++iter;
+			for (auto iter = m_UIScreenStack.begin(); iter != m_UIScreenStack.end();) {
+				if ((*iter)->GetUIScreenState() == UIScreen::UIScreenState::EErace) {
+					iter = m_UIScreenStack.erase(iter);  //EErace状態のUIScreenを削除し、その後のイテレーター全てを前に持ってくる
+				}
+				else {
+					++iter;
+				}
+			}
 		}
 	}
 }
@@ -80,8 +84,12 @@ void ofApp::update() {
 void ofApp::draw() {
 	hierarchyRoot_->draw(m_deltaTime);
 
-	for (auto& ui : m_UIStack) {
-		ui->draw(m_deltaTime);
+	if (!m_UIScreenStack.empty()) {
+		for (auto& ui : m_UIScreenStack) {
+			if (ui->GetUIScreenDrawState() == UIScreen::UIScreenDrawState::EVisible) {
+				ui->draw(m_deltaTime);  //Visible状態のUIScreenを描画
+			}
+		}
 	}
 	//ofPushMatrix();
 	//ofSetColor(ofColor::white);
@@ -92,11 +100,17 @@ void ofApp::draw() {
 }
 void ofApp::exit()
 {
+	mp_font.reset();
+	mp_texture.reset();
+
 	hierarchyRoot_.reset();
+	m_UIScreenStack.clear();
+
 	mp_collisionManager.reset();
 	mp_soundManager.reset();
 	mp_inputManager.reset();
 }
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 

@@ -7,6 +7,8 @@ Actor::Actor(string _name)
 	, m_scale({ 1,1,1 })
 	, m_name(_name)
 	, drawfunc([]() {})
+	, m_ActorState(ActorState::EActive)
+	, m_ActorDrawState(ActorDrawState::EVisible)
 {
 
 }
@@ -17,33 +19,39 @@ Actor::~Actor()
 
 void Actor::caluculateWorldTransform()
 {
-	m_worldScale = m_scale;
-	m_worldRotAngle = m_rotAngle;
-	m_worldPos = m_pos.getRotated(-m_rotAngle, ofVec3f(0, 0, 1)) * m_scale;
+	if (m_rotAngle >= 360.0f) {
+		m_rotAngle = 0.0f;
+	}
+
+	this->m_worldScale = this->m_scale;
+	this->m_worldRotAngle = this->m_rotAngle;
+	this->m_worldPos = this->m_pos.getRotated(-(this->m_rotAngle), ofVec3f(0, 0, 1)) * this->m_scale;
 }
 
 void Actor::initialize(ofVec3f _pos, string _name)
 {
-	m_pos = _pos;
-	m_name = _name;
+	this->m_pos = _pos;
+	this->m_name = _name;
 	this->caluculateWorldTransform();
 }
 
 void Actor::draw()
 {
-	ofPushMatrix();
-	ofTranslate(m_worldPos);
-	ofRotateDeg(-m_worldRotAngle);
-	ofScale(m_worldScale);
+	if (GetActorDrawState() == ActorDrawState::EVisible) {
+		ofPushMatrix();
+		ofTranslate(this->m_worldPos);
+		ofRotateDeg(-(this->m_worldRotAngle));
+		ofScale(this->m_worldScale);
 
-	assert(drawfunc != nullptr);
-	drawfunc();
-	ofPopMatrix();
+		assert(this->drawfunc != nullptr);
+		this->drawfunc();
+		ofPopMatrix();
+	}
 }
 
 void Actor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
 {
-	Pos() = _pos;
-	Scale() = _scale;
-	RotAngle() = _angle;
+	this->Pos() = _pos;
+	this->Scale() = _scale;
+	this->RotAngle() = _angle;
 }

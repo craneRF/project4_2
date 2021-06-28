@@ -181,7 +181,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Actor.cpp" />
+    <ClCompile Include="src\BattleHUD.cpp" />
     <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
@@ -193,7 +195,6 @@
     <ClCompile Include="src\GameActor.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
@@ -213,7 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Actor.h" />
+    <ClInclude Include="src\BattleHUD.h" />
     <ClInclude Include="src\Font.h" />
+    <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\ResourceManager.h" />
@@ -227,7 +230,6 @@
     <ClInclude Include="src\GameActor.h" />
     <ClInclude Include="src\GameState.h" />
     <ClInclude Include="src\LoadCSVFile.h" />
-    <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />

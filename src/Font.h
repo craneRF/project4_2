@@ -19,7 +19,7 @@ private:
 	unique_ptr< ResourceManager<string>> mp_fontManager;
 
 	const vector<int> m_fontSize = {  //使用するであろうフォントのサイズをあらかじめ用意しておく
-		8, 18, 28/*, 38, 48, 58*/
+		/*8,*/ 18/*, 28*//*, 38, 48, 58*/
 		//フォントサイズを増やすとメモリ不足か何かでエラーが出て起動しない模様
 	};
 
