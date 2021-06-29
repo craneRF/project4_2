@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "EnemyActor.h"
-
+#include "PlayerActor.h"
 
 class Parameter;
 class BattleComponent :public Component
@@ -32,13 +32,14 @@ private:
 	Result m_result = Result::NONE;
 
 	// í“¬ƒLƒƒƒ‰
+	PlayerActor *charaActor;
 	shared_ptr<Parameter> m_Player;
 	vector<EnemyActor*> m_EnemyList;
 	map<string, EnemyActor*>m_EnemyMap;
 
 	// ‰¼HP(ÀÛ‚Íí“¬ƒLƒƒƒ‰‚ª‚Á‚Ä‚¢‚éHP‚ğg‚¤)
 	//int m_PlayerHP = 10;
-	int m_EnemyHP =10;
+	int m_EnemyHP = 10;
 
 	string m_Enemyname;
 
@@ -54,7 +55,10 @@ public:
 	virtual ~BattleComponent();
 	virtual void update(float _deltatime);
 
+
 	void SetPlayer(shared_ptr<Parameter> _player) { m_Player = _player; }
+
+	//void SetEnemy();
 	void SetEnemy(vector<EnemyActor*> _enemyList);
 	Result GetResult() { return m_result; }
 	string GetInfo() { return m_stateInfo; }

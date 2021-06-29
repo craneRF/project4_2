@@ -11,7 +11,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	Component(_gactor, "BattleComponent")
 {
 	m_EnemyList.reserve(2);
-	auto charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
+	charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
 		if (_other->gActor()->waitforErase_)
@@ -34,7 +34,8 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		mp_Command->commandval = 3;
 	};
 
-	m_EnemyList.emplace_back(charaActor);
+	//m_EnemyList.emplace_back(charaActor);
+
 	for (int i = 1; i <= 2; ++i)
 	{
 		auto collisionComp = charaActor->addComponent<CollisionComponent>();
@@ -65,7 +66,6 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			}
 		};
 	}
-	m_EnemyList.emplace_back(EnemyActor::createEnemy(_gactor, { 200, 200 }));
 }
 
 BattleComponent::~BattleComponent() {
@@ -90,7 +90,8 @@ void BattleComponent::update(float _deltatime)
 		// 速さ
 		float speed = 50.f;
 		// ベクトル作成
-		ofVec3f direction = m_EnemyList[1]->Pos() - m_EnemyList[0]->Pos();
+		//ofVec3f direction = m_EnemyList[1]->Pos() - m_EnemyList[0]->Pos();
+		ofVec3f direction = m_EnemyList[0]->Pos() - charaActor->Pos();
 		// 正規化
 		direction.normalize();
 		ofVec3f forward = { 0, -1 };
@@ -102,7 +103,7 @@ void BattleComponent::update(float _deltatime)
 		if (/*mp_Command->fromIndex == 0*/false)
 		{
 			// 攻撃アクター作成
-			actor = PlayerActor::createPlayer(mp_gActor, m_EnemyList[0]->Pos());
+			actor = PlayerActor::createPlayer(mp_gActor, charaActor->Pos());
 			// 回転設定
 			actor->RotAngle() = angle;
 			// 速さ設定
@@ -110,7 +111,7 @@ void BattleComponent::update(float _deltatime)
 		}
 		else
 		{
-			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[1]->Pos());
+			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), Nomal);
 			actor->RotAngle() = angle + 180;
 			direction *= -speed;
 			// エネミーアクターはMoveComponentがなかったため、ここで付ける
@@ -126,13 +127,23 @@ void BattleComponent::update(float _deltatime)
 
 	ExcuteCommand();
 	CheckResult();
-//void BattleComponent::SetEnemy(vector <EnemyActor*> _enemyList)
+}
+
+//void BattleComponent::SetEnemy()
 //{
-//	m_EnemyList = _enemyList;
-//	auto enemyCpnt = m_EnemyList[0]->getComponent<EnemyComponent>();
+//	auto enemyCpnt = m_EnemyList[1]->getComponent<EnemyComponent>();
 //	m_EnemyHP = enemyCpnt->getEnemy(Nomal).HP;
-//	m_Enemyname = _enemyList[Nomal]->getEnemyName();
+//	m_Enemyname = "";
+//	/*m_Enemyname = m_EnemyList[1]->getEnemyName();*/
 //}
+
+void BattleComponent::SetEnemy(vector <EnemyActor*> _enemyList)
+{
+	m_EnemyList = _enemyList;
+	auto enemyCpnt = m_EnemyList[0]->getComponent<EnemyComponent>();
+	m_EnemyHP = enemyCpnt->getEnemy(Nomal).HP;
+	m_Enemyname = m_EnemyList[0]->getEnemyName();
+}
 
 
 void BattleComponent::CheckResult()

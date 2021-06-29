@@ -108,15 +108,15 @@ void GameStateBattle::enter(Parameter _pprm)
 	// í“¬ƒVƒXƒeƒ€‰Šú‰»
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
 	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
-	ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>();
+	//ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>();
 
 	//m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
-	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
+	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 
-	m_EnemyList.emplace_back(EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 100,50 }, Nomal));
-	m_EnemyList.emplace_back(EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 800,50 }, Small));
+	m_EnemyList.emplace_back(EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,200 }, Nomal));
+	//m_EnemyList.emplace_back(EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 800,50 }, Small));
 	mp_BattleComp->SetPlayer(m_prmInState);
-	//mp_BattleComp->SetEnemy(m_EnemyList);
+	mp_BattleComp->SetEnemy(m_EnemyList);
 }
 
 GameState * GameStateBattle::update(float _deltatime)

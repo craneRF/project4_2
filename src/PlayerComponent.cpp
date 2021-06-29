@@ -8,7 +8,6 @@ PlayerComponent::PlayerComponent(GameActor * _gactor) :Component(_gactor, "Playe
 	mp_sprCpnt = mp_gActor->addComponent<SpriteComponent>();
 	mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/marine_icon.png"));
 	mp_sprCpnt->AlignPivotCenter();
-
 }
 
 PlayerComponent::~PlayerComponent()
