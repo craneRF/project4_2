@@ -1,6 +1,9 @@
 #include "BattleComponent.h"
 #include "GameActor.h"
 #include "ofApp.h"
+#include "EnemyComponent.h"
+#include "EnemyObject.h"
+#include "EnemyType.h"
 
 BattleComponent::BattleComponent(GameActor* _gactor) :
 	Component(_gactor, "BattleComponent") {
@@ -48,7 +51,7 @@ void BattleComponent::update(float _deltatime)
 		}
 
 		++m_currentChara;
-		if (m_currentChara > m_EnemyList.size() - 1)
+		if (m_currentChara > m_EnemyList.size())
 		{
 			m_currentChara = 0;
 		}
@@ -60,8 +63,9 @@ void BattleComponent::update(float _deltatime)
 void BattleComponent::SetEnemy(vector <EnemyActor*> _enemyList)
 {
 	m_EnemyList = _enemyList;
-	auto enemyCpnt = m_EnemyList[Nomal]->getComponent<EnemyComponent>();
+	auto enemyCpnt = m_EnemyList[0]->getComponent<EnemyComponent>();
 	m_EnemyHP = enemyCpnt->getEnemy(Nomal).HP;
+	m_Enemyname = _enemyList[Nomal]->getEnemyName();
 }
 
 void BattleComponent::CheckResult()
@@ -133,7 +137,8 @@ void BattleComponent::ExcuteCommand()
 		m_EnemyHP = hp;
 	}
 	//	現在のHP表示
-	m_stateInfo += u8"\nエネミー：" + std::to_string(m_EnemyHP) + u8", プレイヤー：" + std::to_string(m_Player->getPlayerParam("HP"));
+	m_stateInfo += u8"\nエネミー：" + m_Enemyname + std::to_string(m_EnemyHP) + u8", プレイヤー：" + std::to_string(m_Player->getPlayerParam("HP"));
+
 
 	// コマンドのリセット
 	mp_Command.reset();

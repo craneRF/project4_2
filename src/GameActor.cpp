@@ -28,8 +28,18 @@ float& GameActor::RotAngle() {
 	return m_rotAngle;
 }
 
+const float & GameActor::WorldRotAngle()
+{
+	return m_worldRotAngle;
+}
+
 ofVec3f& GameActor::Scale() {
 	return m_scale;
+}
+
+const ofVec3f & GameActor::WorldScale()
+{
+	return m_worldScale;
 }
 
 void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
@@ -52,9 +62,9 @@ void GameActor::caluculateWorldTransform() {
 			mp_parent->m_worldScale;
 	}
 	else {
-		m_worldScale = m_scale;
+		m_worldScale = m_scale * ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 		m_worldRotAngle = m_rotAngle;
-		m_worldPos = m_pos.getRotated(-m_rotAngle, ofVec3f(0, 0, 1)) * m_scale;
+		m_worldPos = m_pos.getRotated(-m_rotAngle, ofVec3f(0, 0, 1)) * m_scale* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 	}
 }
 
@@ -63,28 +73,6 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	caluculateWorldTransform();
 	m_name = _name;
 }
-
-//GameActor* GameActor::addChild()
-//{
-//	auto actor = make_unique<GameActor>();
-//	auto res = actor.get();
-//	m_childAddQue.push(move(actor));
-//	res->mp_parent = this;
-//	return res;
-//}
-
-//void GameActor::RemoveAllChild()
-//{
-//	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
-//	for (auto& c : m_childList) {
-//		c->waitforErase_ = true;
-//	}
-//}
-//
-//GameActor* GameActor::getChild(int _index) const
-//{
-//	return m_childList[_index].get();
-//}
 
 GameActor * GameActor::findActor(GameActor* _current, string _name)
 {
@@ -96,8 +84,7 @@ GameActor * GameActor::findActor(GameActor* _current, string _name)
 	return nullptr;
 }
 
-list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, list<GameActor*>&&
-	_list)
+list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, list<GameActor*>&&	_list)
 {
 	if (_current->m_name == _name) _list.push_back(_current);
 	for (auto & actor : _current->m_childList) {

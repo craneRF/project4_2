@@ -1,14 +1,15 @@
 #pragma once
 #include "GameActor.h"
-#include "EnemyObject.h"
 
+enum EnemyType;
 class EnemyActor : public GameActor
 {
+private:
+	static string m_EnemyName;
 public:
-	
-	static EnemyActor* createEnemy(GameActor* _parent, ofVec3f _pos, int _enemytype = Nomal, string _name = "Enemy");
-	
-	int getEnemyHP(int _enemytype);
-	string getEnemySkill(int _enemytype);
+	static EnemyActor* createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name = "Enemy");
+
+	string getEnemyName() { return m_EnemyName; }
 };
+
 

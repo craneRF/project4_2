@@ -1,5 +1,13 @@
 #include "EnemyObject.h"
 
+EnemyObject::EnemyObject() {
+	m_eParam.name = "";
+	m_eParam.ImageName = "";
+	m_eParam.scale = { 1.f,1.f };
+	m_eParam.HP = 1;
+	m_eParam.Def = 0;
+}
+
 void EnemyObject::setEnemyStatus(string key, int val)
 {
 	m_enemyStatus[key] = val;
@@ -41,6 +49,7 @@ void NomalEnemy::initialize()
 {
 	m_eParam.scale = { 0.5,0.5 };
 	m_eParam.HP = 20;
+	m_eParam.ImageName = "zeni.png";
 	setEnemySkill("NomalAttack", 10);
 }
 
@@ -52,4 +61,5 @@ SmallEnemy::SmallEnemy()
 void SmallEnemy::initialize()
 {
 	m_eParam.scale = { 0.2,0.2 };
+	//m_eParam.ImageName = "marine_icon.png";
 }

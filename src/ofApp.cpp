@@ -37,6 +37,12 @@ void ofApp::setup() {
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
 	//mp_gameMainCtrlComponent->playerScore_ = 0;
 	mp_gameMainCtrlComponent->GameStateStart();
+
+	windowWidth = ofGetWidth();
+	windowHeight = ofGetHeight();
+	windowScale = 1.0f;
+	widthScaled = windowWidth * windowScale;
+	heightScaled = windowHeight * windowScale;
 }
 
 //--------------------------------------------------------------
@@ -52,18 +58,17 @@ void ofApp::update() {
 		hierarchyRoot_->update(m_deltaTime);
 	}
 	//hierarchyRoot_->update(m_deltaTime);
+
+	if (bScaleDirFixed) {
+		bScaleDirFixed = false;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	hierarchyRoot_->draw(m_deltaTime);
-	//ofPushMatrix();
-	//ofSetColor(ofColor::white);
-	//for (auto c : draworderset_) {
-	//	c->draw();
-	//}
-	//ofPopMatrix();
 }
+
 void ofApp::exit()
 {
 	hierarchyRoot_.reset();
@@ -113,7 +118,34 @@ void ofApp::mouseExited(int x, int y) {
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h) {
+	if (!bScaleDirFixed) {
 
+		int gapW = abs(widthScaled - w);
+		int gapH = abs(heightScaled - h);
+
+		if (gapW > gapH)
+			scaleDir = SCALE_DIR_HORIZONTAL;
+		else
+			scaleDir = SCALE_DIR_VERTICAL;
+		bScaleDirFixed = true;
+	}
+	float ratio;
+
+	if (scaleDir == SCALE_DIR_HORIZONTAL) {
+
+		ratio = static_cast<float>(windowHeight) / static_cast<float>(windowWidth);
+		h = w * ratio;
+		windowScale = static_cast<float>(w) / static_cast<float>(windowWidth);
+	}
+	else if (scaleDir == SCALE_DIR_VERTICAL) {
+
+		ratio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+		w = h * ratio;
+		windowScale = static_cast<float>(h) / static_cast<float>(windowHeight);
+	}
+	widthScaled = windowWidth * windowScale;
+	heightScaled = windowHeight * windowScale;
+	ofSetWindowShape(widthScaled, heightScaled);
 }
 
 //--------------------------------------------------------------

@@ -1,8 +1,7 @@
 #include "ofApp.h"
 #include "GameState.h"
 #include "GameActor.h"
-#include "PlayerActor.h"
-#include "Parameter.h"
+#include "EnemyType.h"
 #include "stdComponent.h"
 #include "LoadCSVFile.h"
 
@@ -15,9 +14,9 @@ void GameStateTitle::enter(Parameter _pprm)
 		initialize(ofApp::getInstance()->myFont, u8"タイトルシーン", { }, ofColor::white);
 	*m_prmInState = _pprm;
 
-	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
-	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
-	ofApp::getInstance()->mp_soundManager->loop(0);
+	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	//ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
+	//ofApp::getInstance()->mp_soundManager->loop(0);
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_actor->Pos() = { 500,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
@@ -28,8 +27,8 @@ void GameStateTitle::enter(Parameter _pprm)
 	mp_actor1->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState->getPlayerParam("HP")), { }, ofColor::white);
 
-	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 });
+	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
+	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
 }
 
 GameState* GameStateTitle::update(float _deltatime)
@@ -109,8 +108,9 @@ void GameStateBattle::enter(Parameter _pprm)
 	// 戦闘システム初期化
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
 	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
+	ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>();
 
-	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
+	//m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
 	PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 
 	m_EnemyList.emplace_back(EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 100,50 }, Nomal));

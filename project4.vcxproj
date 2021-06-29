@@ -207,6 +207,7 @@
     <ClCompile Include="src\SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />
     <ClInclude Include="src\BattleComponent.h" />

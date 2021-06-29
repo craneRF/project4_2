@@ -6,6 +6,12 @@
 #include "GameActor.h"
 #include "stdMgr.h"
 
+enum ScaleDir { //window scaling directions
+
+	SCALE_DIR_HORIZONTAL,
+	SCALE_DIR_VERTICAL,
+};
+
 class GameMainCtrlComponent;
 
 class ofApp : public ofBaseApp {
@@ -45,4 +51,12 @@ public:
 
 	unique_ptr< ResourceManager<ofImage>> mp_imageManager;
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
+
+	ScaleDir scaleDir;
+
+	int windowWidth, windowHeight; //original window dimensions
+	float widthScaled, heightScaled; //scaled window dimensions
+	float windowScale; //scale amount (1.0 = original)
+	bool bScaleDirFixed; //is direction fixed?
 };
+

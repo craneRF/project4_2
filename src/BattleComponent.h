@@ -1,9 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "EnemyActor.h"
-#include"EnemyObject.h"
-#include"EnemyComponent.h"
-//#include "Parameter.h"
+
 
 class Parameter;
 class BattleComponent :public Component
@@ -36,10 +34,13 @@ private:
 	// 戦闘キャラ
 	shared_ptr<Parameter> m_Player;
 	vector<EnemyActor*> m_EnemyList;
+	map<string, EnemyActor*>m_EnemyMap;
 
 	// 仮HP(実際は戦闘キャラが持っているHPを使う)
 	//int m_PlayerHP = 10;
 	int m_EnemyHP =10;
+
+	string m_Enemyname;
 
 	// 動作確認文字列
 	string m_stateInfo = "";

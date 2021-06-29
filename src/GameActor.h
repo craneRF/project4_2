@@ -27,7 +27,9 @@ public:
 	ofVec3f& Pos();
 	const ofVec3f& WorldPos();
 	float& RotAngle();
+	const float& WorldRotAngle();
 	ofVec3f& Scale();
+	const ofVec3f& WorldScale();
 
 	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
 
@@ -58,7 +60,7 @@ public:
 
 	//static GameActor * createMap(GameActor * _parent, ofVec3f _pos, string _name);
 
-	void onCollision(class CollisionComponent* _other);
+	/*void onCollision(class CollisionComponent* _other);*/
 
 
 	template <typename T>

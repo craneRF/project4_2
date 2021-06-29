@@ -1,14 +1,6 @@
 #pragma once
 #include "ofMain.h"
 
-enum  EnemyType
-{
-	NONE,
-	Nomal,
-	Small,
-	Big
-};
-
 struct EnemySkill {
 	int attackpower;
 	string attackStatement;
@@ -16,10 +8,12 @@ struct EnemySkill {
 
 struct EnemyParam
 {
-	EnemySkill eSkill;
+	string name;
+	string ImageName;
 	ofVec3f scale;
 	int HP;
 	int Def;
+	map<string, EnemySkill> eSkill;
 };
 
 class EnemyObject
@@ -28,7 +22,7 @@ public:
 	const static int Error = -1;
 	struct EnemySkill error_enemyskill = { -1,"Error" };
 
-	EnemyObject() {};
+	EnemyObject();
 	virtual ~EnemyObject() {};
 
 	virtual void initialize() {};
@@ -45,14 +39,14 @@ private:
 	map<string, EnemySkill> m_enemySkill;
 };
 
-class NomalEnemy final : public EnemyObject
+class NomalEnemy : public EnemyObject
 {
 public:
 	NomalEnemy();
 	virtual void initialize();
 };
 
-class SmallEnemy final : public EnemyObject
+class SmallEnemy final : public NomalEnemy
 {
 public:
 	SmallEnemy();

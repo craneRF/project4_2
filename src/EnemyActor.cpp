@@ -1,13 +1,26 @@
-#include "EnemyActor.h"
 #include "stdComponent.h"
+#include "ofApp.h"
+#include "EnemyActor.h"
+#include "EnemyObject.h"
+#include "EnemyType.h"
 
-EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, int _enemytype, string _name)
+string EnemyActor::m_EnemyName = "";
+
+EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name)
 {
 	auto actor = _parent->addChild<EnemyActor>();
 	auto enemyCpnt = actor->addComponent<EnemyComponent>();
+	enemyCpnt->setEnemyType(_enemytype);
 
 	actor->initialize(_pos, _name);
 	actor->setParam(_pos, enemyCpnt->getEnemy(_enemytype).scale);
+
+	if (enemyCpnt->getEnemy(_enemytype).name != "") {
+		m_EnemyName = enemyCpnt->getEnemy(_enemytype).name;
+	}
+	else {
+		m_EnemyName = StrEnemyType(_enemytype);
+	}
 
 	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
 	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_BULLET);
