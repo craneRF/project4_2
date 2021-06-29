@@ -74,6 +74,28 @@ void GameActor::initialize(ofVec3f _pos, string _name) {
 	m_name = _name;
 }
 
+//GameActor* GameActor::addChild()
+//{
+//	auto actor = make_unique<GameActor>();
+//	auto res = actor.get();
+//	m_childAddQue.push(move(actor));
+//	res->mp_parent = this;
+//	return res;
+//}
+//
+//void GameActor::RemoveAllChild()
+//{
+//	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queueの全消し
+//	for (auto& c : m_childList) {
+//		c->waitforErase_ = true;
+//	}
+//}
+//
+//GameActor* GameActor::getChild(int _index) const
+//{
+//	return m_childList[_index].get();
+//}
+
 GameActor * GameActor::findActor(GameActor* _current, string _name)
 {
 	if (_current->m_name == _name) return _current;
@@ -105,7 +127,6 @@ GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
 void GameActor::update(float _deltatime) {
 	caluculateWorldTransform();
 
-	//ofApp::getInstance()->hierarchyRoot_->RotAngle() += 1.f;
 
 	//自分のコンポーネントの更新処理
 	for (const auto& c : mp_componentList) {

@@ -11,5 +11,3 @@ public:
 
 	string getEnemyName() { return m_EnemyName; }
 };
-
-

@@ -49,6 +49,7 @@ private:
 	unique_ptr<Command> mp_Command;
 
 public:
+
 	BattleComponent(GameActor* _gator);
 	virtual ~BattleComponent();
 	virtual void update(float _deltatime);
