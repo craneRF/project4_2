@@ -28,6 +28,7 @@ public:
 	const ofVec3f& WorldPos();
 	float& RotAngle();
 	ofVec3f& Scale();
+	const ofVec3f& WorldScale();
 
 	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
 

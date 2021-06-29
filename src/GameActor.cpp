@@ -32,6 +32,11 @@ ofVec3f& GameActor::Scale() {
 	return m_scale;
 }
 
+const ofVec3f & GameActor::WorldScale()
+{
+	return m_worldScale;
+}
+
 void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
 {
 	Pos() = _pos;

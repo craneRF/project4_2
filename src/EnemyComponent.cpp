@@ -2,6 +2,7 @@
 #include "EnemyComponent.h"
 #include "SpriteComponent.h"
 #include "EnemyObject.h"
+#include "CollisionComponent.h"
 
 NomalEnemy EnemyComponent::m_nomalEnemy;
 
@@ -21,6 +22,11 @@ void EnemyComponent::update(float _deltatime)
 	mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/zeni.png"));
 }
 
-void EnemyComponent::onCollision(CollisionComponent *)
+void EnemyComponent::onCollision(CollisionComponent* _other)
 {
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Bomb"))
+	{
+		_other->gActor()->waitforErase_ = true;
+	}
+
 }

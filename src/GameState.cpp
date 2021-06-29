@@ -112,7 +112,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild();
 	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild());
 	mp_BattleComp->SetPlayer(m_prmInState);
-	mp_BattleComp->SetEnemy(m_EnemyList);
+	//mp_BattleComp->SetEnemy(m_EnemyList);
 }
 
 GameState * GameStateBattle::update(float _deltatime)

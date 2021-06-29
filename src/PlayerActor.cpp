@@ -11,7 +11,9 @@ GameActor* PlayerActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _n
 	auto moveCpnt = actor->addComponent<MoveComponent>();
 
 	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
-	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
+	coliisionCpnt->initialize(ofVec3f(0, 0), 200, 200, CollisionType::PLAYER_OBJECT);
+	//coliisionCpnt->initialize(ofVec3f(0, 0), 2067, 2067, CollisionType::PLAYER_OBJECT);
+	//coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
 	coliisionCpnt->m_onCollisionFunc = bind(&PlayerComponent::onCollision, playerCpnt, std::placeholders::_1);
 
 	return actor;
