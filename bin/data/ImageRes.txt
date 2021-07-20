@@ -1,1 +1,3 @@
 images/marine_icon.png
+images/NoSearch.png
+images/Arrow.png

@@ -7,6 +7,7 @@ Actor::Actor(string _name)
 	, m_scale({ 1,1,1 })
 	, m_name(_name)
 	, drawfunc([]() {})
+	, mp_parent(nullptr)
 	, m_ActorState(ActorState::EActive)
 	, m_ActorDrawState(ActorDrawState::EVisible)
 {
@@ -20,12 +21,21 @@ Actor::~Actor()
 void Actor::caluculateWorldTransform()
 {
 	if (m_rotAngle >= 360.0f) {
-		m_rotAngle = 0.0f;
+		this->m_rotAngle = 0.0f;
 	}
 
-	this->m_worldScale = this->m_scale;
-	this->m_worldRotAngle = this->m_rotAngle;
-	this->m_worldPos = this->m_pos.getRotated(-(this->m_rotAngle), ofVec3f(0, 0, 1)) * this->m_scale;
+	if (mp_parent != nullptr) {
+		this->m_worldScale = mp_parent->m_worldScale * this->m_scale;
+		this->m_worldRotAngle = mp_parent->m_worldRotAngle + this->m_rotAngle;
+		this->m_worldPos = mp_parent->m_worldPos +
+			this->m_pos.getRotated(-mp_parent->m_worldRotAngle, ofVec3f(0, 0, 1)) *
+			mp_parent->m_worldScale;
+	}
+	else {
+		this->m_worldScale = this->m_scale;
+		this->m_worldRotAngle = this->m_rotAngle;
+		this->m_worldPos = this->m_pos.getRotated(-(this->m_rotAngle), ofVec3f(0, 0, 1)) * this->m_scale;
+	}
 }
 
 void Actor::initialize(ofVec3f _pos, string _name)

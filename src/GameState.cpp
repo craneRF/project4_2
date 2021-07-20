@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "GameActor.h"
 #include "stdComponent.h"
+#include "BattleHUD.h"
 #include "LoadCSVFile.h"
 
 /*
@@ -55,9 +56,9 @@ void GameStateTitle::enter()
 	//auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();"Images/Idling/marine_icon.png"
 
 	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor2->setParam({ 700,450,0 }, { 0.05f,0.05f }, 0.0f);
+	mp_actor2->setParam({ 700,450,0 }, { 0.25f,0.25f }, 0.0f);
 	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
-	spr1->initialize("marine_icon.png");
+	spr1->initialize("Arrow.png");
 	spr1->AlignPivotCenter();
 	m_move = mp_actor2->addComponent<MoveComponent>();
 
@@ -73,6 +74,7 @@ void GameStateTitle::enter()
 		}
 	}
 
+	mp_BHUD = ofApp::getInstance()->addUIScreen<BattleHUD>();
 
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	//actor1->Pos() = { 200,300,0 };
@@ -103,16 +105,7 @@ GameState* GameStateTitle::update(float _deltatime)
 	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime());
 	mp_actor->getComponent<FontRendererComponent>()->Scale() = ofVec3f(ofGetLastFrameTime() * 100, ofGetLastFrameTime() * 100, 1);
 
-	mp_Enemy->getComponent<MoveComponent>()->AddMovePos({ 20.0f, 0.0f, 0.0f });
-
-	/*m_angle += 1.0f;
-	if (m_angle >= 360.0f) {
-		m_angle = 0.0f;
-	}
-	m_move->setAngle(m_angle, 0.0f);*/
-	m_move->AddMoveAngle(180.0f);
-	//m_move->AddMovePos({ 0.0f, 0.0f, 0.0f });
-	//m_move->FrontMove(20.0f);
+	mp_Enemy->getComponent<MoveComponent>()->AddMovePos({ 50.0f, 0.0f, 0.0f });
 
 	/*if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateMain;
@@ -127,7 +120,20 @@ GameState* GameStateTitle::update(float _deltatime)
 			mp_actor2->StatePause();
 			mp_actor2->StateAllCpntPause();
 		}*/
-		m_move->FrontMove(100.0f);
+		m_move->FrontMove(200.0f);
+	}
+	else {
+		m_move->AddMoveAngle(180.0f);
+	}
+	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
+		if (mp_BHUD->GetUIScreenState() == BattleHUD::UIScreenState::EPause || mp_BHUD->GetUIScreenDrawState() == BattleHUD::UIScreenDrawState::EHidden) {
+			mp_BHUD->StateActive();
+			mp_BHUD->StateVisible();
+		}
+		else if (mp_BHUD->GetUIScreenState() == BattleHUD::UIScreenState::EActive || mp_BHUD->GetUIScreenDrawState() == BattleHUD::UIScreenDrawState::EVisible) {
+			mp_BHUD->StatePause();
+			mp_BHUD->StateHidden();
+		}
 	}
 	return nullptr;
 }
@@ -136,6 +142,4 @@ void GameStateTitle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
 	ofApp::getInstance()->mp_soundManager->stop(0);
-
-	delete m_move;
 }

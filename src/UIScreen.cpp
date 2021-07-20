@@ -1,15 +1,19 @@
 #include "ofApp.h"
 #include "UIScreen.h"
+#include "UISprite.h"
 
 UIScreen::UIScreen(string _name)
 	:m_screenName(_name)
 	,m_UIScreenState(UIScreenState::EActive)
 	,m_UIScreenDrawState(UIScreenDrawState::EVisible)
 {
-	ofApp::getInstance()->PushUIScreen(this);
 }
 
 UIScreen::~UIScreen()
+{
+}
+
+void UIScreen::initialize()
 {
 }
 
@@ -46,11 +50,11 @@ void UIScreen::input(float _deltaTime)
 	}
 }
 
-void UIScreen::draw(float _deltaTime)
+void UIScreen::draw()
 {
 	for (auto& uia : m_UIActorList) {
 		if (uia->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
-			uia->draw(_deltaTime);
+			uia->draw();
 		}
 	}
 }

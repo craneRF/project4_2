@@ -116,12 +116,12 @@ void GameActor::input(float _deltaTime)
 }
 
 
-void GameActor::draw(float _deltaTime)
+void GameActor::draw()
 {
 	Actor::draw();
 
 	for (auto& gac : m_childList) {
-		gac->draw(_deltaTime);
+		gac->draw();
 	}
 
 }

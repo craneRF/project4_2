@@ -9,7 +9,7 @@ public:
 	SpriteComponent(GameActor* _gactor);
 	virtual ~SpriteComponent();
 
-	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = { 1, 1, 1 });
+	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofVec3f _scale = { 1, 1, 1 }, float _degree = 0.0f, ofColor _col = ofColor::white);
 	virtual void update(float _deltatime);
 	void draw();	
 
@@ -17,8 +17,9 @@ public:
 
 private:
 	ofVec3f m_offset;
-	ofColor m_col;
 	ofVec3f m_scale;
+	float m_degree;
+	ofColor m_col;
 	string m_texName;
 
 	//update中にサイズとフォントネームが変化された時用の変数
@@ -30,16 +31,21 @@ public:
 	inline ofVec3f& Offset() 
 	{ 
 		return m_offset;
+	}	
+	inline ofVec3f& Scale() 
+	{ 
+		return m_scale;
+	}
+	inline float& Degree()
+	{
+		return m_degree;
 	}
 	inline ofColor& Color()
 	{ 
 		return m_col;
 	}
-	inline ofVec3f& Scale() 
-	{ 
-		return m_scale;
-	}
 
+	//初期化の時に使わない。初期化の時はinitialize()を使う。
 	inline string& TexName()
 	{
 		return m_texName;

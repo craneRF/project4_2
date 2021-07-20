@@ -1,36 +1,18 @@
-#include "UIActor.h"
+#include "UIPanel.h"
 
-UIActor::UIActor(string _name)
-	:Actor(_name)
-	, mp_UIparent(nullptr)
-	, mp_UIScreen(nullptr)
+UIPanel::UIPanel(string _name)
+	:UIActor(_name)
 {
 	m_UIchildList.clear();
-	mp_fontRenderer = make_unique<FontRenderer>();
-	mp_TexRenderer = make_unique<TextureRenderer>();
 }
 
-UIActor::~UIActor()
+UIPanel::~UIPanel()
 {
 }
 
-void UIActor::caluculateWorldTransform()
+void UIPanel::update(float _deltaTime)
 {
-	if (mp_UIparent != nullptr) {
-		m_worldScale = mp_UIparent->m_worldScale * m_scale;
-		m_worldRotAngle = mp_UIparent->m_worldRotAngle + m_rotAngle;
-		m_worldPos = mp_UIparent->m_worldPos +
-			m_pos.getRotated(-mp_UIparent->m_worldRotAngle, ofVec3f(0, 0, 1)) *
-			mp_UIparent->m_worldScale;
-	}
-	else {
-		Actor::caluculateWorldTransform();
-	}
-}
-
-void UIActor::update(float _deltaTime)
-{
-	caluculateWorldTransform();
+	Actor::caluculateWorldTransform();
 
 	//削除予定UIアクターの削除
 	m_UIchildList.erase(
@@ -53,7 +35,7 @@ void UIActor::update(float _deltaTime)
 	}
 }
 
-void UIActor::input(float _deltaTime)
+void UIPanel::input(float _deltaTime)
 {
 	for (auto& uic : m_UIchildList)
 	{
@@ -63,10 +45,8 @@ void UIActor::input(float _deltaTime)
 	}
 }
 
-void UIActor::draw()
+void UIPanel::draw()
 {
-	Actor::draw();
-
 	for (auto& uic : m_UIchildList) {
 		if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
 			uic->draw();
@@ -75,7 +55,7 @@ void UIActor::draw()
 
 }
 
-void UIActor::RemoveAllChild()
+void UIPanel::RemoveAllChild()
 {
 	queue<unique_ptr<UIActor>>().swap(m_UIchildAddQue);	//queueの全消し
 	for (auto& uic : m_UIchildList) {

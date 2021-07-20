@@ -18,7 +18,7 @@ public:
 
 	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
 	void input(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
-	void draw(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
+	void draw();	//åpè≥ÇµÇ»Ç¢
 
 	GameActor* addChild();
 	void RemoveAllChild();

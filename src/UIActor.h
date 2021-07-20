@@ -4,6 +4,8 @@
 #include "Renderer.h"
 
 /*
+* 抽象クラス(継承専用のクラス)
+*
 * 基本的にコンポーネントを持つことができないGameActorみたいなもの
 */
 class UIScreen;
@@ -19,13 +21,13 @@ protected:
 
 public:
 	UIActor(string _name = "");
-	virtual ~UIActor();
+	virtual ~UIActor() = 0;
 
 	void caluculateWorldTransform() override;
 
-	void update(float _deltaTime);
-	void input(float _deltaTime);
-	void draw(float _deltaTime);
+	virtual void update(float _deltaTime) = 0;
+	virtual void input(float _deltaTime) = 0;
+	virtual void draw() = 0;
 
 	void RemoveAllChild();
 

@@ -42,6 +42,7 @@ public:
 
 	unique_ptr<GameActor> hierarchyRoot_;
 	vector<unique_ptr<UIScreen>> m_UIScreenStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	queue<unique_ptr<UIScreen>> m_UIScreenAddQue;
 
 	unique_ptr< CollisionManager> mp_collisionManager;
 	unique_ptr< SoundManager> mp_soundManager;
@@ -49,12 +50,17 @@ public:
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 
-	inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack() 
+	inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack()
 	{ 
 		return m_UIScreenStack; 
 	}
-	inline void PushUIScreen(UIScreen* _screen)
+
+	template <typename T>
+	inline T* addUIScreen()
 	{
-		m_UIScreenStack.emplace_back(_screen);
+		auto screen = make_unique<T>();
+		auto res = screen.get();
+		m_UIScreenAddQue.push(move(screen));
+		return res;
 	}
 };

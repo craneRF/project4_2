@@ -4,14 +4,16 @@
 Texture::Texture()
 	:mp_ImageManager(nullptr)
 {
-	Load();
+	if (!Load()) {
+		std::cout << "Texture‚Ìƒ[ƒh‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+	}
 }
 
 Texture::~Texture()
 {
 }
 
-ofImage * Texture::GetImage(const string & _filename)
+ofImage* Texture::GetImage(const string & _filename)
 {
 	return mp_ImageManager->getContents(_filename);
 }

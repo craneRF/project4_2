@@ -34,9 +34,10 @@ public:
 	UIScreen(string _name = "");
 	virtual ~UIScreen() = 0;
 
+	virtual void initialize() = 0;
 	virtual void update(float _deltaTime) = 0;
 	virtual void input(float _deltaTime) = 0;
-	virtual void draw(float _deltaTime) = 0;
+	virtual void draw() = 0;
 
 	void RemoveAllUIActor();
 
@@ -83,9 +84,9 @@ public:
 
 public:
 	template <typename T>
-	inline T* addUIActor()
+	inline T* addUIActor(string _name)
 	{
-		auto actor = make_unique<T>();
+		auto actor = make_unique<T>(_name);
 		auto res = actor.get();
 		m_UIActorAddQue.push(move(actor));
 		res->mp_UIScreen = this;

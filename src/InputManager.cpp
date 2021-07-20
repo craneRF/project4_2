@@ -8,6 +8,7 @@ InputManager::KeyDefine InputManager::keyMap_[] = {
 	{"Horz",ofKey::OF_KEY_RIGHT,ofKey::OF_KEY_LEFT},
 	{"Vert",ofKey::OF_KEY_DOWN,ofKey::OF_KEY_UP},
 	{"Start",' ',0},
+	{"HUD",'e',0},
 };
 size_t InputManager::keyListSize_ = sizeof(keyMap_) / sizeof(keyMap_[0]);
 

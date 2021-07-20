@@ -27,11 +27,9 @@ public:
 
 	void SetTexture(const string & _texname = "NoSearch.png");
 
-	void TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale);
+	void TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale, float _degree);
 
 private:
-	string m_texName;
-
 	ofImage* mp_image;
 
 public:

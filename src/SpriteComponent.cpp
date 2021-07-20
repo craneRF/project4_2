@@ -3,13 +3,14 @@
 
 SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	Component(_gactor, "SpriteComponent")
-	, m_offset({ 0,0,0 })
+	, m_offset({ 0.0f, 0.0f, 0.0f })
 	, m_col(ofColor::white)
-	, m_scale({ 1, 1, 1 })
+	, m_scale({ 1.0f, 1.0f, 1.0f })
 	, m_texName("NoSearch.png")
 	, m_texNameBuffer(m_texName)
 {
 	mp_TexRenderer = make_unique<TextureRenderer>();
+	mp_TexRenderer->SetTexture(m_texName);
 
 	mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
 }
@@ -18,18 +19,17 @@ SpriteComponent::~SpriteComponent()
 {
 }
 
-void SpriteComponent::initialize(const string& _texname, ofVec3f _offset, ofColor _col, ofVec3f _scale)
+void SpriteComponent::initialize(const string& _texname, ofVec3f _offset, ofVec3f _scale, float _degree, ofColor _col)
 {
 	m_offset = _offset;
-	m_col = _col;
 	m_scale = _scale;
+	m_degree = _degree;
+	m_col = _col;
 
 	m_texName = _texname;
 
 	mp_TexRenderer->SetTexture(m_texName);
 	m_texNameBuffer = m_texName;
-
-	mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
 }
 
 void SpriteComponent::update(float _deltatime)
@@ -43,7 +43,7 @@ void SpriteComponent::update(float _deltatime)
 void SpriteComponent::draw()
 {
 	if (m_CpntDrawState == Component::ComponentDrawState::EVisible) {
-		mp_TexRenderer->TextureDraw(m_offset, m_col, m_scale);
+		mp_TexRenderer->TextureDraw(m_offset, m_col, m_scale, m_degree);
 	}
 }
 

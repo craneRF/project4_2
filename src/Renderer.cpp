@@ -36,7 +36,6 @@ void FontRenderer::FontDraw(string _str, ofVec3f _offset, ofColor _col, ofVec3f 
 
 //--------------------------------------------------------------
 TextureRenderer::TextureRenderer()
-	:m_texName("NoSearch.png")
 {
 }
 
@@ -46,13 +45,13 @@ TextureRenderer::~TextureRenderer()
 
 void TextureRenderer::SetTexture(const string & _texname)
 {
-	m_texName = _texname;
-	mp_image = ofApp::getInstance()->mp_texture->GetImage("images/" + m_texName);
+	mp_image = ofApp::getInstance()->mp_texture->GetImage("images/" + _texname);
 }
 
-void TextureRenderer::TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale)
+void TextureRenderer::TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale, float _degree)
 {
 	ofSetColor(_col);
+	ofRotateDeg(-(_degree));
 	ofScale(_scale);
 	mp_image->draw(_offset);
 }

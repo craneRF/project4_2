@@ -41,6 +41,8 @@ public:
 
 	function<void()> drawfunc;
 
+	Actor* mp_parent;
+
 
 	virtual void caluculateWorldTransform();
 

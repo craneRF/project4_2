@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include "stdComponent.h"
 #include "GameMainCtrlComponent.h"
+#include "UIScreen.h"
 
 ofApp* ofApp::instance = nullptr;
 
@@ -57,6 +58,22 @@ void ofApp::update() {
 		hierarchyRoot_->update(m_deltaTime);
 		hierarchyRoot_->input(m_deltaTime);
 
+		//追加待ちUIScreenの追加処理
+		while (!m_UIScreenAddQue.empty()) {
+			m_UIScreenStack.push_back(move(m_UIScreenAddQue.front()));
+			m_UIScreenAddQue.pop();
+		}
+
+		for (auto iter = m_UIScreenStack.begin(); iter != m_UIScreenStack.end();) {
+			if ((*iter)->GetUIScreenState() == UIScreen::UIScreenState::EErace) {
+				//delete *iter;
+				iter = m_UIScreenStack.erase(iter);  //EErace状態のUIScreenを削除し、その後のイテレーター全てを前に持ってくる
+			}
+			else {
+				++iter;
+			}
+		}
+
 		if (!m_UIScreenStack.empty()) {
 			for (auto& ui : m_UIScreenStack)
 			{
@@ -67,27 +84,18 @@ void ofApp::update() {
 					ui->update(m_deltaTime);  //操作処理以外はEActive状態とEUnControl状態の時に行う
 				}
 			}
-
-			for (auto iter = m_UIScreenStack.begin(); iter != m_UIScreenStack.end();) {
-				if ((*iter)->GetUIScreenState() == UIScreen::UIScreenState::EErace) {
-					iter = m_UIScreenStack.erase(iter);  //EErace状態のUIScreenを削除し、その後のイテレーター全てを前に持ってくる
-				}
-				else {
-					++iter;
-				}
-			}
 		}
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	hierarchyRoot_->draw(m_deltaTime);
+	hierarchyRoot_->draw();
 
 	if (!m_UIScreenStack.empty()) {
 		for (auto& ui : m_UIScreenStack) {
 			if (ui->GetUIScreenDrawState() == UIScreen::UIScreenDrawState::EVisible) {
-				ui->draw(m_deltaTime);  //Visible状態のUIScreenを描画
+				ui->draw();  //Visible状態のUIScreenを描画
 			}
 		}
 	}
@@ -109,6 +117,11 @@ void ofApp::exit()
 	mp_collisionManager.reset();
 	mp_soundManager.reset();
 	mp_inputManager.reset();
+
+	//while (!m_UIScreenStack.empty()) {
+	//	delete m_UIScreenStack.back();  //m_UIScreenのスタックを削除
+	//	m_UIScreenStack.pop_back();
+	//}
 }
 
 //--------------------------------------------------------------

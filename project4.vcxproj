@@ -210,7 +210,11 @@
     <ClCompile Include="src\SpriteComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\UIActor.cpp" />
+    <ClCompile Include="src\UICommon.cpp" />
+    <ClCompile Include="src\UIFont.cpp" />
+    <ClCompile Include="src\UIPanel.cpp" />
     <ClCompile Include="src\UIScreen.cpp" />
+    <ClCompile Include="src\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Actor.h" />
@@ -249,7 +253,11 @@
     <ClInclude Include="src\stdMgr.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\UIActor.h" />
+    <ClInclude Include="src\UICommon.h" />
+    <ClInclude Include="src\UIFont.h" />
+    <ClInclude Include="src\UIPanel.h" />
     <ClInclude Include="src\UIScreen.h" />
+    <ClInclude Include="src\UISprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

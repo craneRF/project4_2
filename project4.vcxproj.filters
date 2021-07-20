@@ -94,6 +94,18 @@
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\UIFont.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UISprite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UICommon.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIPanel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -219,6 +231,18 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIFont.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UISprite.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UICommon.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIPanel.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
