@@ -51,6 +51,10 @@ void FontRendererComponent::update(float _deltatime)
 	}
 }
 
+void FontRendererComponent::input(float _deltatime)
+{
+}
+
 void FontRendererComponent::draw()
 {
 	if (m_CpntDrawState == Component::ComponentDrawState::EVisible) {

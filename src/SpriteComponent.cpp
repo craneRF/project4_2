@@ -40,6 +40,10 @@ void SpriteComponent::update(float _deltatime)
 	}
 }
 
+void SpriteComponent::input(float _deltatime)
+{
+}
+
 void SpriteComponent::draw()
 {
 	if (m_CpntDrawState == Component::ComponentDrawState::EVisible) {

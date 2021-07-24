@@ -18,6 +18,7 @@ public:
 
 	virtual ~CollisionComponent();
 	virtual void update(float _deltatime);
+	void input(float _deltatime) override;
 	void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
 
 };

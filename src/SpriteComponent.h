@@ -11,6 +11,7 @@ public:
 
 	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofVec3f _scale = { 1, 1, 1 }, float _degree = 0.0f, ofColor _col = ofColor::white);
 	virtual void update(float _deltatime);
+	void input(float _deltatime) override;
 	void draw();	
 
 	void AlignPivotCenter();

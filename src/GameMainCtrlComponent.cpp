@@ -27,3 +27,7 @@ void GameMainCtrlComponent::update(float _deltatime)
 		mp_gameState->enter();
 	}
 }
+
+void GameMainCtrlComponent::input(float _deltatime)
+{
+}

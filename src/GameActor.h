@@ -12,9 +12,9 @@ protected:
 
 public:
 	GameActor(string _name = "");
-	virtual ~GameActor();
+	~GameActor();
 
-	void caluculateWorldTransform() override;
+	void caluculateWorldTransform();
 
 	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
 	void input(float _deltaTime);	//åpè≥ÇµÇ»Ç¢

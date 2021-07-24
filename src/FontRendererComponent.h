@@ -27,7 +27,8 @@ public:
 	virtual ~FontRendererComponent();
 	void initialize(const string& _str = "Not String", int _size = 18, ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = {1, 1, 1}, const string& _fontname = "keifont.ttf");
 	virtual void update(float _deltatime);
-	virtual void draw();
+	void input(float _deltatime) override;
+	void draw();
 
 
 	inline string& String()

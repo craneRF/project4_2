@@ -26,7 +26,8 @@ void ofApp::setup() {
 
 	hierarchyRoot_ = make_unique<GameActor>();
 	hierarchyRoot_->mp_parent = nullptr;
-	hierarchyRoot_->initialize({ 0,0 }, "World");
+	hierarchyRoot_->Pos() = { 0, 0, 0 };
+	hierarchyRoot_->Name() = "World";
 
 	/*GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,50 });
 	GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });*/
@@ -39,7 +40,6 @@ void ofApp::setup() {
 	//GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });
 
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
-	//mp_gameMainCtrlComponent->playerScore_ = 0;
 	mp_gameMainCtrlComponent->GameStateStart();
 }
 
@@ -49,14 +49,19 @@ void ofApp::update() {
 	mp_collisionManager->CaluculateCollision();
 	mp_inputManager->update();
 
-	hierarchyRoot_->getComponent<GameMainCtrlComponent>()->StateCpntActive();  //GameMainCtrlComponentは常にActive状態
-
 	m_deltaTime = ofGetLastFrameTime();
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
 	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
+
 	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
-		hierarchyRoot_->update(m_deltaTime);
-		hierarchyRoot_->input(m_deltaTime);
+
+		if (hierarchyRoot_->GetActorState() != Actor::ActorState::EPause) {
+			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {
+				hierarchyRoot_->input(m_deltaTime);  //hierarchyRoot_がEActive状態なら行う
+			}
+			hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_がEPause状態でないなら行う
+		}
+		
 
 		//追加待ちUIScreenの追加処理
 		while (!m_UIScreenAddQue.empty()) {
@@ -90,7 +95,9 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	hierarchyRoot_->draw();
+	if (hierarchyRoot_->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
+		hierarchyRoot_->draw();
+	}
 
 	if (!m_UIScreenStack.empty()) {
 		for (auto& ui : m_UIScreenStack) {
@@ -122,6 +129,14 @@ void ofApp::exit()
 	//	delete m_UIScreenStack.back();  //m_UIScreenのスタックを削除
 	//	m_UIScreenStack.pop_back();
 	//}
+}
+
+UIScreen* ofApp::addUIScreen(string _name, UIPanelCanvas* _canvas)
+{
+	auto screen = make_unique<UIScreen>(_name, _canvas);
+	auto res = screen.get();
+	m_UIScreenAddQue.push(move(screen));
+	return res;
 }
 
 //--------------------------------------------------------------

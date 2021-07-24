@@ -56,7 +56,8 @@ void GameStateTitle::enter()
 	//auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();"Images/Idling/marine_icon.png"
 
 	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor2->setParam({ 700,450,0 }, { 0.25f,0.25f }, 0.0f);
+	mp_actor2->Pos() = { 700, 450, 0 };
+	mp_actor2->Scale() = { 0.25f, 0.25f };
 	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
 	spr1->initialize("Arrow.png");
 	spr1->AlignPivotCenter();

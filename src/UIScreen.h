@@ -1,6 +1,9 @@
 #pragma once
 #include "ofMain.h"
-#include "UIActor.h"
+//#include "UIActor.h"
+//#include "UIPanelCanvas.h"
+
+class UIPanelCanvas;
 
 /*
 * 抽象クラス(継承専用のクラス)
@@ -27,11 +30,13 @@ protected:
 	UIScreenState m_UIScreenState;
 	UIScreenDrawState m_UIScreenDrawState;
 
-	vector<unique_ptr<UIActor>> m_UIActorList;
-	queue<unique_ptr<UIActor>> m_UIActorAddQue;
+	//vector<unique_ptr<UIActor>> m_UIActorList;
+	//queue<unique_ptr<UIActor>> m_UIActorAddQue;
+
+	UIPanelCanvas* mp_Canvas;
 
 public:
-	UIScreen(string _name = "");
+	UIScreen(string _screenName = "", UIPanelCanvas* _canvas = nullptr);
 	virtual ~UIScreen() = 0;
 
 	virtual void initialize() = 0;
@@ -83,7 +88,7 @@ public:
 	}
 
 public:
-	template <typename T>
+	/*template <typename T>
 	inline T* addUIActor(string _name)
 	{
 		auto actor = make_unique<T>(_name);
@@ -91,6 +96,6 @@ public:
 		m_UIActorAddQue.push(move(actor));
 		res->mp_UIScreen = this;
 		return res;
-	}
+	}*/
 };
 

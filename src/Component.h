@@ -1,18 +1,17 @@
 #pragma once
 #include"ofMain.h"
-//#include "GameActor.h"
 
 class GameActor;
 class Component
 {
 public:
-	enum class ComponentState {  //Actorの状態
+	enum class ComponentState {  //Componentの状態
 		EActive  //通常。update()を行う
 		, EUnControl  //update()は行うが、input()は行わない
 		, EPause  //update()を行わない
 		, EErace  //削除する
 	};
-	enum class ComponentDrawState {  //Actorの描画状態
+	enum class ComponentDrawState {  //Componentの描画状態
 		EVisible  //描画する
 		, EHidden  //描画しない(削除はされていない)
 	};
@@ -30,6 +29,7 @@ public:
 	}
 
 	virtual void update(float _deltatime) = 0;
+	virtual void input(float _deltatime) = 0;
 
 	Component(GameActor* _gactor, string _name = "") 
 		:mp_gActor(_gactor)

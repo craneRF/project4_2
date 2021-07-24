@@ -21,6 +21,10 @@ void MoveComponent::update(float _deltatime)
 	m_moveDeg = 0.0f;
 }
 
+void MoveComponent::input(float _deltatime)
+{
+}
+
 void MoveComponent::FrontMove(float _speed)
 {
 	m_movePos += { cosf(ofDegToRad(mp_gActor->RotAngle())) * _speed,-sinf(ofDegToRad(mp_gActor->RotAngle())) * _speed,0 };

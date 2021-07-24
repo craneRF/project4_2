@@ -9,6 +9,7 @@
 #include "UIScreen.h"
 
 class GameMainCtrlComponent;
+class UIPanelCanvas;
 
 class ofApp : public ofBaseApp {
 private:
@@ -21,6 +22,8 @@ public:
 	void update();
 	void draw();
 	void exit();
+
+	UIScreen* addUIScreen(string _name ="", UIPanelCanvas* _canvas = nullptr);
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -50,7 +53,7 @@ public:
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 
-	inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack()
+	/*inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack()
 	{ 
 		return m_UIScreenStack; 
 	}
@@ -62,5 +65,5 @@ public:
 		auto res = screen.get();
 		m_UIScreenAddQue.push(move(screen));
 		return res;
-	}
+	}*/
 };

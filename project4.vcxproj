@@ -213,6 +213,7 @@
     <ClCompile Include="src\UICommon.cpp" />
     <ClCompile Include="src\UIFont.cpp" />
     <ClCompile Include="src\UIPanel.cpp" />
+    <ClCompile Include="src\UIPanelCanvas.cpp" />
     <ClCompile Include="src\UIScreen.cpp" />
     <ClCompile Include="src\UISprite.cpp" />
   </ItemGroup>
@@ -256,6 +257,7 @@
     <ClInclude Include="src\UICommon.h" />
     <ClInclude Include="src\UIFont.h" />
     <ClInclude Include="src\UIPanel.h" />
+    <ClInclude Include="src\UIPanelCanvas.h" />
     <ClInclude Include="src\UIScreen.h" />
     <ClInclude Include="src\UISprite.h" />
   </ItemGroup>

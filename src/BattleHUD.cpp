@@ -5,7 +5,7 @@ BattleHUD::BattleHUD()
 	:UIScreen("BattleHUD")
 {
 	uis = addUIActor<UISprite>("Sprite");
-	uis->setParam({ 100.0f, 100.0f, 0.0f }, { 0.75f, 0.75f }, 0.0f);
+	//uis->setParam({ 100.0f, 100.0f, 0.0f }, { 0.75f, 0.75f }, 0.0f);
 	uis->initialize("marine_icon.png");
 }
 

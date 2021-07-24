@@ -11,13 +11,13 @@ class Actor
 public:
 	enum class ActorState {  //Actorの状態
 		EActive  //通常。update()を行う
-		,EUnControl  //update()は行うが、input()は行わない
-		,EPause  //update()・input()を行わない
-		,EErace  //削除する
+		, EUnControl  //update()は行うが、input()は行わない
+		, EPause  //update()・input()を行わない
+		, EErace  //削除する
 	};
 	enum class ActorDrawState {  //Actorの描画状態
 		EVisible  //描画する
-		,EHidden  //描画しない(削除はされていない)
+		, EHidden  //描画しない(削除はされていない)
 	};
 
 protected:
@@ -36,20 +36,26 @@ protected:
 	ActorDrawState m_ActorDrawState;
 
 public:
-	Actor(string _name = "");
-	virtual ~Actor() = 0;
+	Actor(string _name = "")
+		: m_pos(ofVec3f(0, 0, 0))
+		, m_rotAngle(0)
+		, m_worldRotAngle(0)
+		, m_scale({ 1,1,1 })
+		, m_name(_name)
+		, drawfunc([]() {})
+		//, mp_parent(nullptr)
+		, m_ActorState(ActorState::EActive)
+		, m_ActorDrawState(ActorDrawState::EVisible)
+	{
+	}
+
+	virtual ~Actor() = 0
+	{
+	}
 
 	function<void()> drawfunc;
 
-	Actor* mp_parent;
-
-
-	virtual void caluculateWorldTransform();
-
-	void initialize(ofVec3f _pos, string _name);
-	void draw();
-
-	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float _angle = 0.0f);
+	//Actor* mp_parent;
 
 public:
 	inline ofVec3f& Pos()
@@ -82,11 +88,11 @@ public:
 	}
 
 
-	inline const ActorState GetActorState() 
+	inline const ActorState GetActorState()
 	{
 		return m_ActorState;
 	}
-	inline const ActorDrawState GetActorDrawState() 
+	inline const ActorDrawState GetActorDrawState()
 	{
 		return m_ActorDrawState;
 	}
@@ -116,5 +122,10 @@ public:
 	{
 		m_ActorDrawState = ActorDrawState::EHidden;
 	}
-};
 
+	inline void SetParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 0,0,0 }, float _angle = 0.0f) {
+		m_pos = _pos;
+		m_scale = _scale;
+		m_rotAngle = _angle;
+	}
+};
