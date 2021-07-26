@@ -1,14 +1,14 @@
 #pragma once
 #include "ofMain.h"
-#include "UIActor.h"
+#include "UICommon.h"
 
-class UISprite : public UIActor
+class UISprite : public UICommon
 {
 public:
 	UISprite(string _name = "");
 	~UISprite();
 
-	void initialize(const string& _texname = "NoSearch.png", float _angle = 0.0f, ofColor _col = ofColor::white);
+	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofVec3f _scale = { 1, 1, 1 }, float _degree = 0.0f, ofColor _col = ofColor::white);
 
 	void update(float _deltaTime) override;
 	void input(float _deltaTime) override;
@@ -18,6 +18,8 @@ public:
 
 private:
 	ofVec3f m_offset;
+	ofVec3f m_scale;
+	float m_degree;
 	ofColor m_col;
 	string m_texName;
 
@@ -28,6 +30,14 @@ public:
 	inline ofVec3f& Offset()
 	{
 		return m_offset;
+	}
+	inline ofVec3f& Scale()
+	{
+		return m_scale;
+	}
+	inline float& Degree()
+	{
+		return m_degree;
 	}
 	inline ofColor& Color()
 	{

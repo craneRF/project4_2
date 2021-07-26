@@ -1,9 +1,12 @@
 #include "UIPanel.h"
 
 UIPanel::UIPanel(string _name)
-	:UIActor(_name)
+	:Actor(_name)
+	,mp_UIPanelParent(nullptr)
+	,mp_UIScreenParent(nullptr)
 {
-	m_UIchildList.clear();
+	m_UICommonChildList.clear();
+	m_UIPanelChildList.clear();
 }
 
 UIPanel::~UIPanel()
@@ -16,12 +19,12 @@ void UIPanel::caluculateWorldTransform()
 		this->RotAngle() = 0.0f;
 	}
 
-	if (mp_UIparent != nullptr) {
-		this->WorldScale() = mp_UIparent->WorldScale() * this->Scale();
-		this->WorldRotAngle() = mp_UIparent->WorldRotAngle() + this->RotAngle();
-		this->WorldPos() = mp_UIparent->WorldPos() +
-			this->Pos().getRotated(-(mp_UIparent->WorldRotAngle()), ofVec3f(0, 0, 1)) *
-			mp_UIparent->WorldScale();
+	if (mp_UIPanelParent != nullptr) {
+		this->WorldScale() = mp_UIPanelParent->WorldScale() * this->Scale();
+		this->WorldRotAngle() = mp_UIPanelParent->WorldRotAngle() + this->RotAngle();
+		this->WorldPos() = mp_UIPanelParent->WorldPos() +
+			this->Pos().getRotated(-(mp_UIPanelParent->WorldRotAngle()), ofVec3f(0, 0, 1)) *
+			mp_UIPanelParent->WorldScale();
 	}
 	else {
 		this->WorldScale() = this->Scale();
@@ -34,51 +37,104 @@ void UIPanel::update(float _deltaTime)
 {
 	caluculateWorldTransform();
 
-	//削除予定UIアクターの削除
-	m_UIchildList.erase(
-		remove_if(m_UIchildList.begin(), m_UIchildList.end(),
-			[](const auto& uic) {return uic->GetActorState() == ActorState::EErace; }),
-		m_UIchildList.end()
-	);
-
-	//追加待ちUIアクターの追加処理
-	while (!m_UIchildAddQue.empty()) {
-		m_UIchildList.push_back(move(m_UIchildAddQue.front()));
-		m_UIchildAddQue.pop();
+	//削除予定UICommonの削除
+	if (!m_UICommonChildList.empty()) {
+		m_UICommonChildList.erase(
+			remove_if(m_UICommonChildList.begin(), m_UICommonChildList.end(),
+				[](const auto& uic) {return uic->GetActorState() == ActorState::EErace; }),
+			m_UICommonChildList.end()
+		);
 	}
-	//子UIアクターの全件処理
-	for (auto& uic : m_UIchildList)
-	{
-		if (uic->GetActorState() != ActorState::EPause) {
-			uic->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+
+	//追加待ちUICommonの追加処理
+	while (!m_UICommonChildAddQue.empty()) {
+		m_UICommonChildList.push_back(move(m_UICommonChildAddQue.front()));
+		m_UICommonChildAddQue.pop();
+	}
+	//子UICommonの全件処理
+	if (!m_UICommonChildList.empty()) {
+		for (auto& uic : m_UICommonChildList)
+		{
+			if (uic->GetActorState() != ActorState::EPause) {
+				uic->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+			}
+		}
+	}
+
+	//削除予定UIPanelの削除
+	if (!m_UIPanelChildList.empty()) {
+		m_UIPanelChildList.erase(
+			remove_if(m_UIPanelChildList.begin(), m_UIPanelChildList.end(),
+				[](const auto& uic) {return uic->GetActorState() == ActorState::EErace; }),
+			m_UIPanelChildList.end()
+		);
+	}
+
+	//追加待ちUIPanelの追加処理
+	while (!m_UIPanelChildAddQue.empty()) {
+		m_UIPanelChildList.push_back(move(m_UIPanelChildAddQue.front()));
+		m_UIPanelChildAddQue.pop();
+	}
+	//子UIPanelの全件処理
+	if (!m_UIPanelChildList.empty()) {
+		for (auto& uic : m_UIPanelChildList)
+		{
+			if (uic->GetActorState() != ActorState::EPause) {
+				uic->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+			}
 		}
 	}
 }
 
 void UIPanel::input(float _deltaTime)
 {
-	for (auto& uic : m_UIchildList)
-	{
-		if (uic->GetActorState() == ActorState::EActive) {
-			uic->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+	if (!m_UICommonChildList.empty()) {
+		for (auto& uic : m_UICommonChildList)
+		{
+			if (uic->GetActorState() == ActorState::EActive) {
+				uic->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+			}
+		}
+	}
+
+	if (!m_UIPanelChildList.empty()) {
+		for (auto& uic : m_UIPanelChildList)
+		{
+			if (uic->GetActorState() == ActorState::EActive) {
+				uic->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+			}
 		}
 	}
 }
 
 void UIPanel::draw()
 {
-	for (auto& uic : m_UIchildList) {
-		if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
-			uic->draw();
+	if (!m_UICommonChildList.empty()) {
+		for (auto& uic : m_UICommonChildList) {
+			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
+				uic->draw();
+			}
 		}
 	}
 
+	if (!m_UIPanelChildList.empty()) {
+		for (auto& uic : m_UIPanelChildList) {
+			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
+				uic->draw();
+			}
+		}
+	}
 }
 
 void UIPanel::RemoveAllChild()
 {
-	queue<unique_ptr<UIActor>>().swap(m_UIchildAddQue);	//queueの全消し
-	for (auto& uic : m_UIchildList) {
+	queue<unique_ptr<UICommon>>().swap(m_UICommonChildAddQue);	//queueの全消し
+	for (auto& uic : m_UICommonChildList) {
+		uic->StateErace();
+	}
+
+	queue<unique_ptr<UIPanel>>().swap(m_UIPanelChildAddQue);	//queueの全消し
+	for (auto& uic : m_UIPanelChildList) {
 		uic->StateErace();
 	}
 }

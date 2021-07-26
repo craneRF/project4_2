@@ -25,5 +25,5 @@ public:
 	float m_angle;
 	class MoveComponent* m_move;
 
-	class BattleHUD* mp_BHUD;
+	class UIScreen* mp_BHUD;
 };

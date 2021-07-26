@@ -131,13 +131,13 @@ void ofApp::exit()
 	//}
 }
 
-UIScreen* ofApp::addUIScreen(string _name, UIPanelCanvas* _canvas)
-{
-	auto screen = make_unique<UIScreen>(_name, _canvas);
-	auto res = screen.get();
-	m_UIScreenAddQue.push(move(screen));
-	return res;
-}
+//UIScreen* ofApp::addUIScreen(string _name, UIPanelCanvas* _canvas)
+//{
+//	auto screen = make_unique<UIScreen>(_name, _canvas);
+//	auto res = screen.get();
+//	m_UIScreenAddQue.push(move(screen));
+//	return res;
+//}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {

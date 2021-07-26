@@ -75,7 +75,7 @@ void GameStateTitle::enter()
 		}
 	}
 
-	mp_BHUD = ofApp::getInstance()->addUIScreen<BattleHUD>();
+	mp_BHUD = ofApp::getInstance()->addUIScreen<BattleHUD>("BattleHUD");
 
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	//actor1->Pos() = { 200,300,0 };
@@ -126,7 +126,7 @@ GameState* GameStateTitle::update(float _deltatime)
 	else {
 		m_move->AddMoveAngle(180.0f);
 	}
-	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
+	/*if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
 		if (mp_BHUD->GetUIScreenState() == BattleHUD::UIScreenState::EPause || mp_BHUD->GetUIScreenDrawState() == BattleHUD::UIScreenDrawState::EHidden) {
 			mp_BHUD->StateActive();
 			mp_BHUD->StateVisible();
@@ -135,7 +135,7 @@ GameState* GameStateTitle::update(float _deltatime)
 			mp_BHUD->StatePause();
 			mp_BHUD->StateHidden();
 		}
-	}
+	}*/
 	return nullptr;
 }
 

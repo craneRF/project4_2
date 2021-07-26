@@ -32,6 +32,8 @@ public:
 
 	GameActor* mp_parent;
 
+	function<void()> drawfunc;
+
 public:
 	inline void GameActor::StateAllCpntActive()
 	{

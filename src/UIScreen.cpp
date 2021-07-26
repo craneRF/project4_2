@@ -3,11 +3,11 @@
 #include "UISprite.h"
 #include "UIPanelCanvas.h"
 
-UIScreen::UIScreen(string _screenName, UIPanelCanvas* _canvas)
+UIScreen::UIScreen(string _screenName)
 	:m_screenName(_screenName)
 	,m_UIScreenState(UIScreenState::EActive)
 	,m_UIScreenDrawState(UIScreenDrawState::EVisible)
-	,mp_Canvas(_canvas)
+	,mp_Canvas(nullptr)
 {
 }
 

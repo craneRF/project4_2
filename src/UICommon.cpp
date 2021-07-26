@@ -1,7 +1,15 @@
 #include "UICommon.h"
+#include "UIPanel.h"
 
 UICommon::UICommon(string _name)
+	:Actor(_name)
+	,mp_UIPanelParent(nullptr)
+	,UIupdatefunc([](float) {})
+	,UIinputfunc([](float) {})
+	,UIdrawfunc([]() {})
 {
+	mp_fontRenderer = make_unique<FontRenderer>();
+	mp_TexRenderer = make_unique<TextureRenderer>();
 }
 
 UICommon::~UICommon()
@@ -14,12 +22,12 @@ void UICommon::caluculateWorldTransform()
 		this->RotAngle() = 0.0f;
 	}
 
-	if (mp_UIparent != nullptr) {
-		this->WorldScale() = mp_UIparent->WorldScale() * this->Scale();
-		this->WorldRotAngle() = mp_UIparent->WorldRotAngle() + this->RotAngle();
-		this->WorldPos() = mp_UIparent->WorldPos() +
-			this->Pos().getRotated(-(mp_UIparent->WorldRotAngle()), ofVec3f(0, 0, 1)) *
-			mp_UIparent->WorldScale();
+	if (mp_UIPanelParent != nullptr) {
+		this->WorldScale() = mp_UIPanelParent->WorldScale() * this->Scale();
+		this->WorldRotAngle() = mp_UIPanelParent->WorldRotAngle() + this->RotAngle();
+		this->WorldPos() = mp_UIPanelParent->WorldPos() +
+			this->Pos().getRotated(-(mp_UIPanelParent->WorldRotAngle()), ofVec3f(0, 0, 1)) *
+			mp_UIPanelParent->WorldScale();
 	}
 	else {
 		this->WorldScale() = this->Scale();
@@ -30,11 +38,18 @@ void UICommon::caluculateWorldTransform()
 
 void UICommon::update(float _deltaTime)
 {
-	
+	caluculateWorldTransform();
+
+	if (GetActorState() != ActorState::EPause) {
+		this->UIupdatefunc(_deltaTime);
+	}
 }
 
 void UICommon::input(float _deltaTime)
 {
+	if (GetActorState() == ActorState::EActive) {
+		this->UIinputfunc(_deltaTime);
+	}
 }
 
 void UICommon::draw()
@@ -45,8 +60,8 @@ void UICommon::draw()
 		ofRotateDeg(-(this->m_worldRotAngle));
 		ofScale(this->m_worldScale);
 
-		assert(this->drawfunc != nullptr);
-		this->drawfunc();
+		assert(this->UIdrawfunc != nullptr);
+		this->UIdrawfunc();
 		ofPopMatrix();
 	}
 }

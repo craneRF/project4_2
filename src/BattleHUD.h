@@ -1,15 +1,14 @@
 #pragma once
-#include "UIScreen.h"
+#include "UIPanelCanvas.h"
 
 class UISprite;
 
-class BattleHUD : public UIScreen
+class BattleHUD : public UIPanelCanvas
 {
 public:
 	BattleHUD();
 	~BattleHUD();
 
-	void initialize() override;
 	void update(float _deltaTime) override;
 	void input(float _deltaTime) override;
 	void draw() override;

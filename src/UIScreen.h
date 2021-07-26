@@ -1,14 +1,12 @@
 #pragma once
 #include "ofMain.h"
 //#include "UIActor.h"
-//#include "UIPanelCanvas.h"
+#include "UIPanelCanvas.h"
 
-class UIPanelCanvas;
+//class UIPanelCanvas;
 
 /*
-* 抽象クラス(継承専用のクラス)
 * UIのhierarchyRoot_の様なもの
-* これを継承したクラスがUIを配置するキャンパスのようなものになる
 */
 class UIScreen
 {
@@ -33,18 +31,21 @@ protected:
 	//vector<unique_ptr<UIActor>> m_UIActorList;
 	//queue<unique_ptr<UIActor>> m_UIActorAddQue;
 
-	UIPanelCanvas* mp_Canvas;
+	//UIPanelCanvas* mp_Canvas;
 
 public:
-	UIScreen(string _screenName = "", UIPanelCanvas* _canvas = nullptr);
-	virtual ~UIScreen() = 0;
+	UIScreen(string _screenName = "");
+	virtual ~UIScreen();
 
-	virtual void initialize() = 0;
-	virtual void update(float _deltaTime) = 0;
-	virtual void input(float _deltaTime) = 0;
-	virtual void draw() = 0;
+	virtual void initialize();
+	virtual void update(float _deltaTime);
+	virtual void input(float _deltaTime);
+	virtual void draw();
 
 	void RemoveAllUIActor();
+
+	//UIPanelCanvas* mp_Canvas;  //自身が所持しているキャンバス
+	unique_ptr<UIPanelCanvas> mp_Canvas;
 
 public:
 	inline string& Name()
@@ -94,7 +95,7 @@ public:
 		auto actor = make_unique<T>(_name);
 		auto res = actor.get();
 		m_UIActorAddQue.push(move(actor));
-		res->mp_UIScreen = this;
+		res->mp_UIScreenParent = this;
 		return res;
 	}*/
 };

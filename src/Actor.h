@@ -42,7 +42,7 @@ public:
 		, m_worldRotAngle(0)
 		, m_scale({ 1,1,1 })
 		, m_name(_name)
-		, drawfunc([]() {})
+		//, drawfunc([]() {})
 		//, mp_parent(nullptr)
 		, m_ActorState(ActorState::EActive)
 		, m_ActorDrawState(ActorDrawState::EVisible)
@@ -52,8 +52,6 @@ public:
 	virtual ~Actor() = 0
 	{
 	}
-
-	function<void()> drawfunc;
 
 	//Actor* mp_parent;
 
@@ -123,7 +121,7 @@ public:
 		m_ActorDrawState = ActorDrawState::EHidden;
 	}
 
-	inline void SetParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 0,0,0 }, float _angle = 0.0f) {
+	inline void SetParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1,1 }, float _angle = 0.0f) {
 		m_pos = _pos;
 		m_scale = _scale;
 		m_rotAngle = _angle;

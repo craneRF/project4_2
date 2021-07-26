@@ -1,13 +1,17 @@
 #pragma once
-#include "UIActor.h"
+#include "Actor.h"
+#include "UICommon.h"
 
 class UIScreen;
 
-class UIPanel : public UIActor
+class UIPanel : public Actor
 {
 protected:
-	vector<unique_ptr<UIActor>> m_UIchildList;
-	queue<unique_ptr<UIActor>> m_UIchildAddQue;
+	vector<unique_ptr<UICommon>> m_UICommonChildList;
+	queue<unique_ptr<UICommon>> m_UICommonChildAddQue;
+
+	vector<unique_ptr<UIPanel>> m_UIPanelChildList;
+	queue<unique_ptr<UIPanel>> m_UIPanelChildAddQue;
 
 public:
 	UIPanel(string _name = "");
@@ -21,16 +25,28 @@ public:
 
 	void RemoveAllChild();
 
-	UIScreen* mp_UIScreen;  //©g‚ª‚Ç‚ÌUIScreen‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”B(UIScreen‚ªíœ‚³‚ê‚é‚ÆUIActor‚àíœ‚³‚ê‚é)
+	UIPanel* mp_UIPanelParent;  //©g‚ª‚Ç‚ÌUIPanel‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
+	UIScreen* mp_UIScreenParent;  //©g‚ª‚Ç‚ÌUIScreen‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
 
 public:
 	template <typename T>
-	inline T* addUIChild()
+	inline T* addUICommon(string _name)
 	{
-		auto uiactor = make_unique<T>();
-		auto res = ui.get();
-		m_UIChildAddQue.push(move(ui));
-		res->mp_UIparent = this;
+		auto uicommon = make_unique<T>(_name);
+		uicommon->mp_UIPanelParent = this;
+		auto res = uicommon.get();
+		m_UICommonChildAddQue.push(move(uicommon));
+		return res;
+	}
+
+	template <typename T>
+	inline T* addUIPanel(string _name)
+	{
+		auto uipanel = make_unique<T>(_name);
+		uipanel->mp_UIPanelParent = this;
+		uipanel->mp_UIScreenParent = this->mp_UIScreenParent;
+		auto res = uipanel.get();
+		m_UPanelChildAddQue.push(move(uipanel));
 		return res;
 	}
 };

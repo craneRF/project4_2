@@ -1,27 +1,33 @@
 #include "UISprite.h"
 
 UISprite::UISprite(string _name)
-	:m_offset({0.0f, 0.0f, 0.0f})
+	:m_offset({ 0.0f, 0.0f, 0.0f })
 	,m_col(ofColor::white)
+	,m_scale({ 1.0f, 1.0f, 1.0f })
 	,m_texName("NoSearch.png")
 	,m_texNameBuffer(m_texName)
 {
 	mp_TexRenderer->SetTexture(m_texName);
 
-	drawfunc = std::bind(&UISprite::draw, this);
+	UIupdatefunc = bind(&UISprite::update, this, placeholders::_1);
+	UIdrawfunc = bind(&UISprite::draw, this);
 }
 
 UISprite::~UISprite()
 {
 }
 
-void UISprite::initialize(const string & _texname, float _angle, ofColor _col)
+void UISprite::initialize(const string& _texname, ofVec3f _offset, ofVec3f _scale, float _degree, ofColor _col)
 {
-	RotAngle() = _angle;
+	m_offset = _offset;
+	m_scale = _scale;
+	m_degree = _degree;
 	m_col = _col;
 
 	m_texName = _texname;
+
 	mp_TexRenderer->SetTexture(m_texName);
+	m_texNameBuffer = m_texName;
 }
 
 void UISprite::update(float _deltaTime)
@@ -38,7 +44,7 @@ void UISprite::input(float _deltaTime)
 
 void UISprite::draw()
 {
-	mp_TexRenderer->TextureDraw(m_offset, m_col, {1.0f, 1.0f, 1.0f}, 0.0f);
+	mp_TexRenderer->TextureDraw(m_offset, m_col, m_scale, m_degree);
 }
 
 void UISprite::AlignPivotCenter()
