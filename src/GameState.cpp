@@ -75,7 +75,7 @@ void GameStateTitle::enter()
 		}
 	}
 
-	mp_BHUD = ofApp::getInstance()->addUIScreen<BattleHUD>("BattleHUD");
+	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 
 	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
 	//actor1->Pos() = { 200,300,0 };

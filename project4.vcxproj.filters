@@ -79,15 +79,6 @@
     <ClCompile Include="src\Texture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\UIActor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIScreen.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Actor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\BattleHUD.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -219,12 +210,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Texture.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIActor.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIScreen.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Actor.h">

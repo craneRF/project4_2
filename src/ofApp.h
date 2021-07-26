@@ -6,7 +6,6 @@
 #include "stdMgr.h"
 #include "Font.h"
 #include "Texture.h"
-#include "UIScreen.h"
 #include "UIPanelCanvas.h"
 
 class GameMainCtrlComponent;
@@ -44,11 +43,11 @@ public:
 	
 
 	unique_ptr<GameActor> hierarchyRoot_;
-	vector<unique_ptr<UIScreen>> m_UIScreenStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
-	queue<unique_ptr<UIScreen>> m_UIScreenAddQue;
+	//vector<unique_ptr<UIScreen>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	//queue<unique_ptr<UIScreen>> m_UIPanelAddQue;
 
-	//vector<unique_ptr<UIPanelCanvas>> m_UIScreenStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
-	//queue<unique_ptr<UIPanelCanvas>> m_UIScreenAddQue;
+	vector<unique_ptr<UIPanelCanvas>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	queue<unique_ptr<UIPanelCanvas>> m_UIPanelAddQue;
 
 	unique_ptr< CollisionManager> mp_collisionManager;
 	unique_ptr< SoundManager> mp_soundManager;
@@ -58,36 +57,37 @@ public:
 
 	/*inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack()
 	{ 
-		return m_UIScreenStack; 
+		return m_UIPanelStack; 
 	}*/
+
+	//template <typename T>
+	//inline UIScreen* addUIScreen(string _name)
+	//{
+	//	auto screen = make_unique<UIScreen>(_name);
+	//	//auto canvas = make_unique<T>();
+	//	screen->mp_Canvas = make_unique<T>();
+	//	//screen->mp_Canvas = canvas.get();
+	//	screen->mp_Canvas->SetParam();
+	//	screen->mp_Canvas->mp_UIPanelParent = nullptr;
+	//	screen->mp_Canvas->mp_UIScreenParent = screen.get();
+	//	auto res = screen.get();
+	//	m_UIPanelAddQue.push(move(screen));
+	//	return res;
+	//	/*cout << "UIPanelCanvas‚Ì”h¶ƒNƒ‰ƒX‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢" << endl;
+	//	return nullptr;*/
+	//}
 
 	template <typename T>
-	inline UIScreen* addUIScreen(string _name)
+	inline UIPanelCanvas* addUICanvas()
 	{
-		auto screen = make_unique<UIScreen>(_name);
-		//auto canvas = make_unique<T>();
-		screen->mp_Canvas = make_unique<T>();
-		//screen->mp_Canvas = canvas.get();
-		screen->mp_Canvas->SetParam();
-		screen->mp_Canvas->mp_UIPanelParent = nullptr;
-		screen->mp_Canvas->mp_UIScreenParent = screen.get();
-		auto res = screen.get();
-		m_UIScreenAddQue.push(move(screen));
-		return res;
-		/*cout << "UIPanelCanvas‚Ì”h¶ƒNƒ‰ƒX‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢" << endl;
-		return nullptr;*/
-	}
-
-	/*template <typename T>
-	inline UIPanelCanvas* addUIScreen(string _name)
-	{
-		auto canvas = make_unique<T>(_name);
+		auto canvas = make_unique<T>();
 		canvas->SetParam();
 		canvas->mp_UIPanelParent = nullptr;
+		canvas->mp_UICanvasParent = canvas.get();
 		auto res = canvas.get();
-		m_UIScreenAddQue.push(move(canvas));
+		m_UIPanelAddQue.push(move(canvas));
 		return res;
-	}*/
+	}
 
 	//template<>
 	//inline UIScreen* addUIScreen<UIPanelCanvas>(string _name)
@@ -98,7 +98,7 @@ public:
 	//	screen->mp_Canvas->mp_UIPanelParent = nullptr;
 	//	screen->mp_Canvas->mp_UIScreenParent = screen.get();
 	//	auto res = screen.get();
-	//	m_UIScreenAddQue.push(move(screen));
+	//	m_UIPanelAddQue.push(move(screen));
 	//	return res;
 	//}
 };

@@ -3,7 +3,7 @@
 UIPanel::UIPanel(string _name)
 	:Actor(_name)
 	,mp_UIPanelParent(nullptr)
-	,mp_UIScreenParent(nullptr)
+	,mp_UICanvasParent(nullptr)
 {
 	m_UICommonChildList.clear();
 	m_UIPanelChildList.clear();

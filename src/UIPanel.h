@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "UICommon.h"
 
-class UIScreen;
+class UIPanelCanvas;
 
 class UIPanel : public Actor
 {
@@ -26,7 +26,7 @@ public:
 	void RemoveAllChild();
 
 	UIPanel* mp_UIPanelParent;  //©g‚ª‚Ç‚ÌUIPanel‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
-	UIScreen* mp_UIScreenParent;  //©g‚ª‚Ç‚ÌUIScreen‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
+	UIPanelCanvas* mp_UICanvasParent;  //©g‚ª‚Ç‚ÌUIScreen‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
 
 public:
 	template <typename T>

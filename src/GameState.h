@@ -25,5 +25,5 @@ public:
 	float m_angle;
 	class MoveComponent* m_move;
 
-	class UIScreen* mp_BHUD;
+	class UIPanelCanvas* mp_BHUD;
 };

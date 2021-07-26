@@ -1,5 +1,5 @@
 #pragma once
-#include "UIActor.h"
+#include "Actor.h"
 #include "Renderer.h"
 
 class UIPanel;
