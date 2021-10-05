@@ -10,7 +10,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	Component(_gactor, "BattleComponent")
 {
 	m_EnemyList.reserve(2);
-	auto charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
+	charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
 	//charaActor->Scale() = { 1.0f, 1.0f };
 	//charaActor->Scale() *= 7;
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
@@ -34,7 +34,8 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		mp_Command->commandType = 0;
 		mp_Command->commandval = 3;
 	};
-	m_EnemyList.emplace_back(charaActor);
+
+	//m_EnemyList.emplace_back(charaActor);
 
 	auto imageSize = charaActor->getComponent<SpriteComponent>()->ImageSize() * 0.6f;
 	ofVec3f incrementSize = imageSize * 0.2f;
