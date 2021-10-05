@@ -208,6 +208,7 @@
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\SpriteComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\UIButton.cpp" />
     <ClCompile Include="src\UICommon.cpp" />
     <ClCompile Include="src\UIFont.cpp" />
     <ClCompile Include="src\UIPanel.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="src\stdComponent.h" />
     <ClInclude Include="src\stdMgr.h" />
     <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\UIButton.h" />
     <ClInclude Include="src\UICommon.h" />
     <ClInclude Include="src\UIFont.h" />
     <ClInclude Include="src\UIPanel.h" />

@@ -34,9 +34,9 @@ void GameStateTitle::enter()
 	/*auto actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	actor->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->myFont, "SHOOTING GAME", { 100,100 }, ofColor::black);*/
-	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	/*ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
-	ofApp::getInstance()->mp_soundManager->loop(0);
+	ofApp::getInstance()->mp_soundManager->loop(0);*/
 
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
 	mp_actor->Pos() = { 700,100 };
@@ -126,16 +126,16 @@ GameState* GameStateTitle::update(float _deltatime)
 	else {
 		m_move->AddMoveAngle(180.0f);
 	}
-	/*if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
-		if (mp_BHUD->GetUIScreenState() == BattleHUD::UIScreenState::EPause || mp_BHUD->GetUIScreenDrawState() == BattleHUD::UIScreenDrawState::EHidden) {
+	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
+		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
 			mp_BHUD->StateActive();
 			mp_BHUD->StateVisible();
 		}
-		else if (mp_BHUD->GetUIScreenState() == BattleHUD::UIScreenState::EActive || mp_BHUD->GetUIScreenDrawState() == BattleHUD::UIScreenDrawState::EVisible) {
+		else if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EActive || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EVisible) {
 			mp_BHUD->StatePause();
 			mp_BHUD->StateHidden();
 		}
-	}*/
+	}
 	return nullptr;
 }
 

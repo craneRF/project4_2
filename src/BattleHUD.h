@@ -2,6 +2,7 @@
 #include "UIPanelCanvas.h"
 
 class UISprite;
+class UIFont;
 
 class BattleHUD : public UIPanelCanvas
 {
@@ -15,5 +16,7 @@ public:
 
 public:
 	UISprite* uis;
+	UISprite* uis2;
+	UIFont* uif;
 };
 

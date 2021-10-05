@@ -1,7 +1,8 @@
 #include "UISprite.h"
 
 UISprite::UISprite(string _name)
-	:m_offset({ 0.0f, 0.0f, 0.0f })
+	:UICommon(_name)
+	,m_offset({ 0.0f, 0.0f, 0.0f })
 	,m_col(ofColor::white)
 	,m_scale({ 1.0f, 1.0f, 1.0f })
 	,m_texName("NoSearch.png")

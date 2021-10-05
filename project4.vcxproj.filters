@@ -100,6 +100,9 @@
     <ClCompile Include="src\UIPanelCanvas.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\UIButton.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -234,6 +237,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\UIPanelCanvas.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIButton.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
