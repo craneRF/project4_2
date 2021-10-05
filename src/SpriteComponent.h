@@ -12,11 +12,12 @@ public:
 	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofVec3f _scale = { 1, 1, 1 }, float _degree = 0.0f, ofColor _col = ofColor::white);
 	virtual void update(float _deltatime);
 	void input(float _deltatime) override;
-	void draw();	
+	void draw();
 
 	void AlignPivotCenter();
 
 private:
+
 	ofVec3f m_offset;
 	ofVec3f m_scale;
 	float m_degree;
@@ -29,12 +30,13 @@ private:
 	unique_ptr<TextureRenderer> mp_TexRenderer;
 
 public:
-	inline ofVec3f& Offset() 
-	{ 
+
+	inline ofVec3f& Offset()
+	{
 		return m_offset;
-	}	
-	inline ofVec3f& Scale() 
-	{ 
+	}
+	inline ofVec3f& Scale()
+	{
 		return m_scale;
 	}
 	inline float& Degree()
@@ -42,7 +44,7 @@ public:
 		return m_degree;
 	}
 	inline ofColor& Color()
-	{ 
+	{
 		return m_col;
 	}
 
@@ -51,4 +53,6 @@ public:
 	{
 		return m_texName;
 	}
+
+	inline ofVec3f ImageSize() { return ofVec3f(mp_TexRenderer->GetTexture()->getWidth(), mp_TexRenderer->GetTexture()->getHeight()); }
 };

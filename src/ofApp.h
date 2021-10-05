@@ -59,6 +59,7 @@ public:
 	unique_ptr< CollisionManager> mp_collisionManager;
 	unique_ptr< SoundManager> mp_soundManager;
 	unique_ptr< InputManager> mp_inputManager;
+	unique_ptr< ResourceManager<ofImage>> mp_imageManager;
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 

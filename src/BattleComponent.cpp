@@ -15,7 +15,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	//charaActor->Scale() *= 7;
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
-		if (_other->gActor()->waitforErase_)
+		if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 		{
 			return;
 		}
@@ -25,7 +25,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		}
 
 		cout << "ガード判定：" << "本体の範囲で押されました。\n";
-		_other->gActor()->waitforErase_ = true;
+		_other->gActor()->StateErace();
 
 		//mp_Command.reset();
 		mp_Command = make_unique<Command>();
@@ -45,7 +45,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
 		collisionComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
 		{
-			if (_other->gActor()->waitforErase_)
+			if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 			{
 				return;
 			}
@@ -57,7 +57,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire"))
 			{
 				cout << "ガード判定：" << to_string(i) << "ダメージの範囲で押されました。\n";
-				_other->gActor()->waitforErase_ = true;
+				_other->gActor()->StateErace();
 
 				//mp_Command.reset();
 				mp_Command = make_unique<Command>();
