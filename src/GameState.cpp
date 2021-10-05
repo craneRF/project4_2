@@ -72,7 +72,7 @@ GameState * GameStateMap::update(float _deltatime)
 	switch (kind)
 	{
 	case MapComponent::StepKind::EVENT:
-		break;
+		return &GameMainCtrlComponent::m_gameStateTitle;
 	case MapComponent::StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
 	case MapComponent::StepKind::GOAL:
