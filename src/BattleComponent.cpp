@@ -10,6 +10,8 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 {
 	m_EnemyList.reserve(2);
 	auto charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
+	//charaActor->Scale() = { 1.0f, 1.0f };
+	//charaActor->Scale() *= 7;
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
 		if (_other->gActor()->waitforErase_)
@@ -20,7 +22,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		{
 			return;
 		}
-
+		
 		cout << "ガード判定：" << "本体の範囲で押されました。\n";
 		_other->gActor()->waitforErase_ = true;
 
@@ -31,12 +33,14 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		mp_Command->commandType = 0;
 		mp_Command->commandval = 3;
 	};
-
 	m_EnemyList.emplace_back(charaActor);
+
+	auto imageSize = charaActor->getComponent<SpriteComponent>()->ImageSize() * 0.6f;
+	ofVec3f incrementSize = imageSize * 0.2f;
 	for (int i = 1; i <= 2; ++i)
 	{
 		auto collisionComp = charaActor->addComponent<CollisionComponent>();
-		collisionComp->initialize({ 0,0 }, 2067 + i * 300, 2067 + i * 300, CollisionType::PLAYER_OBJECT);
+		collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
 		collisionComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
 		{
 			if (_other->gActor()->waitforErase_)
@@ -63,7 +67,10 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			}
 		};
 	}
-	m_EnemyList.emplace_back(EnemyActor::createEnemy(_gactor, { 200, 200 }));
+	auto actor = EnemyActor::createEnemy(_gactor, { 200, 200 });
+	//actor->Scale() *= 7;
+	m_EnemyList.emplace_back(actor);
+	//m_EnemyList.emplace_back(EnemyActor::createEnemy(_gactor, { 200, 200 }));
 }
 
 BattleComponent::~BattleComponent() {
@@ -107,6 +114,10 @@ void BattleComponent::update(float _deltatime)
 		{
 			// 攻撃アクター作成
 			actor = PlayerActor::createPlayer(mp_gActor, m_EnemyList[0]->Pos());
+			auto sp = actor->getComponent<SpriteComponent>();
+			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->AlignPivotCenter();
+
 			// 回転設定
 			actor->RotAngle() = angle;
 			// 速さ設定
@@ -115,7 +126,13 @@ void BattleComponent::update(float _deltatime)
 		else
 		{
 			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[1]->Pos());
-			actor->RotAngle() = angle + 180;
+			actor->Scale() = { 1.0f, 1.0f };
+			auto sp = actor->getComponent<SpriteComponent>();
+			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->AlignPivotCenter();
+
+			//actor->RotAngle() = angle + 180;
+			actor->RotAngle() = angle + 270;
 			direction *= -speed;
 			// エネミーアクターはMoveComponentがなかったため、ここで付ける
 			actor->addComponent<MoveComponent>();

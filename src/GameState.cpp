@@ -44,7 +44,8 @@ GameState* GameStateTitle::update(float _deltatime)
 		m_prmInState->setPlayerParam("HP", 100);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		return &GameMainCtrlComponent::m_gameStateBattle;
+		return &GameMainCtrlComponent::m_gameStateMap;
+		//return &GameMainCtrlComponent::m_gameStateBattle;
 	}
 	return nullptr;
 }
@@ -64,20 +65,28 @@ void GameStateMap::enter(Parameter _pprm)
 		initialize(ofApp::getInstance()->myFont, u8"マップシーン", { }, ofColor::white);
 
 	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
-	mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
+	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
+	mapCpnt->CreateRandomMap();
+	mapCpnt->CreateStepActor();
+	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/map1.csv");
+	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
 	*m_prmInState = _pprm;
 
 }
 GameState * GameStateMap::update(float _deltatime)
 {
-	auto kind = mp_mapActor->getComponent<MapComponent>()->GetResKind();
+	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
+	auto kind = mapCpnt->GetResKind();
 	switch (kind)
 	{
 	case MapComponent::StepKind::EVENT:
+		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
 	case MapComponent::StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
 	case MapComponent::StepKind::GOAL:
+		mapCpnt->ClearMap();
+		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
 	default:
 		break;
