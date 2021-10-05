@@ -4,6 +4,7 @@
 SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	Component(_gactor, "SpriteComponent"), mp_image(nullptr), mp_offset({ 0,0,0 })
 {
+	m_color = ofColor::white;
 	mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
 }
 
@@ -18,7 +19,7 @@ void SpriteComponent::update(float _deltatime)
 void SpriteComponent::draw()
 {
 	if (!m_enabled) return;
-	ofSetColor(ofColor::white);
+	ofSetColor(m_color);
 	mp_image->draw(mp_offset);
 }
 

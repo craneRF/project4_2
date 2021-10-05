@@ -60,7 +60,3 @@ void EnemyPartsComponent::CreateParts(EnemyType _enemytype)
 	pmap.find("body")->second.ImageName;
 
 }
-
-
-
-
