@@ -42,7 +42,7 @@ GameState* GameStateTitle::update(float _deltatime)
 		m_prmInState->setPlayerParam("HP", 100);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		return &GameMainCtrlComponent::m_gameStateBattle;
+		return &GameMainCtrlComponent::m_gameStateMap;
 	}
 	return nullptr;
 }

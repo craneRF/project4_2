@@ -3,7 +3,7 @@
 #include "EnemyActor.h"
 #include "EnemyObject.h"
 #include "EnemyType.h"
-
+ 
 string EnemyActor::m_EnemyName = "";
 
 EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name)
@@ -14,13 +14,11 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 
 	actor->initialize(_pos, _name);
 	actor->setParam(_pos, enemyCpnt->getEnemy(_enemytype).scale);
-	
-	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName));
-	mp_sprCpnt->AlignPivotCenter();
-	
-	if (enemyCpnt->getEnemy(_enemytype).name != "") {
-		m_EnemyName = enemyCpnt->getEnemy(_enemytype).name;
+
+	enemyCpnt->mp_epCpnt->CreateEnemyBody(actor, _pos, _enemytype);
+
+	if (enemyCpnt->getEnemy(_enemytype).EnemyName != "") {
+		m_EnemyName = enemyCpnt->getEnemy(_enemytype).EnemyName;
 	}
 	else {
 		m_EnemyName = StrEnemyType(_enemytype);

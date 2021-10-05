@@ -54,6 +54,7 @@ class GameStateBattle final : public GameState {
 private:
 	// プレイヤー
 	PlayerActor* mp_Player;
+	EnemyActor* mp_Enemy;
 	// エネミー配列
 	vector<EnemyActor*> m_EnemyList;
 	// 戦闘システムアクター

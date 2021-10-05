@@ -6,14 +6,23 @@ struct EnemySkill {
 	string attackStatement;
 };
 
+struct EnemyParts {
+	string PartsName;
+	string ImageName;
+	int HP;
+	int Def;
+	ofVec3f pos;
+};
+
 struct EnemyParam
 {
-	string name;
+	string EnemyName;
 	string ImageName;
 	ofVec3f scale;
 	int HP;
 	int Def;
 	map<string, EnemySkill> eSkill;
+	map<string, EnemyParts>eParts;
 };
 
 class EnemyObject

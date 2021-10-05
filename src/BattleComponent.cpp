@@ -1,8 +1,7 @@
-
+#include "ofApp.h"
 #include "stdComponent.h"
 #include "PlayerActor.h"
 #include "EnemyActor.h"
-#include "ofApp.h"
 #include "EnemyComponent.h"
 #include "EnemyObject.h"
 #include "EnemyType.h"

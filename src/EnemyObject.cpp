@@ -1,7 +1,7 @@
 #include "EnemyObject.h"
 
 EnemyObject::EnemyObject() {
-	m_eParam.name = "";
+	m_eParam.EnemyName = "";
 	m_eParam.ImageName = "";
 	m_eParam.scale = { 1.f,1.f };
 	m_eParam.HP = 1;
