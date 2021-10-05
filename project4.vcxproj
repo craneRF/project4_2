@@ -180,6 +180,16 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\EnemyComponent.cpp" />
+    <ClCompile Include="src\EnemyActor.cpp" />
+    <ClCompile Include="src\BattleComponent.cpp" />
+    <ClCompile Include="src\EnemyObject.cpp" />
+    <ClCompile Include="src\MapComponent.cpp" />
+    <ClCompile Include="src\Parameter.cpp" />
+    <ClCompile Include="src\PlayerActor.cpp" />
+    <ClCompile Include="src\PlayerComponent.cpp" />
+    <ClCompile Include="src\AnimationComponent.cpp" />
+    <ClCompile Include="src\AnimSeq.cpp" />
     <ClCompile Include="src\BattleHUD.cpp" />
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -204,6 +214,7 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\MoveComponent.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\SpriteComponent.cpp" />
@@ -216,12 +227,23 @@
     <ClCompile Include="src\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\EnemyType.h" />
+    <ClInclude Include="src\EnemyComponent.h" />
+    <ClInclude Include="src\EnemyActor.h" />
+    <ClInclude Include="src\BattleComponent.h" />
+    <ClInclude Include="src\EnemyObject.h" />
+    <ClInclude Include="src\MapComponent.h" />
+    <ClInclude Include="src\Parameter.h" />
+    <ClInclude Include="src\PlayerActor.h" />
+    <ClInclude Include="src\AnimationComponent.h" />
+    <ClInclude Include="src\AnimSeq.h" />
     <ClInclude Include="src\Actor.h" />
     <ClInclude Include="src\BattleHUD.h" />
     <ClInclude Include="src\Font.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\PlayerComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\CollisionComponent.h" />
     <ClInclude Include="src\CollisionManager.h" />
@@ -245,6 +267,7 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+    <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\MoveComponent.h" />
     <ClInclude Include="src\SoundManager.h" />
     <ClInclude Include="src\SpriteComponent.h" />

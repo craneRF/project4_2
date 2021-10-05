@@ -11,6 +11,12 @@
 !bin/data/*
 !bin/data/fonts/*
 !bin/data/sounds/*
+!bin/data/images/*
 
 # gitignore変更許可
 !.gitignore
+
+#以下の変更を無視
+project4.vcxproj
+project4.vcxproj.filters
+project4.vcxproj.user

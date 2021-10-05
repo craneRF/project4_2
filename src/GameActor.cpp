@@ -29,47 +29,66 @@ void GameActor::caluculateWorldTransform()
 			mp_parent->WorldScale();
 	}
 	else {
-		this->WorldScale() = this->Scale();
+		this->WorldScale() = this->Scale() * ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 		this->WorldRotAngle() = this->RotAngle();
-		this->WorldPos() = this->Pos().getRotated(-(this->RotAngle()), ofVec3f(0, 0, 1)) * this->Scale();
+		this->WorldPos() = this->Pos().getRotated(-this->RotAngle(), ofVec3f(0, 0, 1)) * this->Scale()* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 	}
 }
 
-GameActor* GameActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name)
-{
-	auto actor = _parent->addChild();
-	actor->Pos() = _pos;
-	actor->Name() = _name;
-	auto moveCpnt = actor->addComponent<MoveComponent>();
-	actor->drawfunc = [=]() {
-		ofSetColor(ofColor::green);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
-	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
-	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::PLAYER_OBJECT);
-	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
-
-	return actor;
+void GameActor::initialize(ofVec3f _pos, string _name) {
+	m_pos = _pos;
+	caluculateWorldTransform();
+	m_name = _name;
 }
 
-GameActor* GameActor::createEnemy(GameActor* _parent, ofVec3f _pos, string _name)
+//GameActor* GameActor::addChild()
+//{
+//	auto actor = make_unique<GameActor>();
+//	auto res = actor.get();
+//	m_childAddQue.push(move(actor));
+//	res->mp_parent = this;
+//	return res;
+//}
+//
+//void GameActor::RemoveAllChild()
+//{
+//	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
+//	for (auto& c : m_childList) {
+//		c->waitforErase_ = true;
+//	}
+//}
+//
+//GameActor* GameActor::getChild(int _index) const
+//{
+//	return m_childList[_index].get();
+//}
+
+GameActor * GameActor::findActor(GameActor* _current, string _name)
 {
-	auto actor = _parent->addChild();
-	actor->Pos() = _pos;
-	actor->Name() = _name;
-	auto moveCpnt = actor->addComponent<MoveComponent>();
-	//moveCpnt->AddMovePos({ 150.0f,0,0 });
+	if (_current->m_name == _name) return _current;
+	for (auto & actor : _current->m_childList) {
+		auto tmp = findActor(actor.get(), _name);
+		if (tmp != nullptr) return tmp;
+	}
+	return nullptr;
+}
 
-	actor->drawfunc = [=]() {
-		ofSetColor(ofColor::green);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
+list<GameActor*>&& GameActor::findActors(GameActor * _current, string _name, list<GameActor*>&&	_list)
+{
+	if (_current->m_name == _name) _list.push_back(_current);
+	for (auto & actor : _current->m_childList) {
+		_list = findActors(actor.get(), _name, move(_list));
+	}
+	return move(_list);
+}
 
-	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
-	coliisionCpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_BULLET);
-	coliisionCpnt->m_onCollisionFunc = bind(&onCollision, actor, std::placeholders::_1);
+GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
+{
+	auto mapActor = _parent->addChild<GameActor>();
+	mapActor->initialize(_pos, _name);
+	mapActor->addComponent<MapComponent>();
 
-	return actor;
+	return mapActor;
 }
 
 void GameActor::update(float _deltaTime) {
@@ -155,30 +174,4 @@ void GameActor::draw()
 		}
 	}
 
-}
-
-void GameActor::onCollision(CollisionComponent* _other)
-{
-	drawfunc = [=]() {
-		ofSetColor(ofColor::pink);
-		//ofDrawRectangle(ofVec3f(0, 0), 30, 30);
-		ofDrawRectangle(ofVec3f(-15, -15), 30, 30);
-	};
-}
-
-GameActor* GameActor::addChild()
-{
-	auto actor = make_unique<GameActor>();
-	auto res = actor.get();
-	m_childAddQue.push(move(actor));
-	res->mp_parent = this;
-	return res;
-}
-
-void GameActor::RemoveAllChild()
-{
-	queue<unique_ptr<GameActor>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
-	for (auto& gac : m_childList) {
-		gac->StateErace();
-	}
 }

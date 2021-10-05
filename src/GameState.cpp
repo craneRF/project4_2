@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include "GameState.h"
 #include "GameActor.h"
+#include "EnemyType.h"
 #include "stdComponent.h"
 #include "BattleHUD.h"
 #include "LoadCSVFile.h"
@@ -31,101 +32,139 @@
 
 void GameStateTitle::enter()
 {
-	/*auto actor = ofApp::getInstance()->hierarchyRoot_->addChild();
-	actor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, "SHOOTING GAME", { 100,100 }, ofColor::black);*/
-	/*ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
-	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
-	ofApp::getInstance()->mp_soundManager->loop(0);*/
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, u8"タイトルシーン", { }, ofColor::white);
+	*m_prmInState = _pprm;
 
-	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor->Pos() = { 700,100 };
+	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	//ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
+	//ofApp::getInstance()->mp_soundManager->loop(0);
+	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_actor->Pos() = { 500,100 };
 	mp_actor->addComponent<FontRendererComponent>()->
 		initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 	//"keifont.ttf"
 
-	//string u0 = u8"hello";
-	//mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	//mp_actor1->Pos() = { 50, 100 };
-	//mp_actor1->addComponent<FontRendererComponent>()->
-	//	initialize(/*ofToString(*/mp_actor->getComponent<FontRendererComponent>()->String(), 18, { 0,100,0 }, ofColor::red, {1, 1, 1}, "keifont.ttf");
+	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_actor1->Pos() = { 500,300 };
+	mp_actor1->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState->getPlayerParam("HP")), { }, ofColor::white);
 
-	GameActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
-	mp_Enemy = GameActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 300,50 });
-	
-	//auto mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();"Images/Idling/marine_icon.png"
-
-	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	mp_actor2->Pos() = { 700, 450, 0 };
-	mp_actor2->Scale() = { 0.25f, 0.25f };
-	auto spr1 = mp_actor2->addComponent<SpriteComponent>();
-	spr1->initialize("Arrow.png");
-	spr1->AlignPivotCenter();
-	m_move = mp_actor2->addComponent<MoveComponent>();
-
-	vector<vector<string>> hololivemembertable;
-	LoadCSVFile::SetTable("data/3期生ホロメン.csv", hololivemembertable);
-
-	auto mp_actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	for (int r = 0; r < hololivemembertable.size(); r++) {
-		for (int i = 0; i < hololivemembertable.at(r).size(); i++) {
-			mp_actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
-			mp_actor3->addComponent<FontRendererComponent>()->
-				initialize(hololivemembertable.at(r).at(i), 18, { 150.f * (i + 1),100.f * (r + 1) }, ofColor::white, {1, 1, 1});
-		}
-	}
-
-	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
-	//auto actor1 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	//actor1->Pos() = { 200,300,0 };
-	//auto spr1 = actor1->addComponent<SpriteComponent>();
-	//spr1->setImage(ofApp::getInstance()->imagesManager_->getContents("Images/Idling/U_0000.png"));
-	//spr1->offset() = { -64,-64 };
-	//actor1->Scale() = { 1.5f,1.5f };
-	//actor1->RotAngle() = 30;
-	//auto actor2 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	//actor2->Pos() = { 300,300,1 };
-	//auto spr2 = actor2->addComponent<SpriteComponent>();
-	//spr2->setImage(ofApp::getInstance()->imagesManager_->getContents("Images/Running/D_0000.png"));
-	//spr2->offset() = { -64,-64 };
-	////auto animseq = new AnimSeq("animseq/AnimSeqWalkUp.json");
-	//auto animseq = ofApp::getInstance()->animSeqManager_->getContents("animseq/AnimSeqWalkUp.json");
-	////actor2->addComponent<AnimationComponent>()->initialize(animseq);
-	//actor2->addComponent<AnimationComponent>()->initialize(animseq);
-	//auto actor3 = ofApp::getInstance()->hierarchyRoot_->addChild();
-	//actor3->Pos() = { 200,32,0 };
-	//actor3->RotAngle() = 0;
-	//actor3->Scale() = { 1.0f,1.0f };
-	//actor3->Name() = "tile01";
-	//actor3->addComponent<TileMapComponent>()->initialize("TileData/TileDef01.txt", "MapData/map02.csv");
+	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
+	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
 }
 
 GameState* GameStateTitle::update(float _deltatime)
 {
-	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime());
-	mp_actor->getComponent<FontRendererComponent>()->Scale() = ofVec3f(ofGetLastFrameTime() * 100, ofGetLastFrameTime() * 100, 1);
-
-	mp_Enemy->getComponent<MoveComponent>()->AddMovePos({ 50.0f, 0.0f, 0.0f });
-
-	/*if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-		return &GameMainCtrlComponent::m_gameStateMain;
-	}*/
-	if (ofApp::getInstance()->mp_inputManager->getButtonHold("Start")) {
-		/*ofApp::getInstance()->mp_soundManager->play(1);
-		if (mp_actor2->GetActorState() == Actor::ActorState::EPause) {
-			mp_actor2->StateActive();
-			mp_actor2->StateAllCpntActive();
-		}
-		else {
-			mp_actor2->StatePause();
-			mp_actor2->StateAllCpntPause();
-		}*/
-		m_move->FrontMove(200.0f);
+	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
+	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(m_prmInState->getPlayerParam("HP"));
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire")) {
+		m_prmInState->setPlayerParam("HP", 50);
 	}
-	else {
-		m_move->AddMoveAngle(180.0f);
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Bomb")) {
+		m_prmInState->setPlayerParam("HP", 100);
 	}
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+		return &GameMainCtrlComponent::m_gameStateMap;
+		//return &GameMainCtrlComponent::m_gameStateBattle;
+	}
+	return nullptr;
+}
+
+void GameStateTitle::exit(Parameter& _pprm)
+{
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
+	ofApp::getInstance()->mp_soundManager->stop(0);
+	_pprm = *m_prmInState;
+}
+
+void GameStateMap::enter(Parameter _pprm)
+{
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, u8"マップシーン", { }, ofColor::white);
+
+	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
+	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
+	mapCpnt->CreateRandomMap();
+	mapCpnt->CreateStepActor();
+	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/map1.csv");
+	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
+	*m_prmInState = _pprm;
+
+}
+GameState * GameStateMap::update(float _deltatime)
+{
+	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
+	auto kind = mapCpnt->GetResKind();
+	switch (kind)
+	{
+	case MapComponent::StepKind::EVENT:
+		return &GameMainCtrlComponent::m_gameStateTitle;
+		break;
+	case MapComponent::StepKind::BATTLE:
+		return &GameMainCtrlComponent::m_gameStateBattle;
+	case MapComponent::StepKind::GOAL:
+		mapCpnt->ClearMap();
+		return &GameMainCtrlComponent::m_gameStateTitle;
+		break;
+	default:
+		break;
+	}
+	return nullptr;
+}
+
+void GameStateMap::exit(Parameter& _pprm)
+{
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
+	_pprm = *m_prmInState;
+}
+
+
+void GameStateBattle::enter(Parameter _pprm)
+{
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, u8"戦闘シーン", { }, ofColor::white);
+
+	*m_prmInState = _pprm;
+	m_prmInState->getPlayerParam("HP");
+
+	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_actor2->Pos() = { 500,300 };
+	mp_actor2->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->myFont, ofToString(0), { }, ofColor::white);
+
+	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+
+	// 戦闘システム初期化
+	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
+	//mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
+	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
+	mp_BattleComp->SetPlayer(m_prmInState);
+	mp_BattleComp->SetEnemy(m_EnemyList);
+}
+
+GameState * GameStateBattle::update(float _deltatime)
+{
+	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
+
+	// 勝敗の結果に応じてシーン遷移
+	auto result = mp_BattleComp->GetResult();
+	switch (result)
+	{
+	case BattleComponent::Result::WIN:
+		return &GameMainCtrlComponent::m_gameStateTitle;
+	case BattleComponent::Result::LOSE:
+		return &GameMainCtrlComponent::m_gameStateTitle;
+	default:
+		break;
+	}
+
 	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
 		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
 			mp_BHUD->StateActive();
@@ -136,11 +175,14 @@ GameState* GameStateTitle::update(float _deltatime)
 			mp_BHUD->StateHidden();
 		}
 	}
+
 	return nullptr;
 }
 
-void GameStateTitle::exit()
+void GameStateBattle::exit(Parameter& _pprm)
 {
-	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild();
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(0);
+	m_EnemyList.clear();
+	_pprm = *m_prmInState;
 }

@@ -2,11 +2,18 @@
 
 #include "ofMain.h"
 #include "Define.h"
+#include "Parameter.h"
 #include "GameActor.h"
 #include "stdMgr.h"
 #include "Font.h"
 #include "Texture.h"
 #include "UIPanelCanvas.h"
+
+enum ScaleDir { //window scaling directions
+
+	SCALE_DIR_HORIZONTAL,
+	SCALE_DIR_VERTICAL,
+};
 
 class GameMainCtrlComponent;
 
@@ -55,28 +62,6 @@ public:
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 
-	/*inline const vector<unique_ptr<UIScreen>>& GetUIScreenStack()
-	{ 
-		return m_UIPanelStack; 
-	}*/
-
-	//template <typename T>
-	//inline UIScreen* addUIScreen(string _name)
-	//{
-	//	auto screen = make_unique<UIScreen>(_name);
-	//	//auto canvas = make_unique<T>();
-	//	screen->mp_Canvas = make_unique<T>();
-	//	//screen->mp_Canvas = canvas.get();
-	//	screen->mp_Canvas->SetParam();
-	//	screen->mp_Canvas->mp_UIPanelParent = nullptr;
-	//	screen->mp_Canvas->mp_UIScreenParent = screen.get();
-	//	auto res = screen.get();
-	//	m_UIPanelAddQue.push(move(screen));
-	//	return res;
-	//	/*cout << "UIPanelCanvas‚Ì”h¶ƒNƒ‰ƒX‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢" << endl;
-	//	return nullptr;*/
-	//}
-
 	template <typename T>
 	inline UIPanelCanvas* addUICanvas()
 	{
@@ -89,16 +74,11 @@ public:
 		return res;
 	}
 
-	//template<>
-	//inline UIScreen* addUIScreen<UIPanelCanvas>(string _name)
-	//{
-	//	auto screen = make_unique<UIScreen>(_name);
-	//	auto canvas = make_unique<UIPanelCanvas>();
-	//	screen->mp_Canvas = canvas.get();
-	//	screen->mp_Canvas->mp_UIPanelParent = nullptr;
-	//	screen->mp_Canvas->mp_UIScreenParent = screen.get();
-	//	auto res = screen.get();
-	//	m_UIPanelAddQue.push(move(screen));
-	//	return res;
-	//}
+	ScaleDir scaleDir;
+
+	int windowWidth, windowHeight; //original window dimensions
+	float widthScaled, heightScaled; //scaled window dimensions
+	float windowScale; //scale amount (1.0 = original)
+	bool bScaleDirFixed; //is direction fixed?
 };
+
