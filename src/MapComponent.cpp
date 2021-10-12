@@ -94,22 +94,6 @@ void MapComponent::DrawLine(Step * _step)
 	auto forcusStep = mp_currentStep->m_nextStepList[m_selectIndex];
 
 	auto pos1 = _step->m_pos;
-	pos1 += {15.f, 15.f, 0.f};
-
-	if (!isUseTexture)
-	{
-		// マスの描画
-		if (_step->m_IsSelected)
-		{
-			ofSetColor(ofColor::green);
-
-		}
-		else
-		{
-			ofSetColor(ofColor::lightGreen);
-		}
-		ofDrawRectangle(_step->m_pos, 30, 30);
-	}
 
 	//	ラインの描画
 	for (const auto & step : _step->m_nextStepList)
@@ -120,7 +104,6 @@ void MapComponent::DrawLine(Step * _step)
 		}
 
 		auto pos2 = step->m_pos;
-		pos2 += {15.f, 15.f, 0.f};
 		if (_step->m_IsSelected && (step == forcusStep || step->m_IsSelected))
 		{
 			ofSetColor(ofColor::gray);
@@ -136,11 +119,6 @@ void MapComponent::DrawLine(Step * _step)
 
 void MapComponent::CreateStepActor()
 {
-	if (!isUseTexture)
-	{
-		return;
-	}
-
 	for (const auto & mapColList : m_Map)
 	{
 		for (const auto & step : mapColList)
@@ -150,7 +128,7 @@ void MapComponent::CreateStepActor()
 			actor->SetParam(step->m_pos, { 0.05f,0.05f }, 0.0);
 
 			auto spriteCpnt = actor->addComponent<SpriteComponent>();
-			spriteCpnt->TexName() = "marine_icon.png";
+			spriteCpnt->initialize("marine_icon.png");
 			spriteCpnt->AlignPivotCenter();
 			if (step->m_IsSelected)
 			{
@@ -279,7 +257,7 @@ void MapComponent::CreateRandomMap()
 	
 
 	// X座標決定に使用する割合
-	const float WPR = Define::WIN_W / (randColNum + 3);
+	const float WPR = Define::FULLWIN_W / (randColNum + 3);
 
 	// つながれていないマスが出ないようにするために使うリスト
 	vector<vector<bool>> isConnectedList;
@@ -326,7 +304,7 @@ void MapComponent::CreateRandomMap()
 	{
 		const int size = m_Map[c].capacity();
 		// Y座標決定に使用する割合
-		const float HPR = Define::WIN_H / (size + 1);
+		const float HPR = Define::FULLWIN_H / (size + 1);
 
 		for (int r = 0; r < size; ++r, ++count)
 		{
@@ -338,7 +316,7 @@ void MapComponent::CreateRandomMap()
 			{
 				step->m_kind = StepKind::START;
 				step->m_IsSelected = true;
-				step->m_pos = { WPR, Define::WIN_H * 0.5f };
+				step->m_pos = { WPR, Define::FULLWIN_H * 0.5f };
 				mp_currentStep = step.get();
 			}
 			// ゴールマス
@@ -346,7 +324,7 @@ void MapComponent::CreateRandomMap()
 			{
 				step->m_kind = StepKind::GOAL;
 				step->m_IsSelected = false;
-				step->m_pos = { WPR * (randColNum + 2), Define::WIN_H * 0.5f };
+				step->m_pos = { WPR * (randColNum + 2), Define::FULLWIN_H * 0.5f };
 			}
 			// 道中マス
 			else

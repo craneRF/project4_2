@@ -8,6 +8,7 @@ SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	, m_scale({ 1.0f, 1.0f, 1.0f })
 	, m_texName("NoSearch.png")
 	, m_texNameBuffer(m_texName)
+	,m_degree(0.0f)
 {
 	mp_TexRenderer = make_unique<TextureRenderer>();
 	mp_TexRenderer->SetTexture(m_texName);

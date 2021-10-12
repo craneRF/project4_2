@@ -40,7 +40,6 @@ private:
 	const int m_ConnectPercent = 100;
 
 	UINT timeCount = 0;
-	bool isUseTexture = true;
 public:
 	MapComponent(GameActor* _gator);
 	virtual ~MapComponent();
