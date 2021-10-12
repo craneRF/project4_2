@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
       <Filter>addons\ofxGui\src</Filter>
     </ClCompile>
@@ -34,43 +31,7 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
       <Filter>addons\ofxGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Define.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameActor.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MoveComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameMainCtrlComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FontRendererComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameState.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CollisionComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CollisionManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CollisionObj.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpriteComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\InputManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Font.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SoundManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer.cpp">
@@ -80,9 +41,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\BattleHUD.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\UIFont.cpp">
@@ -103,15 +61,6 @@
     <ClCompile Include="src\UIButton.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\EnemyComponent.cpp" />
-    <ClCompile Include="src\EnemyActor.cpp" />
-    <ClCompile Include="src\BattleComponent.cpp" />
-    <ClCompile Include="src\MapComponent.cpp" />
-    <ClCompile Include="src\Parameter.cpp" />
-    <ClCompile Include="src\PlayerActor.cpp" />
-    <ClCompile Include="src\PlayerComponent.cpp" />
-    <ClCompile Include="src\AnimationComponent.cpp" />
-    <ClCompile Include="src\AnimSeq.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\CollisionManager.cpp" />
@@ -121,25 +70,86 @@
     <ClCompile Include="src\Define.cpp" />
     <ClCompile Include="src\GameActor.cpp" />
     <ClCompile Include="src\GameState.cpp" />
-    <ClCompile Include="src\LoadCSVFile.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\MoveComponent.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\SpriteComponent.cpp" />
-    <ClCompile Include="src\EnemyObject.cpp" />
+    <ClCompile Include="src\AnimationComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimSeq.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionObj.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Define.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FontRendererComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameMainCtrlComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MoveComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Parameter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoundManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\EnemyComponent.h" />
-    <ClInclude Include="src\EnemyActor.h" />
-    <ClInclude Include="src\BattleComponent.h" />
-    <ClInclude Include="src\MapComponent.h" />
-    <ClInclude Include="src\Parameter.h" />
-    <ClInclude Include="src\PlayerActor.h" />
-    <ClInclude Include="src\AnimationComponent.h" />
-    <ClInclude Include="src\AnimSeq.h" />
     <ClInclude Include="src\InputManager.h" />
-    <ClInclude Include="src\PlayerComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\CollisionComponent.h" />
     <ClInclude Include="src\CollisionManager.h" />
@@ -157,8 +167,6 @@
     <ClInclude Include="src\SpriteComponent.h" />
     <ClInclude Include="src\stdComponent.h" />
     <ClInclude Include="src\stdMgr.h" />
-    <ClInclude Include="src\EnemyObject.h" />
-    <ClInclude Include="src\EnemyType.h" />
     <Filter Include="src">
       <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
     </Filter>
@@ -171,6 +179,39 @@
     <Filter Include="addons\ofxGui\src">
       <UniqueIdentifier>{645E9533-4DCD-6179-1CDF-CB65}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="src\AnimationComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimSeq.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyActor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyObject.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyType.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MapComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Parameter.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerActor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
@@ -301,6 +342,8 @@
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram.cd">
+      <Filter>src</Filter>
+    </None>
   </ItemGroup>
 </Project>

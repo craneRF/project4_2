@@ -38,8 +38,6 @@ public:
 
 	//static GameActor * createMap(GameActor * _parent, ofVec3f _pos, string _name);
 
-	GameActor* mp_parent;
-
 	function<void()> drawfunc;
 
 public:
@@ -159,7 +157,7 @@ public:
 	void RemoveAllChild() {
 		queue<unique_ptr<T>>().swap(m_childAddQue);	//queue‚Ì‘SÁ‚µ
 		for (auto& c : m_childList) {
-			c->waitforErase_ = true;
+			c->StateErace();
 		}
 	}
 

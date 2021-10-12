@@ -29,7 +29,7 @@ void AnimationComponent::update() {
 		// アニメーション終わり
 		if (m_nowIdx == -1)
 		{
-			mp_gActor->waitforErase_ = true;
+			mp_gActor->StateErace();
 			return;
 		}
 		setNextSprite(m_nowIdx);
@@ -37,12 +37,12 @@ void AnimationComponent::update() {
 }
 
 void AnimationComponent::setNextSprite(int _idx) {
-	mp_sprCpnt->setImage(mp_animSeq->getFrame(_idx).mp_image);
-	mp_sprCpnt->offset() = mp_animSeq->getFrame(_idx).m_offset;
+	/*mp_sprCpnt->setImage(mp_animSeq->getFrame(_idx).mp_image);
+	mp_sprCpnt->Offset() = mp_animSeq->getFrame(_idx).m_offset;
 	mp_sprCpnt->enabled() = mp_animSeq->getFrame(_idx).m_visible;
 	m_remainTime = mp_animSeq->getFrame(_idx).m_time;
 	m_nowIdx = _idx;
-	ofVec3f intejer;
+	ofVec3f intejer;*/
 }
 
 void AnimationComponent::setAnim(AnimSeq* _animSeq)

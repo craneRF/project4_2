@@ -30,12 +30,12 @@
 	例に書かれているような設計にしてください、ということです。
 */
 
-void GameStateTitle::enter()
+void GameStateTitle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, u8"タイトルシーン", { }, ofColor::white);
+		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
 
 	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
@@ -50,7 +50,7 @@ void GameStateTitle::enter()
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_actor1->Pos() = { 500,300 };
 	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(m_prmInState->getPlayerParam("HP")), { }, ofColor::white);
+		initialize(ofToString(m_prmInState->getPlayerParam("HP")), 18);
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
@@ -85,7 +85,7 @@ void GameStateMap::enter(Parameter _pprm)
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, u8"マップシーン", { }, ofColor::white);
+		initialize(u8"マップシーン");
 
 	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
@@ -129,7 +129,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, u8"戦闘シーン", { }, ofColor::white);
+		initialize(u8"戦闘シーン");
 
 	*m_prmInState = _pprm;
 	m_prmInState->getPlayerParam("HP");
@@ -137,7 +137,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_actor2->Pos() = { 500,300 };
 	mp_actor2->addComponent<FontRendererComponent>()->
-		initialize(ofApp::getInstance()->myFont, ofToString(0), { }, ofColor::white);
+		initialize(ofToString(0));
 
 	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 

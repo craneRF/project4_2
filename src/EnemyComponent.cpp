@@ -22,6 +22,10 @@ void EnemyComponent::update(float _deltatime)
 
 }
 
+void EnemyComponent::input(float _deltatime)
+{
+}
+
 void EnemyComponent::onCollision(CollisionComponent *)
 {
 }
@@ -48,7 +52,7 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 
 	//‰æ‘œ‚Ì“K—p
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName));
+	mp_sprCpnt->TexName() = "Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName;
 	mp_sprCpnt->AlignPivotCenter();
 }
 

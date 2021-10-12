@@ -112,7 +112,7 @@ void BattleComponent::update(float _deltatime)
 			// 攻撃アクター作成
 			actor = PlayerActor::createPlayer(mp_gActor, m_EnemyList[0]->Pos());
 			auto sp = actor->getComponent<SpriteComponent>();
-			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->TexName() = "Arrow.png";
 			sp->AlignPivotCenter();
 
 			// 回転設定
@@ -125,7 +125,7 @@ void BattleComponent::update(float _deltatime)
 			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[1]->Pos(), EnemyType::Nomal);
 			actor->Scale() = { 1.0f, 1.0f };
 			auto sp = actor->getComponent<SpriteComponent>();
-			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->TexName() = "Arrow.png";
 			sp->AlignPivotCenter();
 
 			//actor->RotAngle() = angle + 180;
@@ -135,7 +135,7 @@ void BattleComponent::update(float _deltatime)
 			actor->addComponent<MoveComponent>();
 		}
 		// 方向設定
-		actor->getComponent<MoveComponent>()->setMoveVec(direction);
+		actor->getComponent<MoveComponent>()->AddMovePos(direction);
 		// サイズを本体の1/5に
 		actor->Scale() *= 0.2f;
 
@@ -144,6 +144,10 @@ void BattleComponent::update(float _deltatime)
 
 	ExcuteCommand();
 	CheckResult();
+}
+
+void BattleComponent::input(float _deltatime)
+{
 }
 
 //void BattleComponent::SetEnemy()

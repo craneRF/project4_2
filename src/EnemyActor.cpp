@@ -13,7 +13,7 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 	enemyCpnt->setEnemyType(_enemytype);
 
 	actor->initialize(_pos, _name);
-	actor->setParam(_pos, enemyCpnt->getEnemy(_enemytype).scale);
+	actor->SetParam(_pos, enemyCpnt->getEnemy(_enemytype).scale);
 
 	enemyCpnt->mp_epCpnt->CreateEnemyBody(actor, _pos, _enemytype);
 

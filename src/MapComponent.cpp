@@ -79,6 +79,10 @@ void MapComponent::update(float _deltatime)
 
 }
 
+void MapComponent::input(float _deltatime)
+{
+}
+
 void MapComponent::DrawLine(Step * _step)
 {
 	if (mp_currentStep->m_nextStepList.empty())
@@ -143,14 +147,14 @@ void MapComponent::CreateStepActor()
 		{
 			auto actor = mp_gActor->addChild<GameActor>();
 			actor->initialize({}, "step" + to_string(step->m_id));
-			actor->setParam(step->m_pos, { 0.05f,0.05f }, 0.0);
+			actor->SetParam(step->m_pos, { 0.05f,0.05f }, 0.0);
 
 			auto spriteCpnt = actor->addComponent<SpriteComponent>();
-			spriteCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/marine_icon.png"));
+			spriteCpnt->TexName() = "marine_icon.png";
 			spriteCpnt->AlignPivotCenter();
 			if (step->m_IsSelected)
 			{
-				spriteCpnt->SetColor(ofColor::gray);
+				spriteCpnt->Color() = ofColor::gray;
 			}
 		}
 	}

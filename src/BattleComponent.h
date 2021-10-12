@@ -54,6 +54,7 @@ public:
 	BattleComponent(GameActor* _gator);
 	virtual ~BattleComponent();
 	virtual void update(float _deltatime);
+	virtual void input(float _deltatime);
 
 
 	void SetPlayer(shared_ptr<Parameter> _player) { m_Player = _player; }
