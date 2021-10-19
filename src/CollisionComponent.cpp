@@ -22,12 +22,12 @@ CollisionComponent::~CollisionComponent() {
 	ofApp::getInstance()->mp_collisionManager->releaseObj(mp_cobj);
 }
 
-void CollisionComponent::update(float _deltatime) {
+void CollisionComponent::update() {
 	ofVec3f scaledSize = { m_width * mp_gActor->WorldScale().x, m_height * mp_gActor->WorldScale().y };
 	auto centerOfs = ofVec3f(scaledSize.x * 0.5f, scaledSize.y * 0.5f);
 	mp_cobj->setCollisionParam(ofRectangle(mp_gActor->WorldPos() + m_offset - centerOfs, scaledSize.x, scaledSize.y));
 }
 
-void CollisionComponent::input(float _deltatime)
+void CollisionComponent::input()
 {
 }

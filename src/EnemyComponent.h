@@ -28,8 +28,8 @@ public:
 
 	EnemyPartsComponent * mp_epCpnt;
 
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 	void onCollision(CollisionComponent*);
 
 	EnemyParam getEnemy(int _enemytype);

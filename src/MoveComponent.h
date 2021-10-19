@@ -11,8 +11,8 @@ private:
 public:
 	MoveComponent(GameActor* _gator);
 	virtual ~MoveComponent();
-	virtual void update(float _deltatime);
-	void input(float _deltatime) override;
+	virtual void update();
+	void input() override;
 
 	void FrontMove(float _speed = 1.0f);
 

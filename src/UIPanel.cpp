@@ -1,3 +1,4 @@
+#include "ofApp.h"
 #include "UIPanel.h"
 
 UIPanel::UIPanel(string _name)
@@ -33,9 +34,10 @@ void UIPanel::caluculateWorldTransform()
 	}
 }
 
-void UIPanel::update(float _deltaTime)
+void UIPanel::update()
 {
 	caluculateWorldTransform();
+	m_actorDelta = ofApp::getInstance()->m_deltaTime;
 
 	//削除予定UICommonの削除
 	if (!m_UICommonChildList.empty()) {
@@ -56,7 +58,7 @@ void UIPanel::update(float _deltaTime)
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->UIupdatefunc(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+				uic->UIupdatefunc();  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
 			}
 		}
 	}
@@ -80,19 +82,19 @@ void UIPanel::update(float _deltaTime)
 		for (auto& uic : m_UIPanelChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->update(_deltaTime);  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
+				uic->update();  //描画に影響する処理などはEActive状態とEDrawing状態の時に行う
 			}
 		}
 	}
 }
 
-void UIPanel::input(float _deltaTime)
+void UIPanel::input()
 {
 	if (!m_UICommonChildList.empty()) {
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->UIinputfunc(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+				uic->UIinputfunc();  //操作処理はEActive状態のUIScreenしか行わない
 			}
 		}
 	}
@@ -101,7 +103,7 @@ void UIPanel::input(float _deltaTime)
 		for (auto& uic : m_UIPanelChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->input(_deltaTime);  //操作処理はEActive状態のUIScreenしか行わない
+				uic->input();  //操作処理はEActive状態のUIScreenしか行わない
 			}
 		}
 	}

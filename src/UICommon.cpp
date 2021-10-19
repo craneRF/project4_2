@@ -1,11 +1,12 @@
+#include "ofApp.h"
 #include "UICommon.h"
 #include "UIPanel.h"
 
 UICommon::UICommon(string _name)
 	:Actor(_name)
 	,mp_UIPanelParent(nullptr)
-	,UIupdatefunc([](float) {})
-	,UIinputfunc([](float) {})
+	,UIupdatefunc([]() {})
+	,UIinputfunc([]() {})
 	,UIdrawfunc([]() {})
 {
 	mp_fontRenderer = make_unique<FontRenderer>();
@@ -36,19 +37,20 @@ void UICommon::caluculateWorldTransform()
 	}
 }
 
-void UICommon::update(float _deltaTime)
+void UICommon::update()
 {
 	caluculateWorldTransform();
+	m_actorDelta = ofApp::getInstance()->m_deltaTime;
 
 	if (GetActorState() != ActorState::EPause) {
-		this->UIupdatefunc(_deltaTime);
+		this->UIupdatefunc();
 	}
 }
 
-void UICommon::input(float _deltaTime)
+void UICommon::input()
 {
 	if (GetActorState() == ActorState::EActive) {
-		this->UIinputfunc(_deltaTime);
+		this->UIinputfunc();
 	}
 }
 

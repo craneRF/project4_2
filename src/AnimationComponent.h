@@ -17,6 +17,7 @@ public:
 
 	void initialize(AnimSeq* _animSeq);
 	virtual void update();
+	void input() override;
 	void setNextSprite(int _idx);
 	void setAnim(AnimSeq * _animSeq);
 };

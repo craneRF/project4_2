@@ -15,12 +15,12 @@ PlayerComponent::~PlayerComponent()
 {
 }
 
-void PlayerComponent::update(float _deltatime)
+void PlayerComponent::update()
 {
 	//mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/marine_icon.png"));
 }
 
-void PlayerComponent::input(float _deltatime)
+void PlayerComponent::input()
 {
 }
 

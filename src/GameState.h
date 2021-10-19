@@ -18,7 +18,7 @@ public:
 	GameState() {};
 	virtual ~GameState() {};
 	virtual void enter(Parameter _pprm) = 0;
-	virtual GameState* update(float _deltatime) = 0;
+	virtual GameState* update() = 0;
 	virtual void exit(Parameter& _pprm) = 0;
 
 
@@ -31,7 +31,7 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
+	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 
 	class UIPanelCanvas* mp_BHUD;
@@ -45,7 +45,7 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
+	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 	
 
@@ -67,7 +67,7 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
+	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 
 	float m_angle;

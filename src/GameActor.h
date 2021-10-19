@@ -16,8 +16,8 @@ public:
 
 	void caluculateWorldTransform();
 
-	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
-	void input(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
+	void update();	//åpè≥ÇµÇ»Ç¢
+	void input();	//åpè≥ÇµÇ»Ç¢
 	void draw();	//åpè≥ÇµÇ»Ç¢
 
 	void initialize(ofVec3f _pos, string _name);

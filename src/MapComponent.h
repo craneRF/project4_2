@@ -43,8 +43,8 @@ private:
 public:
 	MapComponent(GameActor* _gator);
 	virtual ~MapComponent();
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 
 	// CSVファイルからマップ情報読み込み
 	void LoadMap(string _filePath);

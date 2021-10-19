@@ -62,9 +62,9 @@ void ofApp::update() {
 
 		if (hierarchyRoot_->GetActorState() != Actor::ActorState::EPause) {
 			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {
-				hierarchyRoot_->input(m_deltaTime);  //hierarchyRoot_がEActive状態なら行う
+				hierarchyRoot_->input();  //hierarchyRoot_がEActive状態なら行う
 			}
-			hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_がEPause状態でないなら行う
+			hierarchyRoot_->update();  //hierarchyRoot_がEPause状態でないなら行う
 		}
 		
 
@@ -89,9 +89,9 @@ void ofApp::update() {
 			{
 				if (ui->GetActorState() != Actor::ActorState::EPause) {
 					if (ui->GetActorState() == Actor::ActorState::EActive) {
-						ui->input(m_deltaTime);  //操作処理はEActive状態の時しか行わない
+						ui->input();  //操作処理はEActive状態の時しか行わない
 					}
-					ui->update(m_deltaTime);  //操作処理以外はEActive状態とEUnControl状態の時に行う
+					ui->update();  //操作処理以外はEActive状態とEUnControl状態の時に行う
 				}
 			}
 		}

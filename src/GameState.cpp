@@ -33,7 +33,7 @@
 void GameStateTitle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
@@ -58,17 +58,18 @@ void GameStateTitle::enter(Parameter _pprm)
 	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_marin->Pos() = { 750, 400 };
 	mp_marin->Scale() = { 1.0f, 1.0f };
+	/*mp_marin->addComponent<SpriteComponent>()->
+		initialize("marine_icon.png");*/
 	mp_marin->addComponent<SpriteComponent>()->
-		initialize("marine_icon.png");
-	mp_marin->addComponent<SpriteComponent>()->
-		initialize("Arrow.png", { 0,0 }, {1, 1}, 45.0f);
+		initialize("Arrow.png", { 0,0 }, {1, 1}, 0.0f);
+	mp_marin->addComponent<MoveComponent>();
 	
 	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 
 	
 }
 
-GameState* GameStateTitle::update(float _deltatime)
+GameState* GameStateTitle::update()
 {
 	mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(m_prmInState->getPlayerParam("HP"));
@@ -94,6 +95,8 @@ GameState* GameStateTitle::update(float _deltatime)
 		}
 	}
 
+	mp_marin->getComponent<MoveComponent>()->AddMovePos({ 100.0f, 0.0f, 0.0f });
+
 	return nullptr;
 }
 
@@ -107,7 +110,7 @@ void GameStateTitle::exit(Parameter& _pprm)
 void GameStateMap::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"マップシーン");
 
@@ -120,7 +123,7 @@ void GameStateMap::enter(Parameter _pprm)
 	*m_prmInState = _pprm;
 
 }
-GameState * GameStateMap::update(float _deltatime)
+GameState * GameStateMap::update()
 {
 	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
 	auto kind = mapCpnt->GetResKind();
@@ -171,7 +174,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_BattleComp->SetEnemy(m_EnemyList);
 }
 
-GameState * GameStateBattle::update(float _deltatime)
+GameState * GameStateBattle::update()
 {
 	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
 

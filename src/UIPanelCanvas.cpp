@@ -9,14 +9,14 @@ UIPanelCanvas::~UIPanelCanvas()
 {
 }
 
-void UIPanelCanvas::update(float _deltatime)
+void UIPanelCanvas::update()
 {
-	UIPanel::update(_deltatime);
+	UIPanel::update();
 }
 
-void UIPanelCanvas::input(float _deltatime)
+void UIPanelCanvas::input()
 {
-	UIPanel::input(_deltatime);
+	UIPanel::input();
 }
 
 void UIPanelCanvas::draw()

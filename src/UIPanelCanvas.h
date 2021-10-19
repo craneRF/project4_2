@@ -7,8 +7,8 @@ public:
 	UIPanelCanvas(string _name = "");
 	~UIPanelCanvas();
 
-	void update(float _deltatime) override;
-	void input(float _deltatime) override;
+	void update() override;
+	void input() override;
 	void draw() override;
 };
 

@@ -16,7 +16,7 @@ MapComponent::~MapComponent()
 {
 }
 
-void MapComponent::update(float _deltatime)
+void MapComponent::update()
 {
 	//if (++timeCount >= 600)
 	//{
@@ -79,7 +79,7 @@ void MapComponent::update(float _deltatime)
 
 }
 
-void MapComponent::input(float _deltatime)
+void MapComponent::input()
 {
 }
 

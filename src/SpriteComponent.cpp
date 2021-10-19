@@ -9,7 +9,6 @@ SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	, m_degree(0.0f)
 	, m_texName("NoSearch.png")
 	, m_texNameBuffer(m_texName)
-	,m_degree(0.0f)
 {
 	mp_TexRenderer = make_unique<TextureRenderer>();
 	mp_TexRenderer->SetTexture(m_texName);
@@ -34,7 +33,7 @@ void SpriteComponent::initialize(const string& _texname, ofVec3f _offset, ofVec3
 	m_texNameBuffer = m_texName;
 }
 
-void SpriteComponent::update(float _deltatime)
+void SpriteComponent::update()
 {
 	if (m_texNameBuffer != m_texName) {
 		mp_TexRenderer->SetTexture(m_texName);
@@ -42,7 +41,7 @@ void SpriteComponent::update(float _deltatime)
 	}
 }
 
-void SpriteComponent::input(float _deltatime)
+void SpriteComponent::input()
 {
 }
 

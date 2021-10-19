@@ -20,14 +20,14 @@ BattleHUD::~BattleHUD()
 {
 }
 
-void BattleHUD::update(float _deltaTime)
+void BattleHUD::update()
 {
-	UIPanelCanvas::update(_deltaTime);
+	UIPanelCanvas::update();
 }
 
-void BattleHUD::input(float _deltaTime)
+void BattleHUD::input()
 {
-	UIPanelCanvas::input(_deltaTime);
+	UIPanelCanvas::input();
 }
 
 void BattleHUD::draw()

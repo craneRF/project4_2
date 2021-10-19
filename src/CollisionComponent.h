@@ -17,8 +17,8 @@ public:
 	function<void(CollisionComponent* _other)> m_onCollisionFunc;
 
 	virtual ~CollisionComponent();
-	virtual void update(float _deltatime);
-	void input(float _deltatime) override;
+	virtual void update();
+	void input() override;
 	void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
 
 };

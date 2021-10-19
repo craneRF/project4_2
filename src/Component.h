@@ -28,8 +28,8 @@ public:
 		return mp_gActor;
 	}
 
-	virtual void update(float _deltatime) = 0;
-	virtual void input(float _deltatime) = 0;
+	virtual void update() = 0;
+	virtual void input() = 0;
 
 	Component(GameActor* _gactor, string _name = "") 
 		:mp_gActor(_gactor)

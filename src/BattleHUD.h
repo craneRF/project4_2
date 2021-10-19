@@ -10,8 +10,8 @@ public:
 	BattleHUD();
 	~BattleHUD();
 
-	void update(float _deltaTime) override;
-	void input(float _deltaTime) override;
+	void update() override;
+	void input() override;
 	void draw() override;
 
 public:

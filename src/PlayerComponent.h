@@ -15,8 +15,8 @@ public:
 	PlayerComponent(GameActor *_gactor);
 	virtual ~PlayerComponent();
 
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 	void onCollision(CollisionComponent*);
 
 

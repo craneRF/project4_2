@@ -17,12 +17,12 @@ EnemyComponent::~EnemyComponent()
 
 }
 
-void EnemyComponent::update(float _deltatime)
+void EnemyComponent::update()
 {
 
 }
 
-void EnemyComponent::input(float _deltatime)
+void EnemyComponent::input()
 {
 }
 

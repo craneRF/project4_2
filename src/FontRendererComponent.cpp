@@ -39,7 +39,7 @@ void FontRendererComponent::initialize(const string & _str, int _size, ofVec3f _
 	mp_gActor->drawfunc = std::bind(&FontRendererComponent::draw, this);
 }
 
-void FontRendererComponent::update(float _deltatime)
+void FontRendererComponent::update()
 {
 	if (m_sizeBuffer != m_size) {
 		mp_fontRenderer->SetSize(m_size);
@@ -51,7 +51,7 @@ void FontRendererComponent::update(float _deltatime)
 	}
 }
 
-void FontRendererComponent::input(float _deltatime)
+void FontRendererComponent::input()
 {
 }
 

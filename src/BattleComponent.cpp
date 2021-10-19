@@ -79,7 +79,7 @@ BattleComponent::~BattleComponent() {
 
 }
 
-void BattleComponent::update(float _deltatime)
+void BattleComponent::update()
 {
 	if (m_result != Result::NONE) {
 		return;
@@ -146,7 +146,7 @@ void BattleComponent::update(float _deltatime)
 	CheckResult();
 }
 
-void BattleComponent::input(float _deltatime)
+void BattleComponent::input()
 {
 }
 
