@@ -56,7 +56,7 @@ void UIPanel::update(float _deltaTime)
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->update(_deltaTime);  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+				uic->UIupdatefunc(_deltaTime);  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
 	}
@@ -92,7 +92,7 @@ void UIPanel::input(float _deltaTime)
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->input(_deltaTime);  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
+				uic->UIinputfunc(_deltaTime);  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
 			}
 		}
 	}
@@ -112,7 +112,10 @@ void UIPanel::draw()
 	if (!m_UICommonChildList.empty()) {
 		for (auto& uic : m_UICommonChildList) {
 			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
-				uic->draw();
+				ofPushMatrix();
+				assert(uic->UIdrawfunc != nullptr);
+				uic->UIdrawfunc();
+				ofPopMatrix();
 			}
 		}
 	}

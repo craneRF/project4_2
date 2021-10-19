@@ -54,14 +54,12 @@ void UICommon::input(float _deltaTime)
 
 void UICommon::draw()
 {
-	if (GetActorDrawState() == ActorDrawState::EVisible) {
-		ofPushMatrix();
-		ofTranslate(this->m_worldPos);
-		ofRotateDeg(-(this->m_worldRotAngle));
-		ofScale(this->m_worldScale);
+	ofPushMatrix();
+	/*ofTranslate(this->m_worldPos);
+	ofRotateDeg(-(this->m_worldRotAngle));
+	ofScale(this->m_worldScale);*/
 
-		assert(this->UIdrawfunc != nullptr);
-		this->UIdrawfunc();
-		ofPopMatrix();
-	}
+	assert(this->UIdrawfunc != nullptr);
+	this->UIdrawfunc();
+	ofPopMatrix();
 }

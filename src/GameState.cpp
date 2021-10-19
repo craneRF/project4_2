@@ -54,6 +54,18 @@ void GameStateTitle::enter(Parameter _pprm)
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
+	
+	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_marin->Pos() = { 750, 400 };
+	mp_marin->Scale() = { 1.0f, 1.0f };
+	mp_marin->addComponent<SpriteComponent>()->
+		initialize("marine_icon.png");
+	mp_marin->addComponent<SpriteComponent>()->
+		initialize("Arrow.png", { 0,0 }, {1, 1}, 45.0f);
+	
+	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+
+	
 }
 
 GameState* GameStateTitle::update(float _deltatime)
@@ -70,6 +82,18 @@ GameState* GameStateTitle::update(float _deltatime)
 		return &GameMainCtrlComponent::m_gameStateMap;
 		//return &GameMainCtrlComponent::m_gameStateBattle;
 	}
+
+	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
+		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
+			mp_BHUD->StateActive();
+			mp_BHUD->StateVisible();
+		}
+		else if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EActive || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EVisible) {
+			mp_BHUD->StatePause();
+			mp_BHUD->StateHidden();
+		}
+	}
+
 	return nullptr;
 }
 
@@ -139,8 +163,6 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofToString(0));
 
-	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
 	// í“¬ƒVƒXƒeƒ€‰Šú‰»
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
 	//mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
@@ -163,17 +185,6 @@ GameState * GameStateBattle::update(float _deltatime)
 		return &GameMainCtrlComponent::m_gameStateTitle;
 	default:
 		break;
-	}
-
-	if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
-		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
-			mp_BHUD->StateActive();
-			mp_BHUD->StateVisible();
-		}
-		else if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EActive || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EVisible) {
-			mp_BHUD->StatePause();
-			mp_BHUD->StateHidden();
-		}
 	}
 
 	return nullptr;

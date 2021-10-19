@@ -18,5 +18,6 @@ public:
 	UISprite* uis;
 	UISprite* uis2;
 	UIFont* uif;
+	UIFont* uif2;
 };
 
