@@ -122,7 +122,7 @@ void BattleComponent::update(float _deltatime)
 		}
 		else
 		{
-			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[1]->Pos(), EnemyType::Nomal);
+			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);
 			actor->Scale() = { 1.0f, 1.0f };
 			auto sp = actor->getComponent<SpriteComponent>();
 			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));

@@ -26,7 +26,7 @@ public:
 	EnemyComponent(GameActor* _gactor);
 	virtual ~EnemyComponent();
 
-	EnemyPartsComponent * mp_epCpnt;
+	std::shared_ptr<EnemyPartsComponent>  mp_epCpnt;
 
 	virtual void update(float _deltatime);
 	void onCollision(CollisionComponent*);
@@ -45,7 +45,7 @@ private:
 
 protected:
 	ofVec3f m_pos = { 0,0 };
-	EnemyComponent*enemyCpnt;
+	EnemyComponent* enemyCpnt;
 public:
 
 	void setPos(ofVec3f _pos) { m_pos = _pos; }
