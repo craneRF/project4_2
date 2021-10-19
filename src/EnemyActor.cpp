@@ -17,6 +17,16 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 
 	enemyCpnt->mp_epCpnt->CreateEnemyBody(actor, _pos, _enemytype);
 
+	////コンポーネントを生成
+	//auto actor = _parent;
+	//actor->initialize(_pos, _name);
+	//enemyCpnt = actor->getComponent<EnemyComponent>();
+
+	////画像の適用
+	//auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
+	//mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName));
+	//mp_sprCpnt->AlignPivotCenter();
+
 	if (enemyCpnt->getEnemy(_enemytype).EnemyName != "") {
 		m_EnemyName = enemyCpnt->getEnemy(_enemytype).EnemyName;
 	}

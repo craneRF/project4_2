@@ -9,7 +9,7 @@ SmallEnemy EnemyComponent::m_smallEnemy;
 
 EnemyComponent::EnemyComponent(GameActor * _gactor) :Component(_gactor, "Enemy")
 {
-	/*mp_epCpnt = _gactor->addComponent<EnemyPartsComponent>();*/
+	//mp_epCpnt = _gactor->addComponent<EnemyPartsComponent>();
 }
 
 EnemyComponent::~EnemyComponent()
@@ -44,7 +44,7 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 	//コンポーネントを生成
 	auto actor = _parent;
 	actor->initialize(_pos, _name);
-	enemyCpnt = actor->getComponent<EnemyComponent>();
+	enemyCpnt = _parent->getComponent<EnemyComponent>();
 
 	//画像の適用
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
