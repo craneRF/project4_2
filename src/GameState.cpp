@@ -33,7 +33,7 @@
 void GameStateTitle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
@@ -107,7 +107,7 @@ void GameStateTitle::exit(Parameter& _pprm)
 void GameStateMap::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"マップシーン");
 
