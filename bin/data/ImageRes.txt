@@ -3,3 +3,6 @@ images/enemy_robot.png
 images/marine_icon.png
 images/NoSearch.png
 images/Arrow.png
+images/backGround.png
+images/HP.png
+images/HP_.png

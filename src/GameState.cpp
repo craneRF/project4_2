@@ -141,11 +141,12 @@ void GameStateBattle::enter(Parameter _pprm)
 
 	// í“¬ƒVƒXƒeƒ€‰Šú‰»
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
-	auto enemyActor = EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,200 }, EnemyType::Nomal);
-	m_EnemyList.emplace_back(enemyActor);
-	//m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
-	mp_BattleComp->SetPlayer(m_prmInState);
-	mp_BattleComp->SetEnemy(m_EnemyList);
+	{
+		auto enemyActor = EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { Define::FULLWIN_W / 2.f,Define::FULLWIN_H / 2.f }, EnemyType::Nomal);
+		m_EnemyList.emplace_back(enemyActor);
+		mp_BattleComp->SetPlayer(m_prmInState);
+		mp_BattleComp->SetEnemy(m_EnemyList);
+	}
 }
 
 GameState * GameStateBattle::update(float _deltatime)
