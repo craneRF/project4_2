@@ -25,6 +25,7 @@ public:
 	virtual ~InputManager();
 	bool getButtonDown(string _keyName);
 	bool getButtonUp(string _keyName);
+	bool getButtonHold(string _keyName);
 	bool getButton(string _keyName);
 	int getAxis(string _keyName);
 	void update();

@@ -15,7 +15,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	//charaActor->Scale() *= 7;
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
-		if (_other->gActor()->waitforErase_)
+		if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 		{
 			return;
 		}
@@ -25,7 +25,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		}
 
 		cout << "ガード判定：" << "本体の範囲で押されました。\n";
-		_other->gActor()->waitforErase_ = true;
+		_other->gActor()->StateErace();
 
 		//mp_Command.reset();
 		mp_Command = make_unique<Command>();
@@ -45,7 +45,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
 		collisionComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
 		{
-			if (_other->gActor()->waitforErase_)
+			if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 			{
 				return;
 			}
@@ -57,7 +57,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire"))
 			{
 				cout << "ガード判定：" << to_string(i) << "ダメージの範囲で押されました。\n";
-				_other->gActor()->waitforErase_ = true;
+				_other->gActor()->StateErace();
 
 				//mp_Command.reset();
 				mp_Command = make_unique<Command>();
@@ -112,7 +112,7 @@ void BattleComponent::update(float _deltatime)
 			// 攻撃アクター作成
 			actor = PlayerActor::createPlayer(mp_gActor, m_EnemyList[0]->Pos());
 			auto sp = actor->getComponent<SpriteComponent>();
-			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->TexName() = "Arrow.png";
 			sp->AlignPivotCenter();
 
 			// 回転設定
@@ -125,7 +125,7 @@ void BattleComponent::update(float _deltatime)
 			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);
 			actor->Scale() = { 1.0f, 1.0f };
 			auto sp = actor->getComponent<SpriteComponent>();
-			sp->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/Arrow.png"));
+			sp->TexName() = "Arrow.png";
 			sp->AlignPivotCenter();
 
 			//actor->RotAngle() = angle + 180;
@@ -135,7 +135,7 @@ void BattleComponent::update(float _deltatime)
 			actor->addComponent<MoveComponent>();
 		}
 		// 方向設定
-		actor->getComponent<MoveComponent>()->setMoveVec(direction);
+		actor->getComponent<MoveComponent>()->AddMovePos(direction);
 		// サイズを本体の1/5に
 		actor->Scale() *= 0.2f;
 
@@ -144,6 +144,10 @@ void BattleComponent::update(float _deltatime)
 
 	ExcuteCommand();
 	CheckResult();
+}
+
+void BattleComponent::input(float _deltatime)
+{
 }
 
 //void BattleComponent::SetEnemy()

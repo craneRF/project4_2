@@ -40,11 +40,11 @@ private:
 	const int m_ConnectPercent = 100;
 
 	UINT timeCount = 0;
-	bool isUseTexture = true;
 public:
 	MapComponent(GameActor* _gator);
 	virtual ~MapComponent();
 	virtual void update(float _deltatime);
+	virtual void input(float _deltatime);
 
 	// CSVファイルからマップ情報読み込み
 	void LoadMap(string _filePath);

@@ -2,69 +2,36 @@
 #include "GameActor.h"
 #include "stdComponent.h"
 
-GameActor::GameActor(string _name) :
-	m_pos(ofVec3f(0, 0, 0))
-	, m_rotAngle(0)
-	, m_worldRotAngle(0)
-	, m_scale({ 1,1,1 })
-	, drawfunc([]() {})
+GameActor::GameActor(string _name) 
+	:Actor(_name)
+	,mp_parent(nullptr)
+	,drawfunc([]() {})
 {
-
+	m_componentList.clear();
+	m_childList.clear();
 }
 
 GameActor::~GameActor()
 {
 }
 
-ofVec3f& GameActor::Pos() {
-	return m_pos;
-}
-
-const ofVec3f& GameActor::WorldPos() {
-	return m_worldPos;
-}
-
-float& GameActor::RotAngle() {
-	return m_rotAngle;
-}
-
-const float & GameActor::WorldRotAngle()
+void GameActor::caluculateWorldTransform()
 {
-	return m_worldRotAngle;
-}
+	if (this->RotAngle() >= 360.0f) {
+		this->RotAngle() = 0.0f;
+	}
 
-ofVec3f& GameActor::Scale() {
-	return m_scale;
-}
-
-const ofVec3f & GameActor::WorldScale()
-{
-	return m_worldScale;
-}
-
-void GameActor::setParam(ofVec3f _pos, ofVec3f _scale, float _angle)
-{
-	Pos() = _pos;
-	Scale() = _scale;
-	RotAngle() = _angle;
-}
-
-string& GameActor::Name() {
-	return m_name;
-}
-
-void GameActor::caluculateWorldTransform() {
 	if (mp_parent != nullptr) {
-		m_worldScale = mp_parent->m_worldScale * m_scale;
-		m_worldRotAngle = mp_parent->m_worldRotAngle + m_rotAngle;
-		m_worldPos = mp_parent->m_worldPos +
-			m_pos.getRotated(-mp_parent->m_worldRotAngle, ofVec3f(0, 0, 1)) *
-			mp_parent->m_worldScale;
+		this->WorldScale() = mp_parent->WorldScale() * this->Scale();
+		this->WorldRotAngle() = mp_parent->WorldRotAngle() + this->RotAngle();
+		this->WorldPos() = mp_parent->WorldPos() +
+			this->Pos().getRotated(-(mp_parent->WorldRotAngle()), ofVec3f(0, 0, 1)) *
+			mp_parent->WorldScale();
 	}
 	else {
-		m_worldScale = m_scale * ((float)ofGetHeight() / (float)Define::FULLWIN_H);
-		m_worldRotAngle = m_rotAngle;
-		m_worldPos = m_pos.getRotated(-m_rotAngle, ofVec3f(0, 0, 1)) * m_scale* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
+		this->WorldScale() = this->Scale() * ((float)ofGetHeight() / (float)Define::FULLWIN_H);
+		this->WorldRotAngle() = this->RotAngle();
+		this->WorldPos() = this->Pos().getRotated(-this->RotAngle(), ofVec3f(0, 0, 1)) * this->Scale()* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 	}
 }
 
@@ -124,46 +91,87 @@ GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
 	return mapActor;
 }
 
-void GameActor::update(float _deltatime) {
+void GameActor::update(float _deltaTime) {
 	caluculateWorldTransform();
 
-
+	if (!m_componentList.empty()) {
+		m_componentList.erase(
+			remove_if(m_componentList.begin(), m_componentList.end(),
+				[](const auto& cpnt) { return cpnt->GetComponentState() == Component::ComponentState::EErace; }),
+			m_componentList.end()
+		);
+	}
 	//自分のコンポーネントの更新処理
-	for (const auto& c : mp_componentList) {
-		c->update(_deltatime);
+	if (!m_componentList.empty()) {
+		for (const auto& cpnt : m_componentList) {
+			if (cpnt->GetComponentState() != Component::ComponentState::EPause) {
+				cpnt->update(_deltaTime);
+			}
+		}
 	}
 	//DrawOrder
 	//ofApp::getInstance()->draworderset_.insert(this);
 	//削除予定アクターの削除
-	m_childList.erase(
-		remove_if(m_childList.begin(), m_childList.end(),
-			[](const auto& a) {return a->waitforErase_; }),
-		m_childList.end()
-	);
+	if (!m_childList.empty()) {
+		m_childList.erase(
+			remove_if(m_childList.begin(), m_childList.end(),
+				[](const auto& gac) { return gac->GetActorState() == ActorState::EErace; }),
+			m_childList.end()
+		);
+	}
 	//追加待ちアクターの追加処理
 	while (!m_childAddQue.empty()) {
 		m_childList.push_back(move(m_childAddQue.front()));
 		m_childAddQue.pop();
 	}
-	//子ゲームアクターの全件処理
-	for (auto& c : m_childList) {
-		c->update(_deltatime);
+	//子ゲームアクターの更新処理
+	if (!m_childList.empty()) {
+		for (auto& gac : m_childList) {
+			if (gac->GetActorState() != ActorState::EPause) {
+				gac->update(_deltaTime);
+			}
+		}
 	}
 }
 
-void GameActor::draw(float _deltatime)
+void GameActor::input(float _deltaTime)
 {
-	ofPushMatrix();
-	ofTranslate(m_worldPos);
-	ofRotateDeg(-m_worldRotAngle);
-	ofScale(m_worldScale);
+	//自分のコンポーネントの入力処理
+	if (!m_componentList.empty()) {
+		for (const auto& cpnt : m_componentList) {
+			if (cpnt->GetComponentState() == Component::ComponentState::EActive) {
+				cpnt->input(_deltaTime);
+			}
+		}
+	}
+	//子ゲームアクターの入力処理
+	if (!m_childList.empty()) {
+		for (auto& gac : m_childList) {
+			if (gac->GetActorState() == ActorState::EActive) {
+				gac->input(_deltaTime);
+			}
+		}
+	}
+}
 
-	assert(drawfunc != nullptr);
-	drawfunc();
-	ofPopMatrix();
 
-	for (auto& c : m_childList) {
-		c->draw(_deltatime);
+void GameActor::draw()
+{
+	if (GetActorDrawState() == ActorDrawState::EVisible) {
+		ofPushMatrix();
+		ofTranslate(this->m_worldPos);
+		ofRotateDeg(-(this->m_worldRotAngle));
+		ofScale(this->m_worldScale);
+
+		assert(this->drawfunc != nullptr);
+		this->drawfunc();
+		ofPopMatrix();
+	}
+
+	if (!m_childList.empty()) {
+		for (auto& gac : m_childList) {
+			gac->draw();
+		}
 	}
 
 }

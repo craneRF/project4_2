@@ -21,5 +21,6 @@ public:
 
 	void GameStateStart();
 	void update(float _deltatime);
+	void input(float _deltatime) override;
 	bool m_isGameover;
 };

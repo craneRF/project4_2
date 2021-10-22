@@ -1,41 +1,63 @@
+#include "ofApp.h"
 #include "FontRendererComponent.h"
 #include "GameActor.h"
 
-FontRendererComponent::FontRendererComponent(GameActor* _gactor) :
-	Component(_gactor, "FontRendererComponent"), m_str(""), m_col(ofColor::black)
+FontRendererComponent::FontRendererComponent(GameActor* _gactor) 
+	:Component(_gactor, "FontRendererComponent")
+	, m_str("Not String")
+	, m_size(18)
+	, m_offset({ 0,0,0 })
+	, m_col(ofColor::white)
+	, m_scale({ 1, 1, 1 })
+	, m_fontName("keifont.ttf")
+	, m_sizeBuffer(m_size)
+	, m_fontNameBuffer(m_fontName)
 {
+	mp_fontRenderer = make_unique<FontRenderer>();
 }
 
 FontRendererComponent::~FontRendererComponent()
 {
 }
 
-void FontRendererComponent::initialize(ofTrueTypeFont _font, string _str, ofVec3f _offset, ofColor _col)
+void FontRendererComponent::initialize(const string & _str, int _size, ofVec3f _offset, ofColor _col, ofVec3f _scale, const string & _fontname)
 {
-	m_offset = _offset;
-	m_font = _font;
 	m_str = _str;
+	m_offset = _offset;
 	m_col = _col;
+	m_scale = _scale;
+
+	m_size = _size;
+	m_fontName = _fontname;
+
+	mp_fontRenderer->SetSize(m_size);
+	mp_fontRenderer->SetFontName(m_fontName);
+
+	m_sizeBuffer = m_size;
+	m_fontNameBuffer = m_fontName;
+
 	mp_gActor->drawfunc = std::bind(&FontRendererComponent::draw, this);
 }
 
 void FontRendererComponent::update(float _deltatime)
 {
+	if (m_sizeBuffer != m_size) {
+		mp_fontRenderer->SetSize(m_size);
+		m_sizeBuffer = m_size;
+	}
+	if (m_fontNameBuffer != m_fontName) {
+		mp_fontRenderer->SetFontName(m_fontName);
+		m_fontNameBuffer = m_fontName;
+	}
+}
+
+void FontRendererComponent::input(float _deltatime)
+{
 }
 
 void FontRendererComponent::draw()
 {
-	ofTranslate(m_offset);
-	ofSetColor(m_col);
-	m_font.drawString(m_str, 0, 0);
-}
-
-string& FontRendererComponent::String()
-{
-	return m_str;
-}
-
-ofColor& FontRendererComponent::Color()
-{
-	return m_col;
+	if (m_CpntDrawState == Component::ComponentDrawState::EVisible) {
+		mp_fontRenderer->FontDraw(m_str, m_offset, m_col, m_scale);
+	}
 }

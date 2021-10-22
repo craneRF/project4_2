@@ -10,6 +10,7 @@ InputManager::KeyDefine InputManager::keyMap_[] = {
 	{"Start",' ',0},
 	{"Down",'s',0},
 	{"Up",'w',0},
+	{"HUD",'e',0},
 };
 size_t InputManager::keyListSize_ = sizeof(keyMap_) / sizeof(keyMap_[0]);
 
@@ -57,6 +58,15 @@ bool InputManager::getButtonUp(string _keyName)
 		(keyStatus_[keylist_[_keyName]].nowValue !=
 			keyStatus_[keylist_[_keyName]].backValue) &&
 		keyStatus_[keylist_[_keyName]].nowValue == 0;
+}
+
+bool InputManager::getButtonHold(string _keyName)
+{
+	//¡ó‘Ô == ‘Oó‘Ô && ‰Ÿ‚µ‚Ä‚¢‚é
+	return
+		(keyStatus_[keylist_[_keyName]].nowValue ==
+			keyStatus_[keylist_[_keyName]].backValue) &&
+		keyStatus_[keylist_[_keyName]].nowValue == 1;
 }
 
 bool InputManager::getButton(string _keyName)

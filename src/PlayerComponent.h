@@ -16,6 +16,7 @@ public:
 	virtual ~PlayerComponent();
 
 	virtual void update(float _deltatime);
+	virtual void input(float _deltatime);
 	void onCollision(CollisionComponent*);
 
 

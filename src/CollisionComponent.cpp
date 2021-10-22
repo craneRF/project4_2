@@ -27,3 +27,7 @@ void CollisionComponent::update(float _deltatime) {
 	auto centerOfs = ofVec3f(scaledSize.x * 0.5f, scaledSize.y * 0.5f);
 	mp_cobj->setCollisionParam(ofRectangle(mp_gActor->WorldPos() + m_offset - centerOfs, scaledSize.x, scaledSize.y));
 }
+
+void CollisionComponent::input(float _deltatime)
+{
+}

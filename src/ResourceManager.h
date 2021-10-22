@@ -16,6 +16,7 @@ public:
 	void clearContents();
 	void unloadContentFromFile(string _filename);
 	void loadCropImageFromFile(string _fileName, int _width, int _height);
+	const unordered_map<string, T> getMap();
 };
 
 template<typename T>
@@ -41,7 +42,7 @@ inline void ResourceManager<T>::loadContentFromFile(string _filename)
 }
 
 template<typename T>
-inline T * ResourceManager<T>::getContents(string _key)
+inline T* ResourceManager<T>::getContents(string _key)
 {
 	return &mp_contents[_key];
 }
@@ -95,4 +96,10 @@ inline void ResourceManager<ofImage>::loadCropImageFromFile(string _fileName, in
 			mp_contents.insert(make_pair(_fileName + std::to_string(i * w + j), cropedRes));
 		}
 	}
+}
+
+template<typename T>
+const inline unordered_map<string, T> ResourceManager<T>::getMap()
+{
+	return mp_contents;
 }

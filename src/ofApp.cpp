@@ -14,28 +14,31 @@ void ofApp::setup() {
 
 	instance = this;
 
+	mp_font = make_unique<Font>();
+	mp_texture = make_unique<Texture>();
+
 	mp_collisionManager = make_unique<CollisionManager>();
 	mp_soundManager = make_unique<SoundManager>();
 	mp_inputManager = make_unique<InputManager>();
-
-	mp_imageManager = make_unique<ResourceManager<ofImage>>();
-	mp_imageManager->loadContentFromFile("ImageRes.txt");
-
 
 	m_deltaTime = 0.0f;
 
 	hierarchyRoot_ = make_unique<GameActor>();
 	hierarchyRoot_->mp_parent = nullptr;
-	hierarchyRoot_->initialize({ 0,0 }, "World");
+	hierarchyRoot_->Pos() = { 0, 0, 0 };
+	hierarchyRoot_->Name() = "World";
 
-	//auto fontsettings = ofTrueTypeFontSettings("mplus-1p-regular.ttf", 16);
-	auto fontsettings = ofTrueTypeFontSettings("keifont.ttf", 16);
-	fontsettings.addRanges(ofAlphabet::Latin);
-	fontsettings.addRanges(ofAlphabet::Japanese);
-	myFont.load(fontsettings);
+	/*GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,50 });
+	GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });*/
+
+	//auto act1 = GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 300,50 });
+	//auto movevcpnt = act1->getComponent<MoveComponent>();
+	//movevcpnt->setMoveVec({ 1,0,0 });
+	//auto colcpnt = act1->getComponent<CollisionComponent>();
+	//colcpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_OBJECT);
+	//GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });
 
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
-	//mp_gameMainCtrlComponent->playerScore_ = 0;
 	mp_gameMainCtrlComponent->GameStateStart();
 
 	windowWidth = ofGetWidth();
@@ -54,8 +57,44 @@ void ofApp::update() {
 	m_deltaTime = ofGetLastFrameTime();
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
 	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
+
 	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
-		hierarchyRoot_->update(m_deltaTime);
+
+		if (hierarchyRoot_->GetActorState() != Actor::ActorState::EPause) {
+			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {
+				hierarchyRoot_->input(m_deltaTime);  //hierarchyRoot_がEActive状態なら行う
+			}
+			hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_がEPause状態でないなら行う
+		}
+		
+
+		//追加待ちUIScreenの追加処理
+		while (!m_UIPanelAddQue.empty()) {
+			m_UIPanelStack.push_back(move(m_UIPanelAddQue.front()));
+			m_UIPanelAddQue.pop();
+		}
+
+		for (auto iter = m_UIPanelStack.begin(); iter != m_UIPanelStack.end();) {
+			if ((*iter)->GetActorState() == Actor::ActorState::EErace) {
+				//delete *iter;
+				iter = m_UIPanelStack.erase(iter);  //EErace状態のUIScreenを削除し、その後のイテレーター全てを前に持ってくる
+			}
+			else {
+				++iter;
+			}
+		}
+
+		if (!m_UIPanelStack.empty()) {
+			for (auto& ui : m_UIPanelStack)
+			{
+				if (ui->GetActorState() != Actor::ActorState::EPause) {
+					if (ui->GetActorState() == Actor::ActorState::EActive) {
+						ui->input(m_deltaTime);  //操作処理はEActive状態の時しか行わない
+					}
+					ui->update(m_deltaTime);  //操作処理以外はEActive状態とEUnControl状態の時に行う
+				}
+			}
+		}
 	}
 	//hierarchyRoot_->update(m_deltaTime);
 
@@ -66,16 +105,46 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	hierarchyRoot_->draw(m_deltaTime);
+	if (hierarchyRoot_->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
+		hierarchyRoot_->draw();
+	}
+
+	if (!m_UIPanelStack.empty()) {
+		for (auto& ui : m_UIPanelStack) {
+			if (ui->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
+				ui->draw();  //Visible状態のUIScreenを描画
+			}
+		}
+	}
+	//ofPushMatrix();
+	//ofSetColor(ofColor::white);
+	//for (auto c : draworderset_) {
+	//	c->draw();
+	//}
+	//ofPopMatrix();
 }
 
 void ofApp::exit()
 {
+	mp_font.reset();
+	mp_texture.reset();
+
 	hierarchyRoot_.reset();
+	m_UIPanelStack.clear();
+
 	mp_collisionManager.reset();
 	mp_soundManager.reset();
 	mp_inputManager.reset();
 }
+
+//UIScreen* ofApp::addUIScreen(string _name, UIPanelCanvas* _canvas)
+//{
+//	auto screen = make_unique<UIScreen>(_name, _canvas);
+//	auto res = screen.get();
+//	m_UIPanelAddQue.push(move(screen));
+//	return res;
+//}
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 

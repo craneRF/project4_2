@@ -1,4 +1,5 @@
-images/Idling/marine_icon.png
-images/Idling/zeni.png
-images/Idling/Arrow.png
+images/zeni.png
 images/Idling/enemy_robot.png
+images/marine_icon.png
+images/NoSearch.png
+images/Arrow.png

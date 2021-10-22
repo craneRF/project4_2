@@ -2,7 +2,8 @@
 
 MoveComponent::MoveComponent(GameActor* _gactor) :
 	Component(_gactor, "MoveComponent")
-	, m_movevec({0,0,0})
+	, m_movePos({0,0,0})
+	, m_moveDeg(0.0f)
 {
 }
 
@@ -13,18 +14,18 @@ MoveComponent::~MoveComponent()
 
 void MoveComponent::update(float _deltatime)
 {
-	mp_gActor->Pos() += m_movevec  *_deltatime;
+	mp_gActor->Pos() += m_movePos * _deltatime;
+	mp_gActor->RotAngle() -= m_moveDeg * _deltatime;
+
+	m_movePos = { 0.0f, 0.0f, 0.0f };
+	m_moveDeg = 0.0f;
 }
 
-void MoveComponent::setMoveVec(ofVec3f _vec)
+void MoveComponent::input(float _deltatime)
 {
-	m_movevec = _vec;
 }
 
-void MoveComponent::setAngle(float _degree, float _speed)
+void MoveComponent::FrontMove(float _speed)
 {
-	mp_gActor->RotAngle() = _degree;
-	setMoveVec(
-		{ cosf(ofDegToRad(_degree)) * _speed,-sinf(ofDegToRad(_degree)) * _speed,0 }
-	);
-};
+	m_movePos += { cosf(ofDegToRad(mp_gActor->RotAngle())) * _speed,-sinf(ofDegToRad(mp_gActor->RotAngle())) * _speed,0 };
+}

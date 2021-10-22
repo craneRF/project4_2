@@ -1,46 +1,24 @@
 #pragma once
 #include"ofMain.h"
+#include "Actor.h"
 #include "Component.h"
 
-class GameActor
+class GameActor : public Actor
 {
-private:
 protected:
-	ofVec3f m_pos;
-	ofVec3f m_worldPos;
-
-	float m_rotAngle;
-	float m_worldRotAngle;
-
-	ofVec3f m_scale;
-	ofVec3f m_worldScale;
-
-	vector<unique_ptr<Component>> mp_componentList;
-	string m_name;
+	vector<unique_ptr<Component>> m_componentList;
 	vector<unique_ptr<GameActor>> m_childList;
 	queue<unique_ptr<GameActor>> m_childAddQue;
+
 public:
-	bool waitforErase_ = false;
 	GameActor(string _name = "");
-	virtual ~GameActor();
-
-	ofVec3f& Pos();
-	const ofVec3f& WorldPos();
-	float& RotAngle();
-	const float& WorldRotAngle();
-	ofVec3f& Scale();
-	const ofVec3f& WorldScale();
-
-	void setParam(ofVec3f _pos = { 0,0,0 }, ofVec3f _scale = { 1,1 }, float angle = 0.0f);
-
-	string& Name();
+	~GameActor();
 
 	void caluculateWorldTransform();
-	function<void()> drawfunc;
 
 	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
-	void draw(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
-
+	void input(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
+	void draw();	//åpè≥ÇµÇ»Ç¢
 
 	void initialize(ofVec3f _pos, string _name);
 
@@ -60,20 +38,105 @@ public:
 
 	//static GameActor * createMap(GameActor * _parent, ofVec3f _pos, string _name);
 
-	/*void onCollision(class CollisionComponent* _other);*/
+	function<void()> drawfunc;
 
+public:
+	inline void GameActor::StateAllCpntActive()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntActive();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntActive();
+				}
+			}
+		}
+	}
 
+	inline void GameActor::StateAllCpntUnControl()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntUnControl();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntUnControl();
+				}
+			}
+		}
+	}
+
+	inline void GameActor::StateAllCpntPause()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntPause();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntPause();
+				}
+			}
+		}
+	}
+
+	inline void GameActor::StateAllCpntErace()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntErace();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntErace();
+				}
+			}
+		}
+	}
+
+	inline void GameActor::StateAllCpntVisible()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntVisible();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntVisible();
+				}
+			}
+		}
+	}
+
+	inline void GameActor::StateAllCpntHidden()
+	{
+		for (auto& cpnt : m_componentList) {
+			cpnt->StateCpntHidden();
+		}
+		if (!m_childList.empty()) {
+			for (auto& gac : m_childList) {
+				for (auto& cpnt : m_componentList) {
+					cpnt->StateCpntHidden();
+				}
+			}
+		}
+	}
+
+public:
 	template <typename T>
 	T* addComponent() {
 		auto tmp = make_unique<T>(this);
 		auto res = tmp.get();
-		mp_componentList.push_back(move(tmp));
+		m_componentList.push_back(move(tmp));
 		return res;
 	}
 
 	template <typename T>
 	T* getComponent() {
-		for (auto& cpnt : mp_componentList) {
+		for (auto& cpnt : m_componentList) {
 			if (typeid(T) == typeid(*cpnt.get())) {
 				return (dynamic_cast<T*>(cpnt.get()));
 			}
@@ -94,7 +157,7 @@ public:
 	void RemoveAllChild() {
 		queue<unique_ptr<T>>().swap(m_childAddQue);	//queueÇÃëSè¡Çµ
 		for (auto& c : m_childList) {
-			c->waitforErase_ = true;
+			c->StateErace();
 		}
 	}
 

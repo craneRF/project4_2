@@ -9,6 +9,7 @@
 
 # binフォルダ許可
 !bin/data/*
+!bin/data/fonts/*
 !bin/data/sounds/*
 !bin/data/images/*
 

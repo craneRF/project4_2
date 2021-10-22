@@ -66,5 +66,9 @@ public:
 	virtual void enter(Parameter _pprm);
 	virtual GameState* update(float _deltatime);
 	virtual void exit(Parameter& _pprm);
-};
 
+	float m_angle;
+	class MoveComponent* m_move;
+
+	class UIPanelCanvas* mp_BHUD;
+};
