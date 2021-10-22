@@ -5,6 +5,7 @@
 #include "stdComponent.h"
 #include "BattleHUD.h"
 #include "LoadCSVFile.h"
+#include "MapState.h"
 
 /*
 * 1.hierarchyRoot_のGameMainCtrlComponent内でシーン制御をし、アクターの生成を行うことから、
@@ -89,12 +90,9 @@ void GameStateMap::enter(Parameter _pprm)
 
 	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
-	mapCpnt->CreateRandomMap();
-	mapCpnt->CreateStepActor();
-	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/map1.csv");
-	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
-	*m_prmInState = _pprm;
+	mapCpnt->Initialize();
 
+	*m_prmInState = _pprm;
 }
 GameState * GameStateMap::update(float _deltatime)
 {
@@ -102,12 +100,12 @@ GameState * GameStateMap::update(float _deltatime)
 	auto kind = mapCpnt->GetResKind();
 	switch (kind)
 	{
-	case MapComponent::StepKind::EVENT:
+	case StepKind::EVENT:
 		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
-	case MapComponent::StepKind::BATTLE:
+	case StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
-	case MapComponent::StepKind::GOAL:
+	case StepKind::GOAL:
 		mapCpnt->ClearMap();
 		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
