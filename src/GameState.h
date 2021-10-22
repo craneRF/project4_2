@@ -28,6 +28,7 @@ public:
 // タイトルシーン
 class GameStateTitle final : public GameState {
 private:
+	ofPath path;
 
 public:
 	virtual void enter(Parameter _pprm);

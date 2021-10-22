@@ -5,6 +5,7 @@
 #include "stdComponent.h"
 #include "BattleHUD.h"
 #include "LoadCSVFile.h"
+#include "MapState.h"
 
 /*
 * 1.hierarchyRoot_のGameMainCtrlComponent内でシーン制御をし、アクターの生成を行うことから、
@@ -89,12 +90,9 @@ void GameStateMap::enter(Parameter _pprm)
 
 	mp_mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	auto mapCpnt = mp_mapActor->getComponent<MapComponent>();
-	mapCpnt->CreateRandomMap();
-	mapCpnt->CreateStepActor();
-	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/map1.csv");
-	//mp_mapActor->getComponent<MapComponent>()->LoadMap("data/Book1.csv");
-	*m_prmInState = _pprm;
+	mapCpnt->Initialize();
 
+	*m_prmInState = _pprm;
 }
 GameState * GameStateMap::update(float _deltatime)
 {
@@ -102,12 +100,12 @@ GameState * GameStateMap::update(float _deltatime)
 	auto kind = mapCpnt->GetResKind();
 	switch (kind)
 	{
-	case MapComponent::StepKind::EVENT:
+	case StepKind::EVENT:
 		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
-	case MapComponent::StepKind::BATTLE:
+	case StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
-	case MapComponent::StepKind::GOAL:
+	case StepKind::GOAL:
 		mapCpnt->ClearMap();
 		return &GameMainCtrlComponent::m_gameStateTitle;
 		break;
@@ -127,7 +125,7 @@ void GameStateMap::exit(Parameter& _pprm)
 void GameStateBattle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"戦闘シーン");
 
@@ -143,8 +141,9 @@ void GameStateBattle::enter(Parameter _pprm)
 
 	// 戦闘システム初期化
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
-	//mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
-	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
+	auto enemyActor = EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,200 }, EnemyType::Nomal);
+	m_EnemyList.emplace_back(enemyActor);
+	//m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
 	mp_BattleComp->SetPlayer(m_prmInState);
 	mp_BattleComp->SetEnemy(m_EnemyList);
 }

@@ -52,7 +52,7 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 
 	//‰æ‘œ‚Ì“K—p
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	mp_sprCpnt->TexName() = enemyCpnt->getEnemy(_enemytype).ImageName;
+	mp_sprCpnt->TexName() = /*"Idling/" + */enemyCpnt->getEnemy(_enemytype).ImageName;
 	mp_sprCpnt->AlignPivotCenter();
 }
 
