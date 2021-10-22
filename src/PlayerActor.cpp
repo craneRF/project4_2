@@ -11,7 +11,7 @@ PlayerActor* PlayerActor::createPlayer(GameActor* _parent, ofVec3f _pos, string 
 	auto moveCpnt = actor->addComponent<MoveComponent>();
 
 	auto imageSize = actor->getComponent<SpriteComponent>()->ImageSize();
-	actor->Scale() = { 300 / imageSize.x, 300 / imageSize.y };
+	//actor->Scale() = { 300 / imageSize.x, 300 / imageSize.y };
 
 	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
 	coliisionCpnt->initialize(ofVec3f(0, 0), imageSize.x * 0.2f, imageSize.y * 0.2f, CollisionType::PLAYER_OBJECT);

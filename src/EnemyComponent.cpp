@@ -48,11 +48,11 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 	//コンポーネントを生成
 	auto actor = _parent;
 	actor->initialize(_pos, _name);
-	enemyCpnt = actor->getComponent<EnemyComponent>();
+	auto enemyCpnt = actor->addComponent<EnemyComponent>();
 
 	//画像の適用
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	mp_sprCpnt->TexName() = "Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName;
+	mp_sprCpnt->TexName() = /*"Idling/" + */enemyCpnt->getEnemy(_enemytype).ImageName;
 	mp_sprCpnt->AlignPivotCenter();
 }
 

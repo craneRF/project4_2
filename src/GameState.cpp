@@ -125,7 +125,7 @@ void GameStateMap::exit(Parameter& _pprm)
 void GameStateBattle::enter(Parameter _pprm)
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::WIN_W / 2, (float)Define::WIN_H / 2 };
+	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"戦闘シーン");
 
@@ -141,8 +141,9 @@ void GameStateBattle::enter(Parameter _pprm)
 
 	// 戦闘システム初期化
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
-	//mp_Player = ofApp::getInstance()->hierarchyRoot_->addChild<PlayerActor>();
-	m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
+	auto enemyActor = EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,200 }, EnemyType::Nomal);
+	m_EnemyList.emplace_back(enemyActor);
+	//m_EnemyList.emplace_back(ofApp::getInstance()->hierarchyRoot_->addChild<EnemyActor>());
 	mp_BattleComp->SetPlayer(m_prmInState);
 	mp_BattleComp->SetEnemy(m_EnemyList);
 }

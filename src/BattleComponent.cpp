@@ -69,10 +69,6 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			}
 		};
 	}
-	auto actor = EnemyActor::createEnemy(_gactor, { 200, 200 }, EnemyType::Nomal);
-	//actor->Scale() *= 7;
-	m_EnemyList.emplace_back(actor);
-	//m_EnemyList.emplace_back(EnemyActor::createEnemy(_gactor, { 200, 200 }));
 }
 
 BattleComponent::~BattleComponent() {
@@ -97,7 +93,6 @@ void BattleComponent::update(float _deltatime)
 		// 速さ
 		float speed = 50.f;
 		// ベクトル作成
-		//ofVec3f direction = m_EnemyList[1]->Pos() - m_EnemyList[0]->Pos();
 		ofVec3f direction = m_EnemyList[0]->Pos() - charaActor->Pos();
 		// 正規化
 		direction.normalize();
@@ -122,23 +117,20 @@ void BattleComponent::update(float _deltatime)
 		}
 		else
 		{
-			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[1]->Pos(), EnemyType::Nomal);
-			actor->Scale() = { 1.0f, 1.0f };
+			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);
 			auto sp = actor->getComponent<SpriteComponent>();
 			sp->TexName() = "Arrow.png";
 			sp->AlignPivotCenter();
 
-			//actor->RotAngle() = angle + 180;
 			actor->RotAngle() = angle + 270;
 			direction *= -speed;
 			// エネミーアクターはMoveComponentがなかったため、ここで付ける
 			actor->addComponent<MoveComponent>();
 		}
 		// 方向設定
-		actor->getComponent<MoveComponent>()->AddMovePos(direction);
-		// サイズを本体の1/5に
-		actor->Scale() *= 0.2f;
-
+		auto moveCpnt = actor->getComponent<MoveComponent>();
+		moveCpnt->AddMovePos(direction);
+		moveCpnt->m_isOnceMove = false;
 	}
 
 
