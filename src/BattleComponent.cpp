@@ -32,7 +32,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		mp_Command->commandval = 3;
 	};
 
-	auto imageSize = charaActor->getComponent<SpriteComponent>()->ImageSize() * 0.6f;
+	auto imageSize = charaActor->getComponent<PlayerComponent>()->GetImageSize() * 0.6f;
 	ofVec3f incrementSize = imageSize * 0.2f;
 	for (int i = 1; i <= 2; ++i)
 	{
@@ -102,6 +102,7 @@ void BattleComponent::update(float _deltatime)
 		{
 			angle = 360 - angle;
 		}
+		angle = fmodf(angle, 360);
 
 		// 攻撃アクター
 		auto actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);

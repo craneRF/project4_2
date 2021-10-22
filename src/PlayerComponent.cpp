@@ -3,12 +3,10 @@
 #include "SpriteComponent.h"
 #include "CollisionComponent.h"
 
-PlayerComponent::PlayerComponent(GameActor * _gactor) :Component(_gactor, "Player")
+PlayerComponent::PlayerComponent(GameActor * _gactor) :
+	Component(_gactor, "Player"),
+	m_imageSize({0,0,0})
 {
-	mp_sprCpnt = mp_gActor->addComponent<SpriteComponent>();
-	mp_sprCpnt->initialize("enemy_robot.png");
-	mp_sprCpnt->AlignPivotCenter();
-
 	const string lifeSpritePathList[] =
 	{
 		"HP_.png",
@@ -19,12 +17,20 @@ PlayerComponent::PlayerComponent(GameActor * _gactor) :Component(_gactor, "Playe
 	for (const auto & path : lifeSpritePathList)
 	{
 		auto lifeActor = mp_gActor->addChild<GameActor>();
-		lifeActor->Scale() *= 0.25f;
 		lifeActor->initialize({ 0,0,0 }, "lifeSpriteActor" + to_string(count));
 
 		auto spriteCpnt = lifeActor->addComponent<SpriteComponent>();
 		spriteCpnt->initialize(path);
 		spriteCpnt->AlignPivotCenter();
+		auto imageSize = spriteCpnt->ImageSize();
+		if (m_imageSize.x < imageSize.x)
+		{
+			m_imageSize.x = imageSize.x;
+		}
+		if (m_imageSize.y < imageSize.y)
+		{
+			m_imageSize.y = imageSize.y;
+		}
 
 		++count;
 	}
