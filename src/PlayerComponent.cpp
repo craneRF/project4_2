@@ -6,10 +6,28 @@
 PlayerComponent::PlayerComponent(GameActor * _gactor) :Component(_gactor, "Player")
 {
 	mp_sprCpnt = mp_gActor->addComponent<SpriteComponent>();
-	mp_sprCpnt->TexName() = "enemy_robot.png";
-	//mp_sprCpnt->TexName() = "Idling/Arrow.png";
-	//mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/marine_icon.png"));
+	mp_sprCpnt->initialize("enemy_robot.png");
 	mp_sprCpnt->AlignPivotCenter();
+
+	const string lifeSpritePathList[] =
+	{
+		"HP_.png",
+		"HP.png"
+	};
+
+	int count = 0;
+	for (const auto & path : lifeSpritePathList)
+	{
+		auto lifeActor = mp_gActor->addChild<GameActor>();
+		lifeActor->Scale() *= 0.25f;
+		lifeActor->initialize({ 0,0,0 }, "lifeSpriteActor" + to_string(count));
+
+		auto spriteCpnt = lifeActor->addComponent<SpriteComponent>();
+		spriteCpnt->initialize(path);
+		spriteCpnt->AlignPivotCenter();
+
+		++count;
+	}
 }
 
 PlayerComponent::~PlayerComponent()
@@ -18,7 +36,6 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::update(float _deltatime)
 {
-	//mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/marine_icon.png"));
 }
 
 void PlayerComponent::input(float _deltatime)

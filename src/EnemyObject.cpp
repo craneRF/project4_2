@@ -47,6 +47,7 @@ NomalEnemy::NomalEnemy() {
 
 void NomalEnemy::initialize()
 {
+	//m_eParam.scale = { 1.5f,1.5f };
 	m_eParam.scale = { 0.5,0.5 };
 	m_eParam.HP = 20;
 	m_eParam.ImageName = "enemy_robot.png";

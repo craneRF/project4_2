@@ -9,10 +9,7 @@
 BattleComponent::BattleComponent(GameActor* _gactor) :
 	Component(_gactor, "BattleComponent")
 {
-	m_EnemyList.reserve(2);
-	charaActor = PlayerActor::createPlayer(_gactor, { 500, 500 });
-	//charaActor->Scale() = { 1.0f, 1.0f };
-	//charaActor->Scale() *= 7;
+	charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W / 2.f, Define::FULLWIN_H * 3.f / 4 });
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
 		if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
@@ -34,8 +31,6 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		mp_Command->commandType = 0;
 		mp_Command->commandval = 3;
 	};
-
-	//m_EnemyList.emplace_back(charaActor);
 
 	auto imageSize = charaActor->getComponent<SpriteComponent>()->ImageSize() * 0.6f;
 	ofVec3f incrementSize = imageSize * 0.2f;
@@ -69,6 +64,9 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			}
 		};
 	}
+
+	auto spriteCpnt = mp_gActor->addComponent<SpriteComponent>();
+	spriteCpnt->initialize("backGround.png");
 }
 
 BattleComponent::~BattleComponent() {
@@ -93,43 +91,31 @@ void BattleComponent::update(float _deltatime)
 		// 速さ
 		float speed = 50.f;
 		// ベクトル作成
-		ofVec3f direction = m_EnemyList[0]->Pos() - charaActor->Pos();
+		ofVec3f direction = charaActor->Pos() - m_EnemyList[0]->Pos();
 		// 正規化
 		direction.normalize();
-		ofVec3f forward = { 0, -1 };
+		ofVec3f forward = { 1, 0 };
 		// 回転
 		float angle = ofRadToDeg(acosf(direction.dot(forward)));
+		auto crossVec = forward.crossed(direction);
+		if (crossVec.z > 0)
+		{
+			angle = 360 - angle;
+		}
 
 		// 攻撃アクター
-		GameActor* actor = nullptr;
-		if (/*mp_Command->fromIndex == 0*/false)
-		{
-			// 攻撃アクター作成
-			actor = PlayerActor::createPlayer(mp_gActor, m_EnemyList[0]->Pos());
-			auto sp = actor->getComponent<SpriteComponent>();
-			sp->TexName() = "Arrow.png";
-			sp->AlignPivotCenter();
+		auto actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);
+		actor->RotAngle() = angle;
+		auto sp = actor->getComponent<SpriteComponent>();
+		sp->initialize("Arrow.png");
+		sp->AlignPivotCenter();
 
-			// 回転設定
-			actor->RotAngle() = angle;
-			// 速さ設定
-			direction *= speed;
-		}
-		else
-		{
-			actor = EnemyActor::createEnemy(mp_gActor, m_EnemyList[0]->Pos(), EnemyType::Nomal);
-			auto sp = actor->getComponent<SpriteComponent>();
-			sp->TexName() = "Arrow.png";
-			sp->AlignPivotCenter();
+		// エネミーアクターはMoveComponentがなかったため、ここで付ける
+		actor->addComponent<MoveComponent>();
 
-			actor->RotAngle() = angle + 270;
-			direction *= -speed;
-			// エネミーアクターはMoveComponentがなかったため、ここで付ける
-			actor->addComponent<MoveComponent>();
-		}
 		// 方向設定
 		auto moveCpnt = actor->getComponent<MoveComponent>();
-		moveCpnt->AddMovePos(direction);
+		moveCpnt->AddMovePos(direction * speed);
 		moveCpnt->m_isOnceMove = false;
 	}
 
