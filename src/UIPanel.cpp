@@ -58,7 +58,7 @@ void UIPanel::update()
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->UIupdatefunc();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+				uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
 	}
@@ -115,6 +115,10 @@ void UIPanel::draw()
 		for (auto& uic : m_UICommonChildList) {
 			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
 				ofPushMatrix();
+				ofTranslate(uic->WorldPos());
+				ofRotateDeg(-(uic->WorldRotAngle()));
+				ofScale(uic->WorldScale());
+
 				assert(uic->UIdrawfunc != nullptr);
 				uic->UIdrawfunc();
 				ofPopMatrix();

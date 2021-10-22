@@ -5,7 +5,7 @@
 UICommon::UICommon(string _name)
 	:Actor(_name)
 	,mp_UIPanelParent(nullptr)
-	,UIupdatefunc([]() {})
+	//,UIupdatefunc([]() {})
 	,UIinputfunc([]() {})
 	,UIdrawfunc([]() {})
 {
@@ -44,6 +44,9 @@ void UICommon::update()
 
 	if (GetActorState() != ActorState::EPause) {
 		this->UIupdatefunc();
+		/*for (auto uus : UIupdatefuncVec) {
+			uus;
+		}*/
 	}
 }
 
