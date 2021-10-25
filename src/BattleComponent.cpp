@@ -41,9 +41,37 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	ofVec3f incrementSize = imageSize * 0.2f;
 	for (int i = 1; i <= 2; ++i)
 	{
-		auto collisionComp = charaActor->addComponent<CollisionComponent>();
-		collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
-		collisionComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
+		//auto collisionComp = charaActor->addComponent<CollisionComponent>();
+		//collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
+		//collisionComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
+		//{
+		//	if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
+		//	{
+		//		return;
+		//	}
+		//	if (mp_Command)
+		//	{
+		//		return;
+		//	}
+
+		//	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire"))
+		//	{
+		//		cout << "ガード判定：" << to_string(i) << "ダメージの範囲で押されました。\n";
+		//		_other->gActor()->StateErace();
+
+		//		//mp_Command.reset();
+		//		mp_Command = make_unique<Command>();
+		//		mp_Command->fromIndex = 1;
+		//		mp_Command->toIdenx = 0;
+		//		mp_Command->commandType = 0;
+		//		mp_Command->commandval = i;
+
+		//	}
+		//};
+
+		auto boxComp = charaActor->addComponent<BoxComponent>();
+		boxComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
+		boxComp->m_onCollisionFunc = [&, i](CollisionComponent* _other)
 		{
 			if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 			{

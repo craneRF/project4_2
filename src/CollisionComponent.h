@@ -13,12 +13,17 @@ private:
 	ofVec3f m_offset;
 
 public:
-	CollisionComponent(GameActor* _gactor);
+	CollisionComponent(GameActor* _gactor)
+		: Component(_gactor, "CollisionComponent")
+		, m_onCollisionFunc([](CollisionComponent* _other) {})
+	{
+	}
+
 	function<void(CollisionComponent* _other)> m_onCollisionFunc;
 
-	virtual ~CollisionComponent();
-	virtual void update();
-	void input() override;
-	void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
+	virtual ~CollisionComponent() = 0
+	{
+	}
+	//void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
 
 };

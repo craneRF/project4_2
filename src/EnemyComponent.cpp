@@ -1,5 +1,7 @@
 #include "ofApp.h"
 #include "EnemyComponent.h"
+#include "CollisionComponent.h"
+#include "BoxComponent.h"
 #include "SpriteComponent.h"
 #include "EnemyType.h"
 
@@ -10,6 +12,9 @@ SmallEnemy EnemyComponent::m_smallEnemy;
 EnemyComponent::EnemyComponent(GameActor * _gactor) :Component(_gactor, "Enemy")
 {
 	/*mp_epCpnt = _gactor->addComponent<EnemyPartsComponent>();*/
+	auto boxCpnt = _gactor->addComponent<BoxComponent>();
+	boxCpnt->initialize(ofVec3f(0, 0), _gactor->getComponent<SpriteComponent>()->ImageSize().x, _gactor->getComponent<SpriteComponent>()->ImageSize().y, CollisionType::ENEMY_OBJECT);
+	boxCpnt->m_onCollisionFunc = bind(&EnemyComponent::onCollision, this, placeholders::_1);
 }
 
 EnemyComponent::~EnemyComponent()
@@ -26,7 +31,7 @@ void EnemyComponent::input()
 {
 }
 
-void EnemyComponent::onCollision(CollisionComponent *)
+void EnemyComponent::onCollision(CollisionComponent* _actor)
 {
 }
 

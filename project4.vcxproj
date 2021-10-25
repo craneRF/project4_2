@@ -180,6 +180,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BoxComponent.cpp" />
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="src\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BoxComponent.h" />
     <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />

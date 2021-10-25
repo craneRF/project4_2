@@ -147,6 +147,9 @@
     <ClCompile Include="src\SpriteComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BoxComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -210,6 +213,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\PlayerComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoxComponent.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

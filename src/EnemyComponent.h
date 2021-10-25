@@ -5,6 +5,7 @@
 
 class GameActor;
 class CollisionComponent;
+class BoxComponent;
 class SpriteComponent;
 class EnemyPartsComponent;
 
