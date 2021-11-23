@@ -56,3 +56,8 @@ void TextureRenderer::TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale,
 	ofScale(_scale);
 	mp_image->draw({ 0,0 });
 }
+
+void TextureRenderer::TextureCrop()
+{
+	//mp_image->crop(,)
+}

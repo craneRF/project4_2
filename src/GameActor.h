@@ -40,6 +40,8 @@ public:
 
 	function<void()> drawfunc;
 
+	vector<function<void()>> drawfuncVec;
+
 public:
 	inline void GameActor::StateAllCpntActive()
 	{
@@ -145,8 +147,8 @@ public:
 	}
 
 	template <typename T>
-	T* addChild() {
-		auto actor = make_unique<T>();
+	T* addChild(string _name = "") {
+		auto actor = make_unique<T>(_name);
 		auto res = actor.get();
 		m_childAddQue.push(move(actor));
 		res->mp_parent = this;

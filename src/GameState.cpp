@@ -55,15 +55,56 @@ void GameStateTitle::enter(Parameter _pprm)
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
 	
-	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>("Arrow");
 	mp_marin->Pos() = { 750, 400 };
 	mp_marin->Scale() = { 1.0f, 1.0f };
 	/*mp_marin->addComponent<SpriteComponent>()->
 		initialize("marine_icon.png");*/
+mp_marin->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
 	mp_marin->addComponent<SpriteComponent>()->
 		initialize("Arrow.png", { 0,0 }, {1, 1}, 0.0f);
-	mp_marin->addComponent<MoveComponent>();
+	mp_marin->addComponent<SpriteComponent>()->
+		initialize("Arrow.png", { -200,0 }, { 0.75f, 0.75f }, 0.0f);
+	mp_marin->addComponent<SpriteComponent>()->
+		initialize("Arrow.png", { 200,0 }, { 0.25f, 0.25f }, 0.0f);
+	mp_marin->addComponent<SpriteComponent>()->
+		initialize("Arrow.png", { 0,200 }, { 1.25f, 0.75f }, 0.0f);
 	
+
+	mp_rect = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	//mp_rect->Pos() = { 50.0f, 50.0f };
+	mp_rect->initialize({ 50.0f, 50.0f }, "abc");
+	mp_rect->addComponent<BoxComponent>()->initialize({ 0.f, 0.f, 0.f }, 50.0f, 50.0f, CollisionType::DEFAULT);
+	mp_rect->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect->WorldPos(), 50.0f, 50.0f); });
+	//mp_rect->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+
+	mp_rect2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	//mp_rect2->Pos() = { 200.0f, 50.0f };
+	mp_rect2->initialize({ 200.0f, 50.0f }, "def");
+	mp_rect2->addComponent<BoxComponent>()->initialize({ 0.f, 0.f, 0.f }, 50.0f, 50.0f, CollisionType::DEFAULT);
+	mp_rect2->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect2->WorldPos(), 50.0f, 50.0f); });
+	//mp_rect2->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+
+	mp_rect->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other) 
+	{
+	    //mp_rect->Pos() += { 0.0f, 1.0f };
+		_other->gActor()->Pos() += { 0.0f, 1.0f };
+		//_other->gActor()->Pos() = { 200.0f, 150.0f };
+		//_other->gActor()->drawfuncVec.pop_back();
+		//_other->gActor()->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect->Pos(), 50.0f, 50.0f); });
+		//_other->gActor()->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+		//mp_rect->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+	};
+	/*mp_rect2->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other)
+	{
+		_other->gActor()->Pos() += { 0.0f, 1.0f };
+		_other->gActor()->drawfuncVec.pop_back();
+		_other->gActor()->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect->Pos(), 50.0f, 50.0f); });
+		_other->gActor()->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+		mp_rect->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+	};*/
+	mp_rect->addComponent<MoveComponent>()->AddMovePos({ 2.0f, 0.0f });
+
 	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 
 	
@@ -94,8 +135,7 @@ GameState* GameStateTitle::update()
 			mp_BHUD->StateHidden();
 		}
 	}
-
-	mp_marin->getComponent<MoveComponent>()->AddMovePos({ 100.0f, 0.0f, 0.0f });
+	mp_rect->getComponent<MoveComponent>()->AddMovePos({ 20.0f, 0.0f });
 
 	return nullptr;
 }

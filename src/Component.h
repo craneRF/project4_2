@@ -24,10 +24,6 @@ protected:
 	ComponentState m_CpntState;
 	ComponentDrawState m_CpntDrawState;
 public:
-	GameActor* gActor() {
-		return mp_gActor;
-	}
-
 	virtual void update() = 0;
 	virtual void input() = 0;
 
@@ -40,6 +36,10 @@ public:
 	virtual ~Component() {}
 
 public:
+	inline GameActor* gActor() {
+		return mp_gActor;
+	}
+
 	inline string getComponentName() 
 	{ 
 		return m_componentName;

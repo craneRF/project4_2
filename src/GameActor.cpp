@@ -159,14 +159,22 @@ void GameActor::input()
 void GameActor::draw()
 {
 	if (GetActorDrawState() == ActorDrawState::EVisible) {
-		ofPushMatrix();
+		/*ofPushMatrix();
 		ofTranslate(this->m_worldPos);
 		ofRotateDeg(-(this->m_worldRotAngle));
-		ofScale(this->m_worldScale);
+		ofScale(this->m_worldScale);*/
 
-		assert(this->drawfunc != nullptr);
-		this->drawfunc();
-		ofPopMatrix();
+		for (auto& df : this->drawfuncVec) {
+			assert(df != nullptr);
+			ofPushMatrix();
+			ofTranslate(this->m_worldPos);
+			ofRotateDeg(-(this->m_worldRotAngle));
+			ofScale(this->m_worldScale);
+			df();
+			ofPopMatrix();
+		}
+		//this->drawfunc();
+		//ofPopMatrix();
 	}
 
 	if (!m_childList.empty()) {

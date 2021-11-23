@@ -66,16 +66,26 @@ void MapComponent::update()
 	}
 
 	// ƒ}ƒbƒv‚Ì•`‰æ
-	mp_gActor->drawfunc = [&]
-	{
-		for (auto & colStepList : m_Map)
-		{
-			for (auto & rowStep : colStepList)
+	mp_gActor->drawfuncVec.emplace_back([&]() {
+			for (auto & colStepList : m_Map)
 			{
+				for (auto & rowStep : colStepList)
+				{
 				DrawLine(rowStep.get());
+				}
 			}
 		}
-	};
+	);
+	//mp_gActor->drawfunc = [&]
+	//{
+	//	for (auto & colStepList : m_Map)
+	//	{
+	//		for (auto & rowStep : colStepList)
+	//		{
+	//			DrawLine(rowStep.get());
+	//		}
+	//	}
+	//};
 
 }
 

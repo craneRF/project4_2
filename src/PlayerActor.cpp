@@ -1,8 +1,13 @@
 #include "PlayerActor.h"
 #include "stdComponent.h"
 
+PlayerActor::PlayerActor(string _name)
+	:GameActor(_name)
+{
+}
+
 PlayerActor* PlayerActor::createPlayer(GameActor* _parent, ofVec3f _pos, string _name) {
-	auto actor = _parent->addChild<PlayerActor>();
+	auto actor = _parent->addChild<PlayerActor>(_name);
 	actor->initialize(_pos, _name);
 	//actor->setParam(_pos, { 0.1f,0.1f }, 0.0);
 

@@ -13,6 +13,7 @@ protected:
 	GameActor* mp_actor;
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
+	
 
 public:
 	GameState() {};
@@ -35,6 +36,8 @@ public:
 	virtual void exit(Parameter& _pprm);
 
 	class UIPanelCanvas* mp_BHUD;
+	class GameActor* mp_rect;
+	class GameActor* mp_rect2;
 	class GameActor* mp_marin;
 };
 

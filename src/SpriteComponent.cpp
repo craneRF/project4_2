@@ -13,7 +13,8 @@ SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	mp_TexRenderer = make_unique<TextureRenderer>();
 	mp_TexRenderer->SetTexture(m_texName);
 
-	mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
+	//mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
+	mp_gActor->drawfuncVec.emplace_back(std::bind(&SpriteComponent::draw, this));
 }
 
 SpriteComponent::~SpriteComponent()
@@ -22,10 +23,12 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::initialize(const string& _texname, ofVec3f _offset, ofVec3f _scale, float _degree, ofColor _col)
 {
-	m_offset = _offset;
+	//m_offset = _offset;
 	m_scale = _scale;
 	m_degree = _degree;
 	m_col = _col;
+
+	m_offset = _offset / m_scale;
 
 	m_texName = _texname;
 

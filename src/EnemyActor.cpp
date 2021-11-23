@@ -6,9 +6,14 @@
  
 string EnemyActor::m_EnemyName = "";
 
+EnemyActor::EnemyActor(string _name)
+	:GameActor(_name)
+{
+}
+
 EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name)
 {
-	auto actor = _parent->addChild<EnemyActor>();
+	auto actor = _parent->addChild<EnemyActor>(_name);
 	auto enemyCpnt = actor->addComponent<EnemyComponent>();
 	enemyCpnt->setEnemyType(_enemytype);
 

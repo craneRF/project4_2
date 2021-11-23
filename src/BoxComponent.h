@@ -6,7 +6,7 @@ class CollisionObj;
 class BoxComponent : public CollisionComponent
 {
 private:
-	CollisionObj* mp_cobj;
+	//CollisionObj* mp_cobj;
 
 	float m_width, m_height;
 	ofVec3f m_offset;

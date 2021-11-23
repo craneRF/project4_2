@@ -10,9 +10,9 @@ public:
 	BattleHUD();
 	~BattleHUD();
 
-	void update() override;
-	void input() override;
-	void draw() override;
+	//void update() override;
+	//void input() override;
+	//void draw() override;
 
 public:
 	UISprite* uis;
