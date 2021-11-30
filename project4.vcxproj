@@ -180,7 +180,10 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AttackActor.cpp" />
+    <ClCompile Include="src\BattleState.cpp" />
+    <ClCompile Include="src\BulletActor.cpp" />
+    <ClCompile Include="src\BulletComponent.cpp" />
+    <ClCompile Include="src\BulletObject.cpp" />
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
@@ -228,7 +231,10 @@
     <ClCompile Include="src\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AttackActor.h" />
+    <ClInclude Include="src\BattleState.h" />
+    <ClInclude Include="src\BulletActor.h" />
+    <ClInclude Include="src\BulletComponent.h" />
+    <ClInclude Include="src\BulletObject.h" />
     <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />

@@ -28,16 +28,6 @@ void ofApp::setup() {
 	hierarchyRoot_->Pos() = { 0, 0, 0 };
 	hierarchyRoot_->Name() = "World";
 
-	/*GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 400,50 });
-	GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });*/
-
-	//auto act1 = GameActor::createPlayer(getInstance()->hierarchyRoot_.get(), { 300,50 });
-	//auto movevcpnt = act1->getComponent<MoveComponent>();
-	//movevcpnt->setMoveVec({ 1,0,0 });
-	//auto colcpnt = act1->getComponent<CollisionComponent>();
-	//colcpnt->initialize(ofVec3f(0, 0), 30, 30, CollisionType::ENEMY_OBJECT);
-	//GameActor::createEnemy(getInstance()->hierarchyRoot_.get(), { 300,50 });
-
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
 	mp_gameMainCtrlComponent->GameStateStart();
 
@@ -64,7 +54,8 @@ void ofApp::update() {
 			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {
 				hierarchyRoot_->input(m_deltaTime);  //hierarchyRoot_がEActive状態なら行う
 			}
-			hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_がEPause状態でないなら行う
+			hierarchyRoot_->update(1/60.f);  //hierarchyRoot_がEPause状態でないなら行う
+			//hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_がEPause状態でないなら行う
 		}
 	
 
@@ -96,7 +87,6 @@ void ofApp::update() {
 			}
 		}
 	}
-	//hierarchyRoot_->update(m_deltaTime);
 
 	if (bScaleDirFixed) {
 		bScaleDirFixed = false;

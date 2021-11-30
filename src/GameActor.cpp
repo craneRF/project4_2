@@ -5,7 +5,6 @@
 GameActor::GameActor(string _name) 
 	:Actor(_name)
 	,mp_parent(nullptr)
-	,drawfunc([]() {})
 {
 	m_componentList.clear();
 	m_childList.clear();

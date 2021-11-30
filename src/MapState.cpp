@@ -3,67 +3,62 @@
 #include "SpriteComponent.h"
 #include "ofApp.h"
 
-int MapState::m_selectIndex = 0;
-Step* MapState::mp_currentStep = nullptr;
-vector<vector<unique_ptr<Step>>> MapState::m_Map;
-
 void InitMapState::Initialize(GameActor* _mapActor)
 {
-	// マップの描画
-	_mapActor->drawfuncVec.emplace_back ([this]
-	{
-		for (auto & colStepList : m_Map)
-		{
-			for (auto & rowStep : colStepList)
-			{
-				DrawLine(rowStep.get());
-			}
-		}
-	});
+	// 確率は1%以上であること
+	assert(m_ConnectPercent > 0);
 
-	if (m_Map.empty())
+	if (MapComponent::m_Map.empty())
 	{
 		CreateRandomMap();
 	}
+
+	// マップの描画
+	//_mapActor->drawfuncVec.emplace_back([this]
+	//	{
+
+	//		for (auto & colStepList : MapComponent::m_Map)
+	//		{
+	//			for (auto & rowStep : colStepList)
+	//			{
+	//				//DrawLine(rowStep.get());
+	//			}
+	//		}
+	//	});
+
+	CreateLineActor(_mapActor);
 	CreateStepActor(_mapActor);
 }
 
 void InitMapState::CreateRandomMap()
 {
-	m_Map.clear();
+	MapComponent::ClearMap();
 
-	// 縦横最大サイズ
-	constexpr int maxRowNum = 4;
-	constexpr int maxColNum = 6;
-
-	// 縦横最低サイズ
-	constexpr int minRowNum = 2;
-	constexpr int minColNum = 4;
-	assert(maxRowNum > 0 && maxColNum > 0 && minRowNum > 0 && minColNum > 0);
+	assert(m_maxRowNum > 0 && m_maxColNum > 0 && m_minRowNum > 0 && m_minColNum > 0);
 
 	// カウント変数
 	int count = 0;
 
 	// 列数のランダム生成
-	const int randColNum = max(rand() % maxColNum, minColNum);
+	const int randColNum = max(rand() % m_maxColNum, m_minColNum);
 
 
 	// X座標決定に使用する割合
-	const float WPR = Define::FULLWIN_W / (randColNum + 3);
+	const float WPR = Define::FULLWIN_W / (randColNum + 1);
 
 	// つながれていないマスが出ないようにするために使うリスト
 	vector<vector<bool>> isConnectedList;
 
 	isConnectedList.resize(randColNum);
-	m_Map.resize(randColNum);
-	int preRandRowNum = max(rand() % maxRowNum, minRowNum);
+	MapComponent::m_Map.resize(randColNum);
+	int preRandRowNum = max(rand() % m_maxRowNum, m_minRowNum);
 	for (int c = 0; c < randColNum; ++c)
 	{
 		// スタートマス＆ゴールマス
 		if (c == 0 || c == randColNum - 1)
 		{
 			isConnectedList[c].resize(1, true);
-			m_Map[c].reserve(1);
+			MapComponent::m_Map[c].reserve(1);
 		}
 		// 道中マス
 		else
@@ -72,34 +67,35 @@ void InitMapState::CreateRandomMap()
 			if (rand() % 2 == 0)
 			{
 				++preRandRowNum;
-				if (preRandRowNum > maxRowNum)
+				if (preRandRowNum > m_maxRowNum)
 				{
-					preRandRowNum = maxRowNum;
+					preRandRowNum = m_maxRowNum;
 				}
 			}
 			// 減らすか
 			else
 			{
 				--preRandRowNum;
-				if (preRandRowNum < minRowNum)
+				if (preRandRowNum < m_minRowNum)
 				{
-					preRandRowNum = minRowNum;
+					preRandRowNum = m_minRowNum;
 				}
 			}
 			isConnectedList[c].resize(preRandRowNum, false);
-			m_Map[c].reserve(preRandRowNum);
+			MapComponent::m_Map[c].reserve(preRandRowNum);
 		}
 	}
 
 	// マス情報の設定
 	for (int c = 0; c < randColNum; ++c)
 	{
-		const int size = m_Map[c].capacity();
+		const int size = MapComponent::m_Map[c].capacity();
 		// Y座標決定に使用する割合
 		const float HPR = Define::FULLWIN_H / (size + 1);
 
 		for (int r = 0; r < size; ++r, ++count)
 		{
+
 			auto step = make_unique<Step>();
 			step->m_id = count;
 
@@ -108,25 +104,25 @@ void InitMapState::CreateRandomMap()
 			{
 				step->m_kind = StepKind::START;
 				step->m_IsSelected = true;
-				step->m_pos = { WPR, Define::FULLWIN_H * 0.5f };
-				mp_currentStep = step.get();
+				step->m_pos = { WPR * (c + 1), Define::FULLWIN_H * 0.5f };
+				MapComponent::mp_currentStep = step.get();
 			}
 			// ゴールマス
 			else if (c == randColNum - 1)
 			{
 				step->m_kind = StepKind::GOAL;
 				step->m_IsSelected = false;
-				step->m_pos = { WPR * (randColNum + 2), Define::FULLWIN_H * 0.5f };
+				step->m_pos = { WPR * (c + 1), Define::FULLWIN_H * 0.5f };
 			}
 			// 道中マス
 			else
 			{
 				step->m_kind = static_cast<StepKind>(rand() % static_cast<int>(StepKind::MAXNUM));
 				step->m_IsSelected = false;
-				step->m_pos = { WPR * (c + 2), HPR * (r + 1) };
+				step->m_pos = { WPR * (c + 1), HPR * (r + 1) };
 			}
 
-			m_Map[c].emplace_back(move(step));
+			MapComponent::m_Map[c].emplace_back(move(step));
 		}
 	}
 
@@ -139,21 +135,21 @@ void InitMapState::CreateRandomMap()
 			continue;
 		}
 
-		for (int r = 0; r < m_Map[c].size(); ++r)
+		for (int r = 0; r < MapComponent::m_Map[c].size(); ++r)
 		{
 			// スタートマス
 			if (c == 0)
 			{
-				for (int i = 0, size = m_Map[1].size(); i < size; ++i)
+				for (int i = 0, size = MapComponent::m_Map[1].size(); i < size; ++i)
 				{
-					m_Map[0][0]->m_nextStepList.emplace_back(m_Map[1][i].get());
+					MapComponent::m_Map[0][0]->m_nextStepList.emplace_back(MapComponent::m_Map[1][i].get());
 					isConnectedList[1][i] = true;
 				}
 			}
 			// ゴール手前マス
 			else if (c == randColNum - 2)
 			{
-				m_Map[c][r]->m_nextStepList.emplace_back(m_Map.back()[0].get());
+				MapComponent::m_Map[c][r]->m_nextStepList.emplace_back(MapComponent::m_Map.back()[0].get());
 			}
 			// 道中マス
 			else
@@ -162,7 +158,7 @@ void InitMapState::CreateRandomMap()
 				bool isNeverSet = true;
 				for (int i = r - 1; i < r + 2; ++i)
 				{
-					if (i < 0 || i >= m_Map[c + 1].size())
+					if (i < 0 || i >= MapComponent::m_Map[c + 1].size())
 					{
 						continue;
 					}
@@ -177,7 +173,7 @@ void InitMapState::CreateRandomMap()
 						}
 					}
 
-					m_Map[c][r]->m_nextStepList.emplace_back(m_Map[c + 1][i].get());
+					MapComponent::m_Map[c][r]->m_nextStepList.emplace_back(MapComponent::m_Map[c + 1][i].get());
 					isConnectedList[c + 1][i] = true;
 					isNeverSet = false;
 				}
@@ -186,9 +182,9 @@ void InitMapState::CreateRandomMap()
 
 
 		// 順番に選択ができるようにソート
-		for (int r = 0, size = m_Map[c].size(); r < size; ++r)
+		for (int r = 0, size = MapComponent::m_Map[c].size(); r < size; ++r)
 		{
-			sort(m_Map[c][r]->m_nextStepList.begin(), m_Map[c][r]->m_nextStepList.end(), [](const Step* a, const Step* b) {
+			sort(MapComponent::m_Map[c][r]->m_nextStepList.begin(), MapComponent::m_Map[c][r]->m_nextStepList.end(), [](const Step* a, const Step* b) {
 				return a->m_id < b->m_id;
 				});
 		}
@@ -197,22 +193,75 @@ void InitMapState::CreateRandomMap()
 
 void InitMapState::CreateStepActor(GameActor * _mapActor)
 {
-	for (const auto & mapColList : m_Map)
+	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + m_stepImageFile)->getWidth();
+	// スケール
+	const float scale = m_stepScale / width;
+
+	for (const auto & mapColList : MapComponent::m_Map)
 	{
 		for (const auto & step : mapColList)
 		{
 			auto actor = _mapActor->addChild<GameActor>();
 			actor->initialize({}, "step" + to_string(step->m_id));
-			actor->SetParam(step->m_pos, { 0.05f,0.05f }, 0.0);
+			actor->SetParam(step->m_pos, { scale,scale }, 0.0);
 
 			auto spriteCpnt = actor->addComponent<SpriteComponent>();
-			spriteCpnt->initialize("Map_icon_grass.png");
+			spriteCpnt->initialize(m_stepImageFile);
 			spriteCpnt->AlignPivotCenter();
 			if (step->m_IsSelected)
 			{
 				spriteCpnt->Color() = ofColor::gray;
 			}
 		}
+	}
+}
+
+void InitMapState::CreateLineActor(GameActor * _mapActor)
+{
+	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + m_lineImageFile)->getWidth();
+
+	int colCount = 0;
+	int rowCount = 0;
+	for (const auto & mapColList : MapComponent::m_Map)
+	{
+		for (const auto & step : mapColList)
+		{
+			for (const auto & nextStep : step->m_nextStepList)
+			{
+				auto vec = nextStep->m_pos - step->m_pos;
+				// 回転
+				float angle = RAD_TO_DEG * atan2f(-vec.y, vec.x);
+				// スケール
+				const float scale = vec.length() / width;
+
+				// アクター作成
+				auto actor = _mapActor->addChild<GameActor>();
+				actor->initialize({}, "line" + to_string(colCount) + "_" + to_string(rowCount));
+				actor->SetParam(step->m_pos + vec * 0.5f, { scale,scale }, angle);
+
+				// スプライトコンポーネント
+				auto spriteCpnt = actor->addComponent<SpriteComponent>();
+				spriteCpnt->initialize(m_lineImageFile);
+				spriteCpnt->AlignPivotCenter();
+
+				actor->drawfuncVec.emplace_back([spriteCpnt, &step, nextStep]
+					{
+						if (step->m_IsSelected && (nextStep->m_IsFocused || nextStep->m_IsSelected))
+						{
+							spriteCpnt->Color() = ofColor::gray;
+						}
+						else
+						{
+							spriteCpnt->Color() = ofColor::white;
+						}
+					}
+				);
+			}
+
+			++rowCount;
+		}
+
+		++colCount;
 	}
 }
 
@@ -244,7 +293,7 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 	if (down)
 	{
 		m_selectIndex++;
-		if (m_selectIndex >= mp_currentStep->m_nextStepList.size())
+		if (m_selectIndex >= MapComponent::mp_currentStep->m_nextStepList.size())
 		{
 			m_selectIndex = 0;
 		}
@@ -254,15 +303,24 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 		m_selectIndex--;
 		if (m_selectIndex < 0)
 		{
-			m_selectIndex = mp_currentStep->m_nextStepList.size() - 1;
+			m_selectIndex = MapComponent::mp_currentStep->m_nextStepList.size() - 1;
 		}
 	}
-	// 決定
-	else if (start)
+
+	for (auto & nextStep : MapComponent::mp_currentStep->m_nextStepList)
 	{
-		mp_currentStep = mp_currentStep->m_nextStepList[m_selectIndex];
-		mp_currentStep->m_IsSelected = true;
-		_mapComponent->SetResKind(mp_currentStep->m_kind);
+		nextStep->m_IsFocused = false;
+	}
+	MapComponent::mp_currentStep->m_nextStepList[m_selectIndex]->m_IsFocused = true;
+
+
+	// 決定
+	if (start)
+	{
+		MapComponent::mp_currentStep = MapComponent::mp_currentStep->m_nextStepList[m_selectIndex];
+		MapComponent::mp_currentStep->m_IsSelected = true;
+		MapComponent::mp_currentStep->m_IsFocused = false;
+		_mapComponent->SetResKind(MapComponent::mp_currentStep->m_kind);
 		m_selectIndex = 0;
 	}
 
@@ -275,26 +333,21 @@ void SelectMapState::exit(MapComponent* _mapComponent)
 
 void InitMapState::DrawLine(Step * _step)
 {
-	if (mp_currentStep->m_nextStepList.empty())
+	if (MapComponent::mp_currentStep->m_nextStepList.empty())
 	{
 		return;
 	}
 
-	// 現在カーソルを当てているマスのID
-	auto forcusStep = mp_currentStep->m_nextStepList[m_selectIndex];
+	// 現在カーソルを当てているマス
+	auto focusStep = MapComponent::mp_currentStep->m_nextStepList[m_selectIndex];
 
 	auto pos1 = _step->m_pos;
 
 	//	ラインの描画
 	for (const auto & step : _step->m_nextStepList)
 	{
-		if (!step)
-		{
-			continue;
-		}
-
 		auto pos2 = step->m_pos;
-		if (_step->m_IsSelected && (step == forcusStep || step->m_IsSelected))
+		if (_step->m_IsSelected && (step == focusStep || step->m_IsSelected))
 		{
 			ofSetColor(ofColor::gray);
 
@@ -303,12 +356,7 @@ void InitMapState::DrawLine(Step * _step)
 		{
 			ofSetColor(ofColor::white);
 		}
+
 		ofDrawLine(pos1, pos2);
 	}
-}
-
-void MapState::ClearMap()
-{
-	m_Map.clear();
-	mp_currentStep = nullptr;
 }
