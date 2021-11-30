@@ -66,7 +66,7 @@ void ofApp::update() {
 			}
 			hierarchyRoot_->update(m_deltaTime);  //hierarchyRoot_‚ªEPauseó‘Ô‚Å‚È‚¢‚È‚çs‚¤
 		}
-		
+	
 
 		//’Ç‰Á‘Ò‚¿UIScreen‚Ì’Ç‰Áˆ—
 		while (!m_UIPanelAddQue.empty()) {

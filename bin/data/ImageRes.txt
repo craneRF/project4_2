@@ -6,3 +6,5 @@ images/Arrow.png
 images/backGround.png
 images/HP.png
 images/HP_.png
+images/Map_icon_grass.png
+images/MissilePod.png

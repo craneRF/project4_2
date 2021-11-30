@@ -10,7 +10,7 @@ vector<vector<unique_ptr<Step>>> MapState::m_Map;
 void InitMapState::Initialize(GameActor* _mapActor)
 {
 	// ƒ}ƒbƒv‚Ì•`‰æ
-	_mapActor->drawfunc = [&]
+	_mapActor->drawfuncVec.emplace_back ([this]
 	{
 		for (auto & colStepList : m_Map)
 		{
@@ -19,7 +19,7 @@ void InitMapState::Initialize(GameActor* _mapActor)
 				DrawLine(rowStep.get());
 			}
 		}
-	};
+	});
 
 	if (m_Map.empty())
 	{
@@ -206,7 +206,7 @@ void InitMapState::CreateStepActor(GameActor * _mapActor)
 			actor->SetParam(step->m_pos, { 0.05f,0.05f }, 0.0);
 
 			auto spriteCpnt = actor->addComponent<SpriteComponent>();
-			spriteCpnt->initialize("marine_icon.png");
+			spriteCpnt->initialize("Map_icon_grass.png");
 			spriteCpnt->AlignPivotCenter();
 			if (step->m_IsSelected)
 			{

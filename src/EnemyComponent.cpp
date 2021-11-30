@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include "EnemyComponent.h"
 #include "SpriteComponent.h"
+#include "EnemyActor.h"
 #include "EnemyType.h"
 
 EnemyObject EnemyComponent::m_stdEnemy;
@@ -48,17 +49,31 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 	//コンポーネントを生成
 	auto actor = _parent;
 	actor->initialize(_pos, _name);
-	auto enemyCpnt = actor->addComponent<EnemyComponent>();
+	auto enemyCpnt = actor->getComponent<EnemyComponent>();
 
 	//画像の適用
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
 	mp_sprCpnt->initialize(enemyCpnt->getEnemy(_enemytype).ImageName);
 	mp_sprCpnt->AlignPivotCenter();
+
+	CreateParts(actor, _pos, _enemytype);
 }
 
-void EnemyPartsComponent::CreateParts(EnemyType _enemytype)
+void EnemyPartsComponent::CreateParts(GameActor * _parent, ofVec3f _pos, EnemyType _enemytype)
 {
+	auto enemyCpnt = _parent->getComponent<EnemyComponent>();
 	auto pmap = enemyCpnt->getEnemy(_enemytype).eParts;
-	pmap.find("body")->second.ImageName;
 
+ 	for (auto& c : pmap)
+	{
+		auto parts = c.second;
+
+		auto actor = _parent->addChild<GameActor>();
+		actor->initialize(parts.Pos, parts.PartsName);
+		actor->SetParam(parts.Pos, parts.Scale);
+
+		auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
+		mp_sprCpnt->initialize(parts.ImageName);
+		mp_sprCpnt->AlignPivotCenter();
+	}
 }

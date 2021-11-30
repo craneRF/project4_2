@@ -3,7 +3,7 @@
 #include "EnemyActor.h"
 #include "EnemyObject.h"
 #include "EnemyType.h"
- 
+
 string EnemyActor::m_EnemyName = "";
 
 EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name)
@@ -16,16 +16,6 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 	actor->SetParam(_pos, enemyCpnt->getEnemy(_enemytype).scale);
 
 	enemyCpnt->mp_epCpnt->CreateEnemyBody(actor, _pos, _enemytype);
-
-	////コンポーネントを生成
-	//auto actor = _parent;
-	//actor->initialize(_pos, _name);
-	//enemyCpnt = actor->getComponent<EnemyComponent>();
-
-	////画像の適用
-	//auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	//mp_sprCpnt->setImage(ofApp::getInstance()->mp_imageManager->getContents("images/Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName));
-	//mp_sprCpnt->AlignPivotCenter();
 
 	if (enemyCpnt->getEnemy(_enemytype).EnemyName != "") {
 		m_EnemyName = enemyCpnt->getEnemy(_enemytype).EnemyName;

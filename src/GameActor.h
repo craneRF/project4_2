@@ -39,6 +39,7 @@ public:
 	//static GameActor * createMap(GameActor * _parent, ofVec3f _pos, string _name);
 
 	function<void()> drawfunc;
+	vector<function<void()>> drawfuncVec;
 
 public:
 	inline void GameActor::StateAllCpntActive()

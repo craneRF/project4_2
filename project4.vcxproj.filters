@@ -150,6 +150,7 @@
     <ClCompile Include="src\MapState.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\AttackActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="src\MapState.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\AttackActor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">

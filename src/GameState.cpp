@@ -13,7 +13,7 @@
 * 2.GameMainCtrlComponentのupdate()内に存在するGameStateも常に行われるため、GameStateのupdate()も常に行われる。
 * 3.GameStateのupdate()内で行われる「GameActor」・「UIActor」・「Coponentが持つインスタンス」のプロパティ(Actorでいうm_posやm_rotAngle、Pos()など)
 *   に対する処理はそれぞれがどんな状態だろうが問答無用で行われる。
-* 
+*
 * 以上の3点とGameActor・UIActor・Component それぞれのState処理の都合上、
 * GameStateのupdate()内では
 * 「GameActor」・「UIActor」・「Coponentが持つインスタンス」のプロパティ(Actorでいうm_posやm_rotAngle、Pos()など)を変えないでください。
@@ -44,8 +44,9 @@ void GameStateTitle::enter(Parameter _pprm)
 	//ofApp::getInstance()->mp_soundManager->loop(0);
 	mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_actor->Pos() = { 500,100 };
+	mp_actor->Name() = "";
 	mp_actor->addComponent<FontRendererComponent>()->
-		initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
+		initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, { 3, 3, 3 }, "keifont.ttf");
 	//"keifont.ttf"
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -137,8 +138,9 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofToString(0));
 
-	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+	//mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 
+	mp_actor2->findActor(mp_actor2, "");
 	// 戦闘システム初期化
 	mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
 	{

@@ -40,6 +40,16 @@ EnemySkill EnemyObject::getEnemySkill(string key) const
 	}
 }
 
+void EnemyObject::setEnemyParts(string partsname, ofVec3f pos, string imagename, int hp, int def, ofVec3f scale)
+{
+	m_eParam.eParts[partsname].PartsName = partsname;
+	m_eParam.eParts[partsname].Pos = pos;
+	m_eParam.eParts[partsname].ImageName = imagename;
+	m_eParam.eParts[partsname].HP = hp;
+	m_eParam.eParts[partsname].Def = def;
+	m_eParam.eParts[partsname].Scale = scale;
+}
+
 //NomalEnemy
 NomalEnemy::NomalEnemy() {
 	initialize();
@@ -47,11 +57,14 @@ NomalEnemy::NomalEnemy() {
 
 void NomalEnemy::initialize()
 {
-	//m_eParam.scale = { 1.5f,1.5f };
-	m_eParam.scale = { 0.5,0.5 };
+	m_eParam.scale = { 2.0f,2.0f };
+	//m_eParam.scale = { 0.5,0.5 };
 	m_eParam.HP = 20;
 	m_eParam.ImageName = "enemy_robot.png";
 	setEnemySkill("NomalAttack", 10);
+
+	setEnemyParts("arm_right", { -100,0 }, "MissilePod.png", 1, 0, { 0.03f,0.03f });
+	setEnemyParts("arm_left", { 100,0 }, "MissilePod.png", 1, 0, { 0.03f,0.03f });
 }
 
 //SmalleEnemy

@@ -14,6 +14,8 @@ FontRendererComponent::FontRendererComponent(GameActor* _gactor)
 	, m_fontNameBuffer(m_fontName)
 {
 	mp_fontRenderer = make_unique<FontRenderer>();
+	//mp_gActor->drawfunc = std::bind(&FontRendererComponent::draw, this);
+	mp_gActor->drawfuncVec.emplace_back(std::bind(&FontRendererComponent::draw, this));
 }
 
 FontRendererComponent::~FontRendererComponent()
@@ -35,8 +37,6 @@ void FontRendererComponent::initialize(const string & _str, int _size, ofVec3f _
 
 	m_sizeBuffer = m_size;
 	m_fontNameBuffer = m_fontName;
-
-	mp_gActor->drawfunc = std::bind(&FontRendererComponent::draw, this);
 }
 
 void FontRendererComponent::update(float _deltatime)

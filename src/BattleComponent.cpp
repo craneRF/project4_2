@@ -9,7 +9,7 @@
 BattleComponent::BattleComponent(GameActor* _gactor) :
 	Component(_gactor, "BattleComponent")
 {
-	charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W / 2.f, Define::FULLWIN_H * 3.f / 4 });
+	charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W / 2.f, Define::FULLWIN_H * 7.f / 8 });
 	charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [&](CollisionComponent* _other)
 	{
 		if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
@@ -67,7 +67,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 
 	auto spriteCpnt = mp_gActor->addComponent<SpriteComponent>();
 	spriteCpnt->initialize("backGround.png");
-}
+	}
 
 BattleComponent::~BattleComponent() {
 

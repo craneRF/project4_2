@@ -11,7 +11,8 @@ struct EnemyParts {
 	string ImageName;
 	int HP;
 	int Def;
-	ofVec3f pos;
+	ofVec3f Pos;
+	ofVec3f Scale;
 };
 
 struct EnemyParam
@@ -41,6 +42,8 @@ public:
 
 	void setEnemySkill(string key, int val);
 	EnemySkill getEnemySkill(string key) const;
+
+	void setEnemyParts(string partsname, ofVec3f pos, string imagename, int hp = 1, int def = 0, ofVec3f scale = { 1,1,1 });
 
 	EnemyParam m_eParam;
 private:

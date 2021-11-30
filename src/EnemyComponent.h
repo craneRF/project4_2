@@ -42,7 +42,7 @@ public:
 class EnemyPartsComponent : public Component
 {
 private:
-	void CreateParts(EnemyType _enemytype);
+	void CreateParts(GameActor * _parent, ofVec3f _pos, EnemyType _enemytype);
 
 protected:
 	ofVec3f m_pos = { 0,0 };
@@ -53,8 +53,4 @@ public:
 	ofVec3f getPos() { return m_pos; }
 
 	void EnemyPartsComponent::CreateEnemyBody(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name = "EnemyBody");
-};
-
-class EnemyBodyComponent :public Component {
-
 };
