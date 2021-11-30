@@ -31,3 +31,8 @@ void CollisionComponent::update(float _deltatime) {
 void CollisionComponent::input(float _deltatime)
 {
 }
+
+CollisionType CollisionComponent::GetColType()
+{
+	return mp_cobj->m_ctype;
+}

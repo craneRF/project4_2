@@ -13,13 +13,9 @@ PlayerComponent::PlayerComponent(GameActor * _gactor) :
 		"HP.png"
 	};
 
-	int count = 0;
 	for (const auto & path : lifeSpritePathList)
 	{
-		auto lifeActor = mp_gActor->addChild<GameActor>();
-		lifeActor->initialize({ 0,0,0 }, "lifeSpriteActor" + to_string(count));
-
-		auto spriteCpnt = lifeActor->addComponent<SpriteComponent>();
+		auto spriteCpnt = mp_gActor->addComponent<SpriteComponent>();
 		spriteCpnt->initialize(path);
 		spriteCpnt->AlignPivotCenter();
 		auto imageSize = spriteCpnt->ImageSize();
@@ -31,8 +27,6 @@ PlayerComponent::PlayerComponent(GameActor * _gactor) :
 		{
 			m_imageSize.y = imageSize.y;
 		}
-
-		++count;
 	}
 }
 
