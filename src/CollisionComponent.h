@@ -21,4 +21,5 @@ public:
 	void input(float _deltatime) override;
 	void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
 
+	CollisionType GetColType();
 };

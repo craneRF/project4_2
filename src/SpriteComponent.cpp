@@ -13,7 +13,7 @@ SpriteComponent::SpriteComponent(GameActor* _gactor) :
 	mp_TexRenderer = make_unique<TextureRenderer>();
 	mp_TexRenderer->SetTexture(m_texName);
 
-	mp_gActor->drawfunc = std::bind(&SpriteComponent::draw, this);
+	mp_gActor->drawfuncVec.emplace_back(std::bind(&SpriteComponent::draw, this));
 }
 
 SpriteComponent::~SpriteComponent()

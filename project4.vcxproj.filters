@@ -150,6 +150,18 @@
     <ClCompile Include="src\MapState.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BattleState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletActor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -216,6 +228,18 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\MapState.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleState.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletActor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletObject.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

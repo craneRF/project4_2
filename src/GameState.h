@@ -36,32 +36,24 @@ public:
 	virtual void exit(Parameter& _pprm);
 };
 
+class MapComponent;
 // マップシーン
 class GameStateMap final : public GameState {
 private:
-	GameActor* mp_mapActor;
+	MapComponent* mp_mapComp;
 
 public:
 	virtual void enter(Parameter _pprm);
 	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _pprm);
-	
-
+	virtual void exit(Parameter& _pprm);	
 };
 
-// 戦闘シーン
 class BattleComponent;
+// 戦闘シーン
 class GameStateBattle final : public GameState {
 private:
-	// プレイヤー
-	PlayerActor* mp_Player;
-	EnemyActor* mp_Enemy;
-	// エネミー配列
-	vector<EnemyActor*> m_EnemyList;
-	// 戦闘システムアクター
+	// 戦闘システム
 	BattleComponent* mp_BattleComp;
-	//GameActor* mp_BattleActor;
-
 
 public:
 	virtual void enter(Parameter _pprm);
@@ -71,5 +63,5 @@ public:
 	float m_angle;
 	class MoveComponent* m_move;
 
-	class UIPanelCanvas* mp_BHUD;
+	//class UIPanelCanvas* mp_BHUD;
 };

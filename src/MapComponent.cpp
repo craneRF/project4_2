@@ -3,14 +3,12 @@
 #include "SpriteComponent.h"
 #include "MapState.h"
 
-unique_ptr<MapState> MapComponent::mp_mapState = nullptr;
-
+vector<vector<unique_ptr<Step>>> MapComponent::m_Map;
+Step* MapComponent::mp_currentStep = nullptr;
 
 MapComponent::MapComponent(GameActor* _gactor) :
 	Component(_gactor, "MapComponent")
 {
-	// Šm—¦‚Í1%ˆÈã‚Å‚ ‚é‚±‚Æ
-	assert(m_ConnectPercent > 0);
 }
 
 MapComponent::~MapComponent()
@@ -43,7 +41,6 @@ void MapComponent::Initialize()
 
 void MapComponent::ClearMap()
 {
-	mp_mapState->ClearMap();
-	mp_mapState.reset();
-	mp_gActor->RemoveAllChild<GameActor>();
+	m_Map.clear();
+	mp_currentStep = nullptr;
 }

@@ -4,48 +4,22 @@
 class GameActor;
 class Parameter;
 class MapComponent;
-
-// マスの種類
-enum class StepKind
-{
-	EVENT,			// イベント
-	BATTLE,			// 戦闘
-	MAXNUM,			// 道中イベントの種類数（↑の数）
-	START,			// スタート
-	GOAL,			// ゴール
-	NONE,			// 未設定
-};
-
-// マス
-struct Step
-{
-	int m_id = 0;					// マスID
-	ofVec3f m_pos;					// マス座標
-	bool m_IsSelected = false;		// 選択フラグ
-	StepKind m_kind;				// マスの種類
-	vector<Step*> m_nextStepList;	// 次進むことができるマスのリスト
-};
+struct Step;
+enum class StepKind;
 
 class MapState
 {
 private:
 
 protected:
-	static int m_selectIndex;
+	int m_selectIndex;
 
 public:
-	// マップの構造
-	static vector<vector<unique_ptr<Step>>> m_Map;
-	// 現在止まっているマスのポインタ
-	static Step* mp_currentStep;
-
 	MapState() {};
 	virtual ~MapState() {};
 	virtual void enter(MapComponent* _mapComponent) = 0;
 	virtual MapState* update(MapComponent* _mapComponent) = 0;
 	virtual void exit(MapComponent* _mapComponent) = 0;
-
-	void ClearMap();
 };
 
 // 初期化
@@ -54,10 +28,31 @@ private:
 	// マス同士をつなげる確率(%)
 	const int m_ConnectPercent = 100;
 
+	// 縦最大サイズ
+	const int m_maxRowNum = 4;
+	// 横最大サイズ
+	const int m_maxColNum = 6;
+
+	// 縦最大サイズ
+	const int m_minRowNum = 2;
+	// 横最低サイズ
+	const int m_minColNum = 4;
+
+	// マスの大きさ
+	const float m_stepScale = 150;
+
+	// マスの画像ファイル
+	const std::string m_stepImageFile = "Map_icon_grass.png";
+	//const std::string m_stepImageFile = "Map_icon_city.png";
+	// マスをつなぐラインの画像ファイル
+	const std::string m_lineImageFile = "Road2.png";
+	//const std::string m_lineImageFile = "Road.png";
+
 	void Initialize(GameActor* _mapActor);
 	// マップのランダム生成
 	void CreateRandomMap();
 	void CreateStepActor(GameActor* _mapActor);
+	void CreateLineActor(GameActor* _mapActor);
 	void DrawLine(Step* _step);
 
 public:
