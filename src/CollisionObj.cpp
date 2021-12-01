@@ -16,9 +16,6 @@ bool CollisionObj::checkCollide(const CollisionObj& _other) const {
 	if (mp_compo->m_shape == CollisionComponent::Shape::ERectangle) {
 		return m_rect.intersects(_other.m_rect);
 	}
-	/*if (typeid(mp_compo) == typeid(BoxComponent)) {
-		return m_rect.intersects(_other.m_rect);
-	}*/
 	return false;
 }
 

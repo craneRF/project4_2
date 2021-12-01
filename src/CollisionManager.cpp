@@ -18,10 +18,10 @@ CollisionManager::CollisionManager() {
 CollisionManager::~CollisionManager() {
 }
 
-//CollisionObj* CollisionManager::getObj(CollisionComponent* _compo) {
-//	objpool_.push_back(make_unique<CollisionObj>(_compo));
-//	return objpool_.back().get();
-//}
+CollisionObj* CollisionManager::getObj(CollisionComponent* _compo) {
+	objpool_.push_back(make_unique<CollisionObj>(_compo));
+	return objpool_.back().get();
+}
 
 void CollisionManager::releaseObj(CollisionObj* _target) {
 	auto res = find_if(objpool_.begin(), objpool_.end(),

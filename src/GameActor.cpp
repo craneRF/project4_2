@@ -20,6 +20,9 @@ void GameActor::caluculateWorldTransform()
 	if (this->RotAngle() >= 360.0f) {
 		this->RotAngle() = 0.0f;
 	}
+	else if (this->RotAngle() <= 0.0f) {
+		this->RotAngle() = 360.0f;
+	}
 
 	if (mp_parent != nullptr) {
 		this->WorldScale() = mp_parent->WorldScale() * this->Scale();
