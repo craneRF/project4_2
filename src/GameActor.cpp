@@ -16,11 +16,11 @@ GameActor::~GameActor()
 
 void GameActor::caluculateWorldTransform()
 {
-	if (this->RotAngle() >= 360.0f) {
-		this->RotAngle() = 0.0f;
+	if (this->RotAngle() > 360.0f) {
+		this->RotAngle() -= 360.0f;
 	}
-	else if (this->RotAngle() <= 0.0f) {
-		this->RotAngle() = 360.0f;
+	else if (this->RotAngle() < 0.0f) {
+		this->RotAngle() += 360.0f;
 	}
 
 	if (mp_parent != nullptr) {

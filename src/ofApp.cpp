@@ -48,7 +48,9 @@ void ofApp::update() {
 	//if (m_deltaTime > 0.5f) { m_deltaTime = 0.5f; }
 	if (m_deltaTime < 1 / 60.f) { m_deltaTime = 1 / 60.f; }
 
-	for (int i = 0; i < (int)(60 * m_deltaTime); i++) {
+	int updateCount = (int)(60 * m_deltaTime);
+	m_deltaTime = 1 / 60.f;
+	for (int i = 0; i < updateCount; i++) {
 
 		if (hierarchyRoot_->GetActorState() != Actor::ActorState::EPause) {
 			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {

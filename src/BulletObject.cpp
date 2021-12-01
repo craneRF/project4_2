@@ -27,12 +27,14 @@ void BulletObject::RotateToTarget(BulletComponent * _bulletComponent, MoveCompon
 	// ‰ñ“]
 	// is•ûŒü‚ÌŠp“x
 	float angle = RAD_TO_DEG * atan2f(-direction.y, direction.x);
+	angle = fmodf(angle + 360, 360);
 	if (_isImmediately)
 	{
 		_bulletComponent->gActor()->RotAngle() = angle;
 	}
 	else
 	{
+		// ƒ^[ƒQƒbƒg‚Ö‚ÌŠp“x - Œ»Ý‚Ì’e‚ÌŠp“x
 		float deltaAngle = angle - _bulletComponent->gActor()->RotAngle();
 		if (fabsf(deltaAngle) < m_bParam.rotVal / 60)
 		{
@@ -40,7 +42,7 @@ void BulletObject::RotateToTarget(BulletComponent * _bulletComponent, MoveCompon
 		}
 		else
 		{
-			if (deltaAngle > 0)
+			if (deltaAngle > 0 && deltaAngle <= 180)
 			{
 				_moveComponent->AddMoveAngle(-m_bParam.rotVal);
 			}
