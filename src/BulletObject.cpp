@@ -34,15 +34,15 @@ void BulletObject::RotateToTarget(BulletComponent * _bulletComponent, MoveCompon
 	}
 	else
 	{
+		// É^Å[ÉQÉbÉgÇ÷ÇÃäpìx - åªç›ÇÃíeÇÃäpìx
 		float deltaAngle = angle - _bulletComponent->gActor()->RotAngle();
-		if (deltaAngle < m_bParam.rotVal / 60)
+		if (fabsf(deltaAngle) < m_bParam.rotVal / 60)
 		{
 			_bulletComponent->gActor()->RotAngle() = angle;
 		}
 		else
 		{
-			// óvèCê≥
-			if (deltaAngle <= 0)
+			if (deltaAngle > 0 && deltaAngle <= 180)
 			{
 				_moveComponent->AddMoveAngle(-m_bParam.rotVal);
 			}
