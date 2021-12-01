@@ -41,8 +41,6 @@ public:
 	//function<void()> drawfunc;
 	vector<function<void()>> drawfuncVec;
 
-	vector<function<void()>> drawfuncVec;
-
 public:
 	inline void GameActor::StateAllCpntActive()
 	{

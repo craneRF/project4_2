@@ -28,7 +28,7 @@ void MapComponent::update()
 	}
 }
 
-void MapComponent::input(float _deltatime)
+void MapComponent::input()
 {
 }
 

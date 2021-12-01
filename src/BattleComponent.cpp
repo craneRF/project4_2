@@ -17,7 +17,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	// プレイヤー
 	{
 		mp_charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W * 3 / 4.f, Define::FULLWIN_H * 1.f / 4 });
-		mp_charaActor->getComponent<CollisionComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other)
+		mp_charaActor->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other)
 		{
 			if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 			{
@@ -53,9 +53,12 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 		ofVec3f incrementSize = imageSize * 0.2f;
 		for (int i = 1; i <= 2; ++i)
 		{
-			auto collisionComp = mp_charaActor->addComponent<CollisionComponent>();
+			/*auto collisionComp = mp_charaActor->addComponent<CollisionComponent>();
 			collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
-			collisionComp->m_onCollisionFunc = [this, i](CollisionComponent* _other)
+			collisionComp->m_onCollisionFunc = [this, i](CollisionComponent* _other)*/
+			auto boxComp = mp_charaActor->addComponent<BoxComponent>();
+			boxComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
+			boxComp->m_onCollisionFunc = [this, i](CollisionComponent* _other)
 			{
 				if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
 				{
@@ -202,7 +205,7 @@ void BattleComponent::InitEnemyList()
 
 	for (auto& enemy : m_EnemyList)
 	{
-		enemy->getComponent<CollisionComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other) {
+		enemy->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other) {
 			// 当たった相手が弾リストに入っているか確認
 			auto res = find_if(m_bulletList.begin(), m_bulletList.end(),
 				[&](const auto& c) {return c == _other->gActor(); });
