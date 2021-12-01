@@ -9,3 +9,4 @@
 #include "PlayerComponent.h"
 #include "EnemyComponent.h"
 #include "BattleComponent.h"
+#include "BulletComponent.h"

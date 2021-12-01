@@ -5,7 +5,6 @@
 GameActor::GameActor(string _name) 
 	:Actor(_name)
 	,mp_parent(nullptr)
-	,drawfunc([]() {})
 {
 	m_componentList.clear();
 	m_childList.clear();
@@ -162,11 +161,6 @@ void GameActor::input()
 void GameActor::draw()
 {
 	if (GetActorDrawState() == ActorDrawState::EVisible) {
-		/*ofPushMatrix();
-		ofTranslate(this->m_worldPos);
-		ofRotateDeg(-(this->m_worldRotAngle));
-		ofScale(this->m_worldScale);*/
-
 		for (auto& df : this->drawfuncVec) {
 			assert(df != nullptr);
 			ofPushMatrix();
@@ -176,8 +170,6 @@ void GameActor::draw()
 			df();
 			ofPopMatrix();
 		}
-		//this->drawfunc();
-		//ofPopMatrix();
 	}
 
 	if (!m_childList.empty()) {
@@ -185,5 +177,4 @@ void GameActor::draw()
 			gac->draw();
 		}
 	}
-
 }

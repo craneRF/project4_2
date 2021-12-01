@@ -27,7 +27,7 @@ public:
 	EnemyComponent(GameActor* _gactor);
 	virtual ~EnemyComponent();
 
-	EnemyPartsComponent * mp_epCpnt;
+	std::shared_ptr<EnemyPartsComponent>  mp_epCpnt;
 
 	virtual void update();
 	virtual void input();
@@ -43,19 +43,15 @@ public:
 class EnemyPartsComponent : public Component
 {
 private:
-	void CreateParts(EnemyType _enemytype);
+	void CreateParts(GameActor * _parent, ofVec3f _pos, EnemyType _enemytype);
 
 protected:
 	ofVec3f m_pos = { 0,0 };
-	EnemyComponent*enemyCpnt;
+	EnemyComponent* enemyCpnt;
 public:
 
 	void setPos(ofVec3f _pos) { m_pos = _pos; }
 	ofVec3f getPos() { return m_pos; }
 
 	void EnemyPartsComponent::CreateEnemyBody(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name = "EnemyBody");
-};
-
-class EnemyBodyComponent :public Component {
-
 };

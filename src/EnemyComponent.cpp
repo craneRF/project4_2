@@ -3,6 +3,7 @@
 #include "CollisionComponent.h"
 #include "BoxComponent.h"
 #include "SpriteComponent.h"
+#include "EnemyActor.h"
 #include "EnemyType.h"
 
 EnemyObject EnemyComponent::m_stdEnemy;
@@ -11,10 +12,7 @@ SmallEnemy EnemyComponent::m_smallEnemy;
 
 EnemyComponent::EnemyComponent(GameActor * _gactor) :Component(_gactor, "Enemy")
 {
-	/*mp_epCpnt = _gactor->addComponent<EnemyPartsComponent>();*/
-	auto boxCpnt = _gactor->addComponent<BoxComponent>();
-	boxCpnt->initialize(ofVec3f(0, 0), _gactor->getComponent<SpriteComponent>()->ImageSize().x, _gactor->getComponent<SpriteComponent>()->ImageSize().y, CollisionType::ENEMY_OBJECT);
-	boxCpnt->m_onCollisionFunc = bind(&EnemyComponent::onCollision, this, placeholders::_1);
+	//mp_epCpnt = _gactor->addComponent<EnemyPartsComponent>();
 }
 
 EnemyComponent::~EnemyComponent()
@@ -53,17 +51,31 @@ void EnemyPartsComponent::CreateEnemyBody(GameActor * _parent, ofVec3f _pos, Ene
 	//コンポーネントを生成
 	auto actor = _parent;
 	actor->initialize(_pos, _name);
-	enemyCpnt = actor->getComponent<EnemyComponent>();
+	auto enemyCpnt = actor->getComponent<EnemyComponent>();
 
 	//画像の適用
 	auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
-	mp_sprCpnt->TexName() = "Idling/" + enemyCpnt->getEnemy(_enemytype).ImageName;
+	mp_sprCpnt->initialize(enemyCpnt->getEnemy(_enemytype).ImageName);
 	mp_sprCpnt->AlignPivotCenter();
+
+	CreateParts(actor, _pos, _enemytype);
 }
 
-void EnemyPartsComponent::CreateParts(EnemyType _enemytype)
+void EnemyPartsComponent::CreateParts(GameActor * _parent, ofVec3f _pos, EnemyType _enemytype)
 {
+	auto enemyCpnt = _parent->getComponent<EnemyComponent>();
 	auto pmap = enemyCpnt->getEnemy(_enemytype).eParts;
-	pmap.find("body")->second.ImageName;
 
+ 	for (auto& c : pmap)
+	{
+		auto parts = c.second;
+
+		auto actor = _parent->addChild<GameActor>();
+		actor->initialize(parts.Pos, parts.PartsName);
+		actor->SetParam(parts.Pos, parts.Scale, parts.angle);
+
+		auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
+		mp_sprCpnt->initialize(parts.ImageName);
+		mp_sprCpnt->AlignPivotCenter();
+	}
 }

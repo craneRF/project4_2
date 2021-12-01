@@ -8,8 +8,7 @@ class SpriteComponent;
 class PlayerComponent :public Component
 {
 private:
-
-	SpriteComponent * mp_sprCpnt;
+	ofVec3f m_imageSize;
 
 public:
 	PlayerComponent(GameActor *_gactor);
@@ -19,5 +18,5 @@ public:
 	virtual void input();
 	void onCollision(CollisionComponent*);
 
-
+	ofVec3f GetImageSize() const { return m_imageSize; }
 };

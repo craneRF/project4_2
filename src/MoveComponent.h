@@ -9,6 +9,8 @@ private:
 	float m_moveDeg;
 
 public:
+	bool m_isOnceMove;
+
 	MoveComponent(GameActor* _gator);
 	virtual ~MoveComponent();
 	virtual void update();

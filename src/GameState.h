@@ -29,6 +29,7 @@ public:
 // タイトルシーン
 class GameStateTitle final : public GameState {
 private:
+	ofPath path;
 
 public:
 	virtual void enter(Parameter _pprm);
@@ -41,10 +42,11 @@ public:
 	class GameActor* mp_marin;
 };
 
+class MapComponent;
 // マップシーン
 class GameStateMap final : public GameState {
 private:
-	GameActor* mp_mapActor;
+	MapComponent* mp_mapComp;
 
 public:
 	virtual void enter(Parameter _pprm);
@@ -54,19 +56,12 @@ public:
 
 };
 
-// 戦闘シーン
 class BattleComponent;
+// 戦闘シーン
 class GameStateBattle final : public GameState {
 private:
-	// プレイヤー
-	PlayerActor* mp_Player;
-	EnemyActor* mp_Enemy;
-	// エネミー配列
-	vector<EnemyActor*> m_EnemyList;
-	// 戦闘システムアクター
+	// 戦闘システム
 	BattleComponent* mp_BattleComp;
-	//GameActor* mp_BattleActor;
-
 
 public:
 	virtual void enter(Parameter _pprm);

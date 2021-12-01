@@ -3,7 +3,7 @@
 #include "EnemyActor.h"
 #include "EnemyObject.h"
 #include "EnemyType.h"
- 
+
 string EnemyActor::m_EnemyName = "";
 
 EnemyActor::EnemyActor(string _name)
