@@ -12,6 +12,7 @@ images/HP.png
 images/HP_.png
 images/MissilePod.png
 images/Missile.png
+images/6b71416463520028.png
 images/Map_icon_grass.png
 images/Map_icon_city.png
 images/Road.png
