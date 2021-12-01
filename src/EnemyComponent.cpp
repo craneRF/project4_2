@@ -70,7 +70,7 @@ void EnemyPartsComponent::CreateParts(GameActor * _parent, ofVec3f _pos, EnemyTy
 
 		auto actor = _parent->addChild<GameActor>();
 		actor->initialize(parts.Pos, parts.PartsName);
-		actor->SetParam(parts.Pos, parts.Scale);
+		actor->SetParam(parts.Pos, parts.Scale, parts.angle);
 
 		auto mp_sprCpnt = actor->addComponent<SpriteComponent>();
 		mp_sprCpnt->initialize(parts.ImageName);

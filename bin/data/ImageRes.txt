@@ -1,5 +1,8 @@
 images/zeni.png
 images/enemy_robot.png
+images/enemy_robot_body1.png
+images/enemy_robot_arm_L1.png
+images/enemy_robot_arm_R1.png
 images/marine_icon.png
 images/NoSearch.png
 images/Arrow.png
