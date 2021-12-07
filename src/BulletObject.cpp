@@ -5,8 +5,8 @@ BulletObject::BulletObject()
 {
 	m_bParam.bulletName = "";
 	m_bParam.imageName = "";
-	m_bParam.generationSoundName = "";
-	m_bParam.destroySoundName = "";
+	m_bParam.generationSoundIndex = 12;
+	m_bParam.destroySoundIndex = 11;
 	m_bParam.scale = { 1.f,1.f };
 	m_bParam.speed = 0.f;
 	m_bParam.rotVal = 0.f;
@@ -67,7 +67,7 @@ void NomalBullet::initialize()
 	m_bParam.bulletName = "NormalBullet";
 	m_bParam.scale = { 0.5,0.5 };
 	m_bParam.speed = 600.f;
-	//m_bParam.speed = 200.f;
+	m_bParam.generationSoundIndex = 13;
 	m_bParam.rotVal = 100.f;
 	m_bParam.damage = 5;
 	m_bParam.imageName = "6b71416463520028.png";
@@ -90,6 +90,7 @@ void SmallBullet::initialize()
 	m_bParam.bulletName = "SmallBullet";
 	m_bParam.scale = { 0.2,0.2 };
 	m_bParam.speed = 400.f;
+	m_bParam.generationSoundIndex = 12;
 	m_bParam.damage = 2;
 	m_bParam.imageName = "Missile.png";
 }

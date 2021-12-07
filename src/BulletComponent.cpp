@@ -11,13 +11,19 @@ BulletComponent::BulletComponent(GameActor * _gactor) :Component(_gactor, "Bulle
 
 BulletComponent::~BulletComponent()
 {
-
+	// 消滅時の音声ファイルを鳴らす
+	int destroySoundIndex = getBullet(m_bulletType).destroySoundIndex;
+	ofApp::getInstance()->mp_soundManager->play(destroySoundIndex);
 }
 
 void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType)
 {
 	m_target = _target;
 	m_bulletType = _bulletType;
+
+	// 生成時の音声ファイルを鳴らす
+	int generationSoundIndex = getBullet(m_bulletType).generationSoundIndex;
+	ofApp::getInstance()->mp_soundManager->play(generationSoundIndex);
 
 	//画像の適用
 	mp_sprCpnt = mp_gActor->addComponent<SpriteComponent>();
