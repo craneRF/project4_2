@@ -40,9 +40,9 @@ void GameStateTitle::enter(Parameter _pprm)
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
 
-	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
-	//ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
-	//ofApp::getInstance()->mp_soundManager->loop(0);
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
+	ofApp::getInstance()->mp_soundManager->loop(0);
 
 	// FPS表示
 	//mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -51,7 +51,7 @@ void GameStateTitle::enter(Parameter _pprm)
 	//	initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	
+
 	//タイトル背景
 	{
 		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
@@ -145,15 +145,19 @@ void GameStateTitle::exit(Parameter& _pprm)
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(0);
 	_pprm = *m_prmInState;
+	ofApp::getInstance()->mp_soundManager->play(4);
 }
 
 void GameStateMap::enter(Parameter _pprm)
 {
+
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
 	//mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"マップシーン");
+
+	ofApp::getInstance()->mp_soundManager->loop(1);
 
 	auto mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	mp_mapComp = mapActor->getComponent<MapComponent>();
@@ -188,6 +192,7 @@ void GameStateMap::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	_pprm = *m_prmInState;
+	ofApp::getInstance()->mp_soundManager->stop(1);
 }
 
 
@@ -240,7 +245,7 @@ GameState * GameStateBattle::update()
 void GameStateBattle::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
-	ofApp::getInstance()->mp_soundManager->stop(0);
+	ofApp::getInstance()->mp_soundManager->stop(2);
 	//m_EnemyList.clear();
 	_pprm = *m_prmInState;
 }
