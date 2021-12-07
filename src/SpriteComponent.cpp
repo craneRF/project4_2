@@ -56,6 +56,6 @@ void SpriteComponent::draw()
 
 void SpriteComponent::AlignPivotCenter()
 {
-	m_offset = { -mp_TexRenderer->GetTexture()->getWidth() / 2 * m_scale.x, -mp_TexRenderer->GetTexture()->getHeight() / 2 * m_scale.y};
+	m_offset = { -mp_TexRenderer->GetTexture()->getWidth() / 2 * m_scale.x, -mp_TexRenderer->GetTexture()->getHeight() / 2 * m_scale.y };
 }
 

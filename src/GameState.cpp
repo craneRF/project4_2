@@ -51,13 +51,26 @@ void GameStateTitle::enter(Parameter _pprm)
 	//	initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_actor1->Pos() = { 500,300 };
+	
+	//ƒ^ƒCƒgƒ‹”wŒi
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_title_1.jpg");
+	}
+
+	//ƒ^ƒCƒgƒ‹ƒƒS
+	{
+		auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_title->initialize("title.png");
+		spriteCpnt_title->AlignPivotCenter();
+		spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
+	}
+
 	mp_actor1->addComponent<FontRendererComponent>()->
 		initialize(ofToString(m_prmInState->getPlayerParam("HP")), 18);
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
-	
 //	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>("Arrow");
 //	mp_marin->Pos() = { 750, 400 };
 //	mp_marin->Scale() = { 1.0f, 1.0f };
@@ -94,8 +107,6 @@ void GameStateTitle::enter(Parameter _pprm)
 //	mp_rect->addComponent<MoveComponent>()->AddMovePos({ 4.0f, 0.0f });
 //
 //	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
-	
 }
 
 GameState* GameStateTitle::update()
@@ -147,6 +158,9 @@ void GameStateMap::enter(Parameter _pprm)
 	auto mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	mp_mapComp = mapActor->getComponent<MapComponent>();
 	mp_mapComp->Initialize();
+
+	auto spriteCpnt_bg = mapActor->addComponent<SpriteComponent>();
+	spriteCpnt_bg->initialize("backGround_map_2.jpg");
 
 	*m_prmInState = _pprm;
 }
