@@ -8,6 +8,8 @@ struct BulletParam
 {
 	string bulletName;
 	string imageName;
+	string generationSoundName;
+	string destroySoundName;
 	ofVec3f scale;
 	float speed;
 	float rotVal;

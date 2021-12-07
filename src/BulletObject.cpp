@@ -5,6 +5,8 @@ BulletObject::BulletObject()
 {
 	m_bParam.bulletName = "";
 	m_bParam.imageName = "";
+	m_bParam.generationSoundName = "";
+	m_bParam.destroySoundName = "";
 	m_bParam.scale = { 1.f,1.f };
 	m_bParam.speed = 0.f;
 	m_bParam.rotVal = 0.f;
