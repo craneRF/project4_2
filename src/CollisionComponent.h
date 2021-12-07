@@ -7,19 +7,28 @@ class CollisionObj;
 
 class CollisionComponent: public Component
 {
-private:
-	CollisionObj* mp_cobj;
-	float m_width, m_height;
-	ofVec3f m_offset;
-
 public:
-	CollisionComponent(GameActor* _gactor);
+	enum class Shape {  //衝突判定の形
+		ERectangle  //四角(BoxComponentに使う)
+		, ECircle  //円(CircleComponentに使う)
+	};
+
+	CollisionComponent(GameActor* _gactor, Shape _shape)
+		: Component(_gactor, "CollisionComponent")
+		, m_shape(_shape)
+		, m_onCollisionFunc([](CollisionComponent* _other) {})
+	{
+	}
+
+	CollisionObj* mp_cobj;
 	function<void(CollisionComponent* _other)> m_onCollisionFunc;
 
-	virtual ~CollisionComponent();
-	virtual void update(float _deltatime);
-	void input(float _deltatime) override;
-	void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
+	const Shape m_shape;
+
+	virtual ~CollisionComponent() = 0
+	{
+	}
+	//void initialize(ofVec3f _offset, float _width,float _height, CollisionType _ctype);
 
 	CollisionType GetColType();
 };

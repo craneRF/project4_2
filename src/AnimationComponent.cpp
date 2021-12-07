@@ -36,6 +36,10 @@ void AnimationComponent::update() {
 	}
 }
 
+void AnimationComponent::input()
+{
+}
+
 void AnimationComponent::setNextSprite(int _idx) {
 	/*mp_sprCpnt->setImage(mp_animSeq->getFrame(_idx).mp_image);
 	mp_sprCpnt->Offset() = mp_animSeq->getFrame(_idx).m_offset;

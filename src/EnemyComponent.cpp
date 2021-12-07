@@ -1,5 +1,7 @@
 #include "ofApp.h"
 #include "EnemyComponent.h"
+#include "CollisionComponent.h"
+#include "BoxComponent.h"
 #include "SpriteComponent.h"
 #include "EnemyActor.h"
 #include "EnemyType.h"
@@ -18,16 +20,16 @@ EnemyComponent::~EnemyComponent()
 
 }
 
-void EnemyComponent::update(float _deltatime)
+void EnemyComponent::update()
 {
 
 }
 
-void EnemyComponent::input(float _deltatime)
+void EnemyComponent::input()
 {
 }
 
-void EnemyComponent::onCollision(CollisionComponent *)
+void EnemyComponent::onCollision(CollisionComponent* _actor)
 {
 }
 

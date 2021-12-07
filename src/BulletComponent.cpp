@@ -28,7 +28,7 @@ void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulle
 	mp_moveCpnt = mp_gActor->addComponent<MoveComponent>();
 }
 
-void BulletComponent::update(float _deltatime)
+void BulletComponent::update()
 {
 	switch (m_bulletType)
 	{
@@ -47,7 +47,7 @@ void BulletComponent::update(float _deltatime)
 	mp_gActor->caluculateWorldTransform();
 }
 
-void BulletComponent::input(float _deltatime)
+void BulletComponent::input()
 {
 }
 

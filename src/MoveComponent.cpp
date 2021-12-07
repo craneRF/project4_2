@@ -13,10 +13,10 @@ MoveComponent::~MoveComponent()
 
 }
 
-void MoveComponent::update(float _deltatime)
+void MoveComponent::update()
 {
-	mp_gActor->Pos() += m_movePos * _deltatime;
-	mp_gActor->RotAngle() -= m_moveDeg * _deltatime;
+	mp_gActor->Pos() += m_movePos * mp_gActor->DeltaTime();
+	mp_gActor->RotAngle() -= m_moveDeg * mp_gActor->DeltaTime();
 
 	if (m_isOnceMove)
 	{
@@ -25,7 +25,7 @@ void MoveComponent::update(float _deltatime)
 	}
 }
 
-void MoveComponent::input(float _deltatime)
+void MoveComponent::input()
 {
 }
 

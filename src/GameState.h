@@ -13,12 +13,13 @@ protected:
 	GameActor* mp_actor;
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
+	
 
 public:
 	GameState() {};
 	virtual ~GameState() {};
 	virtual void enter(Parameter _pprm) = 0;
-	virtual GameState* update(float _deltatime) = 0;
+	virtual GameState* update() = 0;
 	virtual void exit(Parameter& _pprm) = 0;
 
 
@@ -32,8 +33,13 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
+	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
+
+	class UIPanelCanvas* mp_BHUD;
+	class GameActor* mp_rect;
+	class GameActor* mp_rect2;
+	class GameActor* mp_marin;
 };
 
 class MapComponent;
@@ -44,8 +50,10 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
-	virtual void exit(Parameter& _pprm);	
+	virtual GameState* update();
+	virtual void exit(Parameter& _pprm);
+	
+
 };
 
 class BattleComponent;
@@ -57,11 +65,10 @@ private:
 
 public:
 	virtual void enter(Parameter _pprm);
-	virtual GameState* update(float _deltatime);
+	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 
 	float m_angle;
 	class MoveComponent* m_move;
 
-	//class UIPanelCanvas* mp_BHUD;
 };

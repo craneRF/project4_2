@@ -184,6 +184,7 @@
     <ClCompile Include="src\BulletActor.cpp" />
     <ClCompile Include="src\BulletComponent.cpp" />
     <ClCompile Include="src\BulletObject.cpp" />
+    <ClCompile Include="src\BoxComponent.cpp" />
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="src\BulletActor.h" />
     <ClInclude Include="src\BulletComponent.h" />
     <ClInclude Include="src\BulletObject.h" />
+    <ClInclude Include="src\BoxComponent.h" />
     <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />

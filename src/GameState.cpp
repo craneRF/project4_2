@@ -57,9 +57,48 @@ void GameStateTitle::enter(Parameter _pprm)
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
+	
+//	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>("Arrow");
+//	mp_marin->Pos() = { 750, 400 };
+//	mp_marin->Scale() = { 1.0f, 1.0f };
+//mp_marin->drawfuncVec.emplace_back([]() { ofSetColor(ofColor::red); });
+//	mp_marin->addComponent<SpriteComponent>()->
+//		initialize("Arrow.png", { 0,0 }, {1, 1}, 0.0f);
+//	mp_marin->addComponent<SpriteComponent>()->
+//		initialize("Arrow.png", { -200,0 }, { 0.75f, 0.75f }, 0.0f);
+//	mp_marin->addComponent<SpriteComponent>()->
+//		initialize("Arrow.png", { 200,0 }, { 0.25f, 0.25f }, 0.0f);
+//	mp_marin->addComponent<SpriteComponent>()->
+//		initialize("Arrow.png", { 0,200 }, { 1.25f, 0.75f }, 0.0f);
+//	
+//
+//	mp_rect = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+//	mp_rect->initialize({ 50.0f, 50.0f }, "abc");
+//	mp_rect->addComponent<SpriteComponent>()->initialize("NoSearch.png");
+//	auto spriteSize = mp_rect->getComponent<SpriteComponent>()->ImageSize();
+//	mp_rect->addComponent<BoxComponent>()->initialize({ 0.f, 0.f, 0.f }, spriteSize.x, spriteSize.y, CollisionType::DEFAULT);
+//	//mp_rect->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect->WorldPos(), 50.0f, 50.0f); });
+//
+//	mp_rect2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+//	mp_rect2->initialize({ 150.0f, 50.0f }, "def");
+//	mp_rect2->addComponent<SpriteComponent>()->initialize("NoSearch.png");
+//	auto spriteSize2 = mp_rect2->getComponent<SpriteComponent>()->ImageSize();
+//	mp_rect2->addComponent<BoxComponent>()->initialize({ 0.f, 0.f, 0.f }, spriteSize2.x, spriteSize2.y, CollisionType::DEFAULT);
+//	//mp_rect2->drawfuncVec.emplace_back([this]() {ofDrawRectangle(mp_rect2->WorldPos(), 50.0f, 50.0f); });
+//
+//	mp_rect->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other) 
+//	{
+//		_other->gActor()->Pos() += { 0.0f, 0.5f };
+//	};
+//
+//	mp_rect->addComponent<MoveComponent>()->AddMovePos({ 4.0f, 0.0f });
+//
+//	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+
+	
 }
 
-GameState* GameStateTitle::update(float _deltatime)
+GameState* GameStateTitle::update()
 {
 	//mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 
@@ -74,6 +113,19 @@ GameState* GameStateTitle::update(float _deltatime)
 		return &GameMainCtrlComponent::m_gameStateMap;
 		//return &GameMainCtrlComponent::m_gameStateBattle;
 	}
+
+	/*if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
+		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
+			mp_BHUD->StateActive();
+			mp_BHUD->StateVisible();
+		}
+		else if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EActive || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EVisible) {
+			mp_BHUD->StatePause();
+			mp_BHUD->StateHidden();
+		}
+	}*/
+	//mp_rect->getComponent<MoveComponent>()->AddMovePos({ 20.0f, 0.0f });
+
 	return nullptr;
 }
 
@@ -98,7 +150,7 @@ void GameStateMap::enter(Parameter _pprm)
 
 	*m_prmInState = _pprm;
 }
-GameState * GameStateMap::update(float _deltatime)
+GameState * GameStateMap::update()
 {
 	auto kind = mp_mapComp->GetResKind();
 	switch (kind)
@@ -151,7 +203,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	}
 }
 
-GameState * GameStateBattle::update(float _deltatime)
+GameState * GameStateBattle::update()
 {
 	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
 
@@ -167,17 +219,6 @@ GameState * GameStateBattle::update(float _deltatime)
 	default:
 		break;
 	}
-
-	//if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
-	//	if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
-	//		mp_BHUD->StateActive();
-	//		mp_BHUD->StateVisible();
-	//	}
-	//	else if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EActive || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EVisible) {
-	//		mp_BHUD->StatePause();
-	//		mp_BHUD->StateHidden();
-	//	}
-	//}
 
 	return nullptr;
 }

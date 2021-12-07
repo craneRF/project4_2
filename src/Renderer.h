@@ -29,6 +29,8 @@ public:
 
 	void TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale, float _degree);
 
+	void TextureCrop();
+
 private:
 	ofImage* mp_image;
 

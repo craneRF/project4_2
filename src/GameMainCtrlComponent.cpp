@@ -21,9 +21,9 @@ void GameMainCtrlComponent::GameStateStart()
 	mp_gameState->enter(m_playerprm);
 }
 
-void GameMainCtrlComponent::update(float _deltatime)
+void GameMainCtrlComponent::update()
 {
-	auto res = mp_gameState->update(_deltatime);
+	auto res = mp_gameState->update();
 	if (res != nullptr) {
 		mp_gameState->exit(m_playerprm);
 		mp_gameState = res;
@@ -31,6 +31,6 @@ void GameMainCtrlComponent::update(float _deltatime)
 	}
 }
 
-void GameMainCtrlComponent::input(float _deltatime)
+void GameMainCtrlComponent::input()
 {
 }

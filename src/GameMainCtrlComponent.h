@@ -20,7 +20,7 @@ public:
 	virtual ~GameMainCtrlComponent();
 
 	void GameStateStart();
-	void update(float _deltatime);
-	void input(float _deltatime) override;
+	void update();
+	void input() override;
 	bool m_isGameover;
 };

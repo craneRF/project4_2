@@ -19,8 +19,8 @@ public:
 
 	void caluculateWorldTransform();
 
-	virtual void update(float _deltaTime) = 0;
-	virtual void input(float _deltaTime) = 0;
+	virtual void update() = 0;
+	virtual void input() = 0;
 	virtual void draw() = 0;
 
 	void RemoveAllChild();

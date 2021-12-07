@@ -5,6 +5,7 @@
 
 class GameActor;
 class CollisionComponent;
+class BoxComponent;
 class SpriteComponent;
 class EnemyPartsComponent;
 
@@ -28,8 +29,8 @@ public:
 
 	std::shared_ptr<EnemyPartsComponent>  mp_epCpnt;
 
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 	void onCollision(CollisionComponent*);
 
 	EnemyParam getEnemy(int _enemytype);

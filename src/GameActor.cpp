@@ -93,8 +93,9 @@ GameActor* GameActor::createMap(GameActor * _parent, ofVec3f _pos, string _name)
 	return mapActor;
 }
 
-void GameActor::update(float _deltaTime) {
+void GameActor::update() {
 	caluculateWorldTransform();
+	m_actorDelta = ofApp::getInstance()->m_deltaTime;
 
 	if (!m_componentList.empty()) {
 		m_componentList.erase(
@@ -107,7 +108,7 @@ void GameActor::update(float _deltaTime) {
 	if (!m_componentList.empty()) {
 		for (const auto& cpnt : m_componentList) {
 			if (cpnt->GetComponentState() != Component::ComponentState::EPause) {
-				cpnt->update(_deltaTime);
+				cpnt->update();
 			}
 		}
 	}
@@ -130,19 +131,19 @@ void GameActor::update(float _deltaTime) {
 	if (!m_childList.empty()) {
 		for (auto& gac : m_childList) {
 			if (gac->GetActorState() != ActorState::EPause) {
-				gac->update(_deltaTime);
+				gac->update();
 			}
 		}
 	}
 }
 
-void GameActor::input(float _deltaTime)
+void GameActor::input()
 {
 	//自分のコンポーネントの入力処理
 	if (!m_componentList.empty()) {
 		for (const auto& cpnt : m_componentList) {
 			if (cpnt->GetComponentState() == Component::ComponentState::EActive) {
-				cpnt->input(_deltaTime);
+				cpnt->input();
 			}
 		}
 	}
@@ -150,7 +151,7 @@ void GameActor::input(float _deltaTime)
 	if (!m_childList.empty()) {
 		for (auto& gac : m_childList) {
 			if (gac->GetActorState() == ActorState::EActive) {
-				gac->input(_deltaTime);
+				gac->input();
 			}
 		}
 	}

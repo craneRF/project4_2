@@ -13,7 +13,7 @@ UIFont::UIFont(string _name)
 	, m_sizeBuffer(m_size)
 	, m_fontNameBuffer(m_fontName)
 {
-	UIupdatefunc = std::bind(&UIFont::update, this, placeholders::_1);
+	UIupdatefunc = std::bind(&UIFont::update, this);
 	UIdrawfunc = std::bind(&UIFont::draw, this);
 }
 
@@ -38,7 +38,7 @@ void UIFont::initialize(const string & _str, int _size, ofVec3f _offset, ofColor
 	m_fontNameBuffer = m_fontName;
 }
 
-void UIFont::update(float _deltatime)
+void UIFont::update()
 {
 	if (m_sizeBuffer != m_size) {
 		mp_fontRenderer->SetSize(m_size);
@@ -50,7 +50,7 @@ void UIFont::update(float _deltatime)
 	}
 }
 
-void UIFont::input(float _deltatime)
+void UIFont::input()
 {
 }
 

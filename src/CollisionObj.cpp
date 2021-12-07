@@ -1,6 +1,7 @@
 #include "GameActor.h"
 #include "CollisionObj.h"
 #include "CollisionComponent.h"
+#include "BoxComponent.h"
 #include "CollisionManager.h"
 
 //CollisionObj::CollisionObj(GameActor* _actor) :
@@ -12,10 +13,13 @@ CollisionObj::CollisionObj(CollisionComponent* _compo) :
 }
 
 bool CollisionObj::checkCollide(const CollisionObj& _other) const {
-	return m_rect.intersects(_other.m_rect);
+	if (mp_compo->m_shape == CollisionComponent::Shape::ERectangle) {
+		return m_rect.intersects(_other.m_rect);
+	}
+	return false;
 }
 
-
-void CollisionObj::setCollisionParam(ofRectangle _rect){
+void CollisionObj::setCollisionBox(ofRectangle _rect)
+{
 	m_rect = _rect;
 }

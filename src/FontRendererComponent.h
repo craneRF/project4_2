@@ -26,8 +26,8 @@ public:
 	FontRendererComponent(GameActor* _gactor);
 	virtual ~FontRendererComponent();
 	void initialize(const string& _str = "Not String", int _size = 18, ofVec3f _offset = { 0,0,0 }, ofColor _col = ofColor::white, ofVec3f _scale = {1, 1, 1}, const string& _fontname = "keifont.ttf");
-	virtual void update(float _deltatime);
-	void input(float _deltatime) override;
+	virtual void update();
+	void input() override;
 	void draw();
 
 

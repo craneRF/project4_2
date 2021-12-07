@@ -15,7 +15,7 @@ MapComponent::~MapComponent()
 {
 }
 
-void MapComponent::update(float _deltatime)
+void MapComponent::update()
 {
 	m_stepKind = StepKind::NONE;
 
@@ -28,7 +28,7 @@ void MapComponent::update(float _deltatime)
 	}
 }
 
-void MapComponent::input(float _deltatime)
+void MapComponent::input()
 {
 }
 

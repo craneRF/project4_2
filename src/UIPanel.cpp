@@ -1,3 +1,4 @@
+#include "ofApp.h"
 #include "UIPanel.h"
 
 UIPanel::UIPanel(string _name)
@@ -33,9 +34,10 @@ void UIPanel::caluculateWorldTransform()
 	}
 }
 
-void UIPanel::update(float _deltaTime)
+void UIPanel::update()
 {
 	caluculateWorldTransform();
+	m_actorDelta = ofApp::getInstance()->m_deltaTime;
 
 	//íœ—\’èUICommon‚Ìíœ
 	if (!m_UICommonChildList.empty()) {
@@ -56,7 +58,7 @@ void UIPanel::update(float _deltaTime)
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->update(_deltaTime);  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+				uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
 	}
@@ -80,19 +82,19 @@ void UIPanel::update(float _deltaTime)
 		for (auto& uic : m_UIPanelChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->update(_deltaTime);  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+				uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
 	}
 }
 
-void UIPanel::input(float _deltaTime)
+void UIPanel::input()
 {
 	if (!m_UICommonChildList.empty()) {
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->input(_deltaTime);  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
+				uic->UIinputfunc();  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
 			}
 		}
 	}
@@ -101,7 +103,7 @@ void UIPanel::input(float _deltaTime)
 		for (auto& uic : m_UIPanelChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->input(_deltaTime);  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
+				uic->input();  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
 			}
 		}
 	}
@@ -112,7 +114,14 @@ void UIPanel::draw()
 	if (!m_UICommonChildList.empty()) {
 		for (auto& uic : m_UICommonChildList) {
 			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
-				uic->draw();
+				ofPushMatrix();
+				ofTranslate(uic->WorldPos());
+				ofRotateDeg(-(uic->WorldRotAngle()));
+				ofScale(uic->WorldScale());
+
+				assert(uic->UIdrawfunc != nullptr);
+				uic->UIdrawfunc();
+				ofPopMatrix();
 			}
 		}
 	}

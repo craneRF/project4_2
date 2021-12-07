@@ -50,8 +50,14 @@ void TextureRenderer::SetTexture(const string & _texname)
 
 void TextureRenderer::TextureDraw(ofVec3f _offset, ofColor _col, ofVec3f _scale, float _degree)
 {
+	ofTranslate(_offset);
 	ofSetColor(_col);
 	ofRotateDeg(-(_degree));
 	ofScale(_scale);
-	mp_image->draw(_offset);
+	mp_image->draw({ 0,0 });
+}
+
+void TextureRenderer::TextureCrop()
+{
+	//mp_image->crop(,)
 }

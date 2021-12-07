@@ -15,14 +15,18 @@ public:
 
 	void caluculateWorldTransform();
 
-	virtual void update(float _deltaTime) = 0;
-	virtual void input(float _deltaTime) = 0;
+	virtual void update() = 0;
+	virtual void input() = 0;
 	virtual void draw() = 0;
 
 	UIPanel* mp_UIPanelParent;  //©g‚ª‚Ç‚ÌUIPanel‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”B(UIScreen‚ªíœ‚³‚ê‚é‚ÆUIActor‚àíœ‚³‚ê‚é)
 
-	function<void(float)> UIupdatefunc;
-	function<void(float)> UIinputfunc;
+	function<void()> UIupdatefunc;
+	function<void()> UIinputfunc;
 	function<void()> UIdrawfunc;
+
+	vector<function<void()>> UIupdatefuncVec;
+	vector<function<void()>> UIinputfuncVec;
+	vector<function<void()>> UIdrawfuncVec;
 };
 

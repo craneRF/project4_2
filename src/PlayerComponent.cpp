@@ -2,6 +2,7 @@
 #include "PlayerComponent.h"
 #include "SpriteComponent.h"
 #include "CollisionComponent.h"
+#include "BoxComponent.h"
 
 PlayerComponent::PlayerComponent(GameActor * _gactor) :
 	Component(_gactor, "Player"),
@@ -34,11 +35,11 @@ PlayerComponent::~PlayerComponent()
 {
 }
 
-void PlayerComponent::update(float _deltatime)
+void PlayerComponent::update()
 {
 }
 
-void PlayerComponent::input(float _deltatime)
+void PlayerComponent::input()
 {
 }
 

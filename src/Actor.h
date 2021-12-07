@@ -32,6 +32,8 @@ protected:
 
 	string m_name;
 
+	float m_actorDelta;
+
 	ActorState m_ActorState;
 	ActorDrawState m_ActorDrawState;
 
@@ -42,6 +44,7 @@ public:
 		, m_worldRotAngle(0)
 		, m_scale({ 1,1,1 })
 		, m_name(_name)
+		, m_actorDelta(0.0f)
 		//, drawfunc([]() {})
 		//, mp_parent(nullptr)
 		, m_ActorState(ActorState::EActive)
@@ -83,6 +86,10 @@ public:
 	inline string& Name()
 	{
 		return m_name;
+	}
+	inline float& DeltaTime()
+	{
+		return m_actorDelta;
 	}
 
 

@@ -13,7 +13,8 @@ public:
 	CollisionObj(CollisionComponent* _compo);
 	virtual ~CollisionObj() {};
 	bool checkCollide(const CollisionObj& _other) const;
-	void setCollisionParam(ofRectangle _rect);
+	//void setCollisionParam(ofRectangle _rect);
+	void setCollisionBox(ofRectangle _rect);
 	CollisionType m_ctype;
 	CollisionComponent* mp_compo;
 };

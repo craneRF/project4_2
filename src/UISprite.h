@@ -10,8 +10,8 @@ public:
 
 	void initialize(const string& _texname = "NoSearch.png", ofVec3f _offset = { 0,0,0 }, ofVec3f _scale = { 1, 1, 1 }, float _degree = 0.0f, ofColor _col = ofColor::white);
 
-	void update(float _deltaTime) override;
-	void input(float _deltaTime) override;
+	void update() override;
+	void input() override;
 	void draw() override;
 
 	void AlignPivotCenter();

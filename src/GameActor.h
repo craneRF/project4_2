@@ -16,8 +16,8 @@ public:
 
 	void caluculateWorldTransform();
 
-	void update(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
-	void input(float _deltaTime);	//åpè≥ÇµÇ»Ç¢
+	void update();	//åpè≥ÇµÇ»Ç¢
+	void input();	//åpè≥ÇµÇ»Ç¢
 	void draw();	//åpè≥ÇµÇ»Ç¢
 
 	void initialize(ofVec3f _pos, string _name);
@@ -146,8 +146,8 @@ public:
 	}
 
 	template <typename T>
-	T* addChild() {
-		auto actor = make_unique<T>();
+	T* addChild(string _name = "") {
+		auto actor = make_unique<T>(_name);
 		auto res = actor.get();
 		m_childAddQue.push(move(actor));
 		res->mp_parent = this;

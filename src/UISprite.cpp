@@ -10,7 +10,7 @@ UISprite::UISprite(string _name)
 {
 	mp_TexRenderer->SetTexture(m_texName);
 
-	UIupdatefunc = bind(&UISprite::update, this, placeholders::_1);
+	//UIupdatefunc = bind(&UISprite::update, this);
 	UIdrawfunc = bind(&UISprite::draw, this);
 }
 
@@ -31,15 +31,17 @@ void UISprite::initialize(const string& _texname, ofVec3f _offset, ofVec3f _scal
 	m_texNameBuffer = m_texName;
 }
 
-void UISprite::update(float _deltaTime)
+void UISprite::update()
 {
+	UICommon::update();
+
 	if (m_texNameBuffer != m_texName) {
 		mp_TexRenderer->SetTexture(m_texName);
 		m_texNameBuffer = m_texName;
 	}
 }
 
-void UISprite::input(float _deltaTime)
+void UISprite::input()
 {
 }
 

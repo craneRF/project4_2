@@ -6,9 +6,14 @@
 
 string EnemyActor::m_EnemyName = "";
 
+EnemyActor::EnemyActor(string _name)
+	:GameActor(_name)
+{
+}
+
 EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name)
 {
-	auto actor = _parent->addChild<EnemyActor>();
+	auto actor = _parent->addChild<EnemyActor>(_name);
 	auto enemyCpnt = actor->addComponent<EnemyComponent>();
 	enemyCpnt->setEnemyType(_enemytype);
 
@@ -26,9 +31,12 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 
 	auto imageSize = actor->getComponent<SpriteComponent>()->ImageSize();
 
-	auto coliisionCpnt = actor->addComponent<CollisionComponent>();
+	/*auto coliisionCpnt = actor->addComponent<CollisionComponent>();
 	coliisionCpnt->initialize(ofVec3f(0, 0), imageSize.x, imageSize.y, CollisionType::ENEMY_OBJECT);
-	coliisionCpnt->m_onCollisionFunc = bind(&EnemyComponent::onCollision, enemyCpnt, std::placeholders::_1);
+	coliisionCpnt->m_onCollisionFunc = bind(&EnemyComponent::onCollision, enemyCpnt, std::placeholders::_1);*/
+	auto boxCpnt = actor->addComponent<BoxComponent>();
+	boxCpnt->initialize(ofVec3f(0, 0), imageSize.x, imageSize.y, CollisionType::ENEMY_OBJECT);
+	boxCpnt->m_onCollisionFunc = bind(&EnemyComponent::onCollision, enemyCpnt, std::placeholders::_1);
 
 	return actor;
 }

@@ -44,8 +44,8 @@ private:
 public:
 	BattleComponent(GameActor* _gator);
 	virtual ~BattleComponent();
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 
 	void SetPlayer(shared_ptr<Parameter> _player) { mp_Player = _player; }
 	void SetCommand(Command* _command) { mp_Command.reset(_command); }

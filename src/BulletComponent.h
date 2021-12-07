@@ -34,8 +34,8 @@ public:
 
 	void initialize(const ofVec3f& _target, const BulletType _bulletType);
 
-	virtual void update(float _deltatime);
-	virtual void input(float _deltatime);
+	virtual void update();
+	virtual void input();
 	void onCollision(CollisionComponent*);
 
 	BulletType getBulletType() { return m_bulletType; }

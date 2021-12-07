@@ -33,10 +33,12 @@ void CollisionManager::CaluculateCollision() {
 	int poolsize = objpool_.size();
 	for (int i = 0; i < poolsize - 1; ++i) {
 		for (int j = i + 1; j < poolsize; ++j) {
-			if (CollisionMatrix[objpool_[i]->m_ctype][objpool_[j]->m_ctype]&& objpool_[i]->checkCollide(*objpool_[j])) 
+			if (CollisionMatrix[objpool_[i]->m_ctype][objpool_[j]->m_ctype]) 
 			{
-				objpool_[i]->mp_compo->m_onCollisionFunc(objpool_[j]->mp_compo);
-				objpool_[j]->mp_compo->m_onCollisionFunc(objpool_[i]->mp_compo);
+				if (objpool_[i]->checkCollide(*objpool_[j])) {
+					objpool_[i]->mp_compo->m_onCollisionFunc(objpool_[j]->mp_compo);
+					objpool_[j]->mp_compo->m_onCollisionFunc(objpool_[i]->mp_compo);
+				}
 			}
 		}
 	}
