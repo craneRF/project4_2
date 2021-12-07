@@ -28,6 +28,9 @@ void InitMapState::Initialize(GameActor* _mapActor)
 
 	CreateLineActor(_mapActor);
 	CreateStepActor(_mapActor);
+
+	ofApp::getInstance()->mp_soundManager->setVolume(3, 0.4f);
+	ofApp::getInstance()->mp_soundManager->setVolume(4, 0.4f);
 }
 
 void InitMapState::CreateRandomMap()
@@ -292,6 +295,8 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 	// 次のマスを選択（現在のマスがつながっているマスから選択）
 	if (down)
 	{
+		ofApp::getInstance()->mp_soundManager->play(3);
+
 		m_selectIndex++;
 		if (m_selectIndex >= MapComponent::mp_currentStep->m_nextStepList.size())
 		{
@@ -300,6 +305,8 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 	}
 	else if (up)
 	{
+		ofApp::getInstance()->mp_soundManager->play(3);
+
 		m_selectIndex--;
 		if (m_selectIndex < 0)
 		{
@@ -317,6 +324,8 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 	// 決定
 	if (start)
 	{
+		ofApp::getInstance()->mp_soundManager->play(4);
+
 		MapComponent::mp_currentStep = MapComponent::mp_currentStep->m_nextStepList[m_selectIndex];
 		MapComponent::mp_currentStep->m_IsSelected = true;
 		MapComponent::mp_currentStep->m_IsFocused = false;

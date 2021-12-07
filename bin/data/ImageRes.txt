@@ -8,6 +8,8 @@ images/NoSearch.png
 images/Arrow.png
 images/backGround.png
 images/backGround_map_1.png
+images/backGround_map_2.jpg
+images/backGround_title_1.jpg
 images/HP.png
 images/HP_.png
 images/MissilePod.png
@@ -17,3 +19,4 @@ images/Map_icon_grass.png
 images/Map_icon_city.png
 images/Road.png
 images/Road2.png
+images/title.png

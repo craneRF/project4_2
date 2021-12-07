@@ -15,7 +15,6 @@ public:
 	void draw();
 
 	void AlignPivotCenter();
-
 private:
 
 	ofVec3f m_offset;

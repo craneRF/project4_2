@@ -14,6 +14,10 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 	auto spriteCpnt = mp_gActor->addComponent<SpriteComponent>();
 	spriteCpnt->initialize("backGround_map_1.png");
 
+	//BGM
+	ofApp::getInstance()->mp_soundManager->setVolume(2, 0.4f);
+	ofApp::getInstance()->mp_soundManager->loop(2);
+
 	// ƒvƒŒƒCƒ„[
 	{
 		mp_charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W * 3 / 4.f, Define::FULLWIN_H * 1.f / 4 });

@@ -3,6 +3,15 @@
 
 //ファイル名が日本語だと読み込まない
 const string SoundManager::soundList[] = {
+		"titleBGM.mp3",
+		"mapBGM.mp3",
+		"battleBGM.mp3",
+		"select.mp3",
+		"enter.mp3",
+		"cancel.mp3",
+		"guard.mp3",
+		"slash.mp3",
+		"explosion.mp3",
 		"UnicornBGM.mp3",
 		"SnakeBeep.mp3",
 };
