@@ -7,7 +7,8 @@ Parameter::Parameter()
 
 void Parameter::initialize()
 {
-	m_playermap["HP"] = 10;
+	m_playermap["HP"] = 50;
+	m_playermap["ATTACK"] = 1;
 }
 
 void Parameter::setInt(string key, int val) {

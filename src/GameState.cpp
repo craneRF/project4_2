@@ -39,6 +39,8 @@ void GameStateTitle::enter(Parameter _pprm)
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
+	// タイトルなので、プレイヤーのパラメータを初期化
+	m_prmInState->initialize();
 
 	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
@@ -68,6 +70,13 @@ void GameStateTitle::enter(Parameter _pprm)
 
 	mp_actor1->addComponent<FontRendererComponent>()->
 		initialize(ofToString(m_prmInState->getPlayerParam("HP")), 18);
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:スタート");
+	}
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
@@ -150,13 +159,6 @@ void GameStateTitle::exit(Parameter& _pprm)
 
 void GameStateMap::enter(Parameter _pprm)
 {
-
-	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
-	//mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
-	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(u8"マップシーン");
-
 	ofApp::getInstance()->mp_soundManager->loop(1);
 
 	auto mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
@@ -166,6 +168,18 @@ void GameStateMap::enter(Parameter _pprm)
 	auto spriteCpnt_bg = mapActor->addComponent<SpriteComponent>();
 	spriteCpnt_bg->initialize("backGround_map_2.jpg");
 
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { 0, 20 };
+	mp_fontActor->addComponent<FontRendererComponent>()->
+		initialize(u8"マップシーン");
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:決定\nWSキー:マス選択");
+	}
+
 	*m_prmInState = _pprm;
 }
 GameState * GameStateMap::update()
@@ -174,7 +188,7 @@ GameState * GameStateMap::update()
 	switch (kind)
 	{
 	case StepKind::EVENT:
-		return &GameMainCtrlComponent::m_gameStateTitle;
+		return &GameMainCtrlComponent::m_gameStateEvent;
 		break;
 	case StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
@@ -198,33 +212,51 @@ void GameStateMap::exit(Parameter& _pprm)
 
 void GameStateBattle::enter(Parameter _pprm)
 {
-	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
-	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(u8"戦闘シーン");
-
 	*m_prmInState = _pprm;
 	m_prmInState->getPlayerParam("HP");
-
-	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_actor2->Pos() = { 500,300 };
-	mp_actor2->addComponent<FontRendererComponent>()->
-		initialize(ofToString(0));
-
-	// mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
-	mp_actor2->findActor(mp_actor2, "");
 	// 戦闘システム初期化
 	{
 		// 戦闘コンポーネント
 		mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
 		mp_BattleComp->SetPlayer(m_prmInState);
 	}
+
+	// 「戦闘シーン」と表示するアクター
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { 0, 20 };
+	mp_fontActor->addComponent<FontRendererComponent>()->
+		initialize(u8"戦闘シーン");
+
+	// プレイヤーのHPを表示するアクター
+	mp_hpFontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_hpFontActor->Pos() = { (float)Define::FULLWIN_W * 0.3f, (float)Define::FULLWIN_H * 0.9f };
+	mp_hpFontActor->addComponent<FontRendererComponent>()->
+		initialize(u8"");
+
+	// 戦闘のメッセージを表示するアクター
+	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_actor2->Pos() = { (float)Define::FULLWIN_W * 0.7f, (float)Define::FULLWIN_H * 0.8f };
+	mp_actor2->addComponent<FontRendererComponent>()->
+		initialize(ofToString(0));
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:攻撃\nWSキー:弾切り替え");
+	}
+
+	// mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+
+	mp_actor2->findActor(mp_actor2, "");
 }
 
 GameState * GameStateBattle::update()
 {
 	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
+
+	int playerHP = m_prmInState->getPlayerParam("HP");
+	mp_hpFontActor->getComponent<FontRendererComponent>()->String() = u8"プレイヤーのHP:" + to_string(playerHP);
 
 	// 勝敗の結果に応じてシーン遷移
 	auto result = mp_BattleComp->GetResult();
@@ -248,4 +280,97 @@ void GameStateBattle::exit(Parameter& _pprm)
 	ofApp::getInstance()->mp_soundManager->stop(2);
 	//m_EnemyList.clear();
 	_pprm = *m_prmInState;
+}
+
+void GameStateEvent::enter(Parameter _pprm)
+{
+	*m_prmInState = _pprm;
+	m_isDead = false;
+
+	auto eventIndex = static_cast<EVENT_INDEX>(rand() % static_cast<int>(EVENT_INDEX::INDEX_NUM));
+	string eventStrInfo = "";
+	switch (eventIndex)
+	{
+	case GameStateEvent::EVENT_INDEX::NONE:
+		eventStrInfo = u8"何も起こらなかった。\n";
+		break;
+	case GameStateEvent::EVENT_INDEX::HEAL:
+	{
+		int hp = m_prmInState->getPlayerParam("HP") + 1;
+		m_prmInState->setPlayerParam("HP", hp);
+		eventStrInfo = u8"体力が1回復した。\n現在のHP:" + to_string(hp) + "\n";
+		break;
+	}
+	case GameStateEvent::EVENT_INDEX::DAMAGE:
+	{
+		int hp = m_prmInState->getPlayerParam("HP") - 1;
+		m_prmInState->setPlayerParam("HP", hp);
+		eventStrInfo = u8"1ダメージを受けた\n";
+		// ダメージを受けた後も生きているか
+		if (hp <= 0)
+		{
+			eventStrInfo += u8"HPが0になった。\n";
+			m_isDead = true;
+		}
+		else
+		{
+			eventStrInfo += u8"現在のHP:" + to_string(hp) + "\n";
+		}
+		break;
+	}
+	case GameStateEvent::EVENT_INDEX::ATTACK_UP:
+	{
+		int attack = m_prmInState->getPlayerParam("ATTACK") + 1;
+		m_prmInState->setPlayerParam("ATTACK", attack);
+		eventStrInfo = u8"攻撃力が1上がった。\n現在の攻撃力:" + to_string(attack) + "\n";
+		break;
+	}
+	case GameStateEvent::EVENT_INDEX::INDEX_NUM:
+		break;
+	default:
+		break;
+	}
+
+	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
+	mp_fontActor->addComponent<FontRendererComponent>()->initialize(u8"イベントシーン\n" + eventStrInfo);
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		if (m_isDead)
+		{
+			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:タイトルシーンへ移動");
+		}
+		else
+		{
+			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:マップシーンへ移動");
+		}
+	}
+}
+
+GameState * GameStateEvent::update()
+{
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start"))
+	{
+		if (m_isDead)
+		{
+			MapComponent::ClearMap();
+			return &GameMainCtrlComponent::m_gameStateTitle;
+		}
+		else
+		{
+			return &GameMainCtrlComponent::m_gameStateMap;
+		}
+	}
+
+	return nullptr;
+}
+
+void GameStateEvent::exit(Parameter & _pprm)
+{
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
+	_pprm = *m_prmInState;
+	//ofApp::getInstance()->mp_soundManager->stop(1);
 }
