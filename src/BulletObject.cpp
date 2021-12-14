@@ -1,5 +1,6 @@
 #include "BulletObject.h"
 #include "stdComponent.h"
+#include "ofApp.h"
 
 BulletObject::BulletObject()
 {
@@ -57,12 +58,49 @@ void BulletObject::RotateToTarget(BulletComponent * _bulletComponent, MoveCompon
 	}
 }
 
-//NomalBullet
-NomalBullet::NomalBullet() {
-	initialize();
+void BulletObject::ReflectRect(BulletComponent * _bulletComponent, MoveComponent * _moveComponent, const ofRectangle & _rect)
+{
+	const auto& wpos = _bulletComponent->gActor()->Pos();
+	auto vec = _bulletComponent->getVec();
+
+	// è„â∫Ç≈îΩéÀ
+	if (_rect.getBottom() < wpos.y)
+	{
+		auto delta = wpos.y - _rect.getBottom();
+		_bulletComponent->gActor()->Pos().y = _rect.getBottom();
+		//_bulletComponent->gActor()->Pos().y -= wpos.y - _rect.getBottom();
+		vec.y *= -1;;
+	}
+	else if (_rect.getTop() > wpos.y)
+	{
+		auto delta = wpos.y - _rect.getTop();
+		_bulletComponent->gActor()->Pos().y = _rect.getTop();
+		//_bulletComponent->gActor()->Pos().y -= wpos.y - _rect.getTop();
+		vec.y *= -1;;
+	}
+
+	// ç∂âEÇ≈îΩéÀ
+	if (_rect.getRight() < wpos.x)
+	{
+		auto delta = wpos.x - _rect.getRight();
+		_bulletComponent->gActor()->Pos().x = _rect.getRight();
+		//_bulletComponent->gActor()->Pos().x -= wpos.x - _rect.getRight();
+		vec.x *= -1;;
+	}
+	else if (_rect.getLeft() > wpos.x)
+	{
+		auto delta = wpos.x - _rect.getLeft();
+		_bulletComponent->gActor()->Pos().x = _rect.getLeft();
+		//_bulletComponent->gActor()->Pos().x -= wpos.x - _rect.getLeft();
+		vec.x *= -1;;
+	}
+
+	_bulletComponent->SetVec(vec);
+	_moveComponent->AddMovePos(vec * m_bParam.speed);
 }
 
-void NomalBullet::initialize()
+//NomalBullet
+NomalBullet::NomalBullet()
 {
 	m_bParam.bulletName = "NormalBullet";
 	m_bParam.scale = { 0.5,0.5 };
@@ -73,19 +111,17 @@ void NomalBullet::initialize()
 	m_bParam.imageName = "6b71416463520028.png";
 }
 
+void NomalBullet::initialize(BulletComponent * _bulletComponent)
+{
+}
+
 void NomalBullet::Move(BulletComponent * _bulletComponent, MoveComponent * _moveComponent)
 {
 	RotateToTarget(_bulletComponent, _moveComponent, false);
-	//MoveToTarget(_bulletComponent, _moveComponent);
 	_moveComponent->FrontMove(m_bParam.speed);
 }
 
 SmallBullet::SmallBullet()
-{
-	initialize();
-}
-
-void SmallBullet::initialize()
 {
 	m_bParam.bulletName = "SmallBullet";
 	m_bParam.scale = { 0.2,0.2 };
@@ -95,8 +131,38 @@ void SmallBullet::initialize()
 	m_bParam.imageName = "Missile.png";
 }
 
+void SmallBullet::initialize(BulletComponent * _bulletComponent)
+{
+}
+
 void SmallBullet::Move(BulletComponent * _bulletComponent, MoveComponent * _moveComponent)
 {
 	RotateToTarget(_bulletComponent, _moveComponent, true);
 	MoveToTarget(_bulletComponent, _moveComponent);
+}
+
+BoundBullet::BoundBullet()
+{
+	m_bParam.bulletName = "BoundBullet";
+	m_bParam.scale = { 0.2,0.2 };
+	m_bParam.speed = 400.f;
+	m_bParam.generationSoundIndex = 12;
+	m_bParam.damage = 2;
+	m_bParam.imageName = "Missile.png";
+}
+
+void BoundBullet::initialize(BulletComponent * _bulletComponent)
+{
+	_bulletComponent->getCollisionComponent()->mp_cobj->m_ctype = CollisionType::DEFAULT;
+}
+
+void BoundBullet::Move(BulletComponent * _bulletComponent, MoveComponent * _moveComponent)
+{
+	m_reflectRect.setFromCenter(_bulletComponent->getTarget(), 800, 500);
+	ReflectRect(_bulletComponent, _moveComponent, m_reflectRect);
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire"))
+	{
+		_bulletComponent->gActor()->StateErace();
+		_bulletComponent->getCollisionComponent()->mp_cobj->m_ctype = CollisionType::PLAYER_BULLET;
+	}
 }
