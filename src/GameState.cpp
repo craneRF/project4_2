@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "GameActor.h"
 #include "EnemyType.h"
+#include "ItemType.h"
 #include "stdComponent.h"
 #include "BattleHUD.h"
 #include "LoadCSVFile.h"
@@ -53,23 +54,26 @@ void GameStateTitle::enter(Parameter _pprm)
 	//	initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	mp_itemlist = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	////タイトル背景
+	//{
+	//	auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+	//	spriteCpnt_bg->initialize("backGround_title_1.jpg");
+	//}
 
-	//タイトル背景
-	{
-		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
-		spriteCpnt_bg->initialize("backGround_title_1.jpg");
-	}
-
-	//タイトルロゴ
-	{
-		auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
-		spriteCpnt_title->initialize("title.png");
-		spriteCpnt_title->AlignPivotCenter();
-		spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
-	}
+	////タイトルロゴ
+	//{
+	//	auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
+	//	spriteCpnt_title->initialize("title.png");
+	//	spriteCpnt_title->AlignPivotCenter();
+	//	spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
+	//}
 
 	mp_actor1->addComponent<FontRendererComponent>()->
-		initialize(ofToString(m_prmInState->getPlayerParam("HP")), 18);
+		initialize(ofToString(ofApp::getInstance()->mp_prm->getPlayerParam("HP")), 18, { 300,400 });
+
+	mp_itemlist->addComponent<FontRendererComponent>()->
+		initialize(ofApp::getInstance()->mp_itemManager->DisplayItemList(), 18, { 400,600 });
 
 	// 操作方法を表示するアクター
 	{
@@ -122,18 +126,21 @@ GameState* GameStateTitle::update()
 {
 	//mp_actor->getComponent<FontRendererComponent>()->String() = ofToString(ofGetLastFrameTime()/*ofGetElapsedTimeMillis()*/);
 
-	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(m_prmInState->getPlayerParam("HP"));
+	mp_actor1->getComponent<FontRendererComponent>()->String() = ofToString(ofApp::getInstance()->mp_prm->getPlayerParam("HP"));
+	mp_itemlist->getComponent<FontRendererComponent>()->String() = ofApp::getInstance()->mp_itemManager->DisplayItemList();
+	auto itemCmp = mp_actor1->addComponent<ItemComponent>();
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire")) {
-		m_prmInState->setPlayerParam("HP", 50);
+		/*ofApp::getInstance()->mp_prm->setPlayerParam("HP", 50);*/
+		itemCmp->useItem(ItemType::ATKUp);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Bomb")) {
-		m_prmInState->setPlayerParam("HP", 100);
+		/*m_prmInState->setPlayerParam("HP", 100);*/
+		itemCmp->useItem(ItemType::POTION);
 	}
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 		return &GameMainCtrlComponent::m_gameStateMap;
 		//return &GameMainCtrlComponent::m_gameStateBattle;
 	}
-
 	/*if (ofApp::getInstance()->mp_inputManager->getButtonUp("HUD")) {
 		if (mp_BHUD->GetActorState() == BattleHUD::ActorState::EPause || mp_BHUD->GetActorDrawState() == BattleHUD::ActorDrawState::EHidden) {
 			mp_BHUD->StateActive();

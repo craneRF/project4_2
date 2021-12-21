@@ -21,6 +21,9 @@ void ofApp::setup() {
 	mp_soundManager = make_unique<SoundManager>();
 	mp_inputManager = make_unique<InputManager>();
 
+	mp_prm = make_unique<Parameter>();
+	mp_itemManager = make_unique<ItemManager>();
+
 	m_deltaTime = 0.0f;
 
 	hierarchyRoot_ = make_unique<GameActor>();

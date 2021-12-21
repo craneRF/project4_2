@@ -13,7 +13,7 @@ protected:
 	GameActor* mp_operationFontactor;	// 操作方法を表示するアクター
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
-	
+	GameActor* mp_itemlist;
 
 public:
 	GameState() {};
@@ -24,6 +24,7 @@ public:
 
 
 	shared_ptr<Parameter> m_prmInState = make_shared<Parameter>();
+
 };
 
 // タイトルシーン
