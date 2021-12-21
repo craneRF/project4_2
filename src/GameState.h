@@ -37,10 +37,10 @@ public:
 	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 
-	class UIPanelCanvas* mp_BHUD;
 	class GameActor* mp_rect;
 	class GameActor* mp_rect2;
 	class GameActor* mp_marin;
+
 };
 
 class MapComponent;
@@ -63,6 +63,7 @@ class GameStateBattle final : public GameState {
 private:
 	// êÌì¨ÉVÉXÉeÉÄ
 	BattleComponent* mp_BattleComp;
+	class UIPanelCanvas* mp_BHUD;
 	GameActor* mp_hpFontActor;
 
 public:

@@ -20,3 +20,4 @@ images/Map_icon_city.png
 images/Road.png
 images/Road2.png
 images/title.png
+images/button1.png

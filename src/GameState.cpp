@@ -8,6 +8,7 @@
 #include "LoadCSVFile.h"
 #include "MapState.h"
 #include "BattleState.h"
+#include "CreateActor.h"
 
 /*
 * 1.hierarchyRoot_のGameMainCtrlComponent内でシーン制御をし、アクターの生成を行うことから、
@@ -246,6 +247,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofToString(0));
 
+	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 	// 操作方法を表示するアクター
 	{
 		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -287,6 +289,7 @@ void GameStateBattle::exit(Parameter& _pprm)
 	ofApp::getInstance()->mp_soundManager->stop(2);
 	//m_EnemyList.clear();
 	_pprm = *m_prmInState;
+	mp_BHUD->StateErace();
 }
 
 void GameStateEvent::enter(Parameter _pprm)

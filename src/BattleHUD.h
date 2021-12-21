@@ -1,9 +1,6 @@
 #pragma once
 #include "UIPanelCanvas.h"
 
-class UISprite;
-class UIFont;
-
 class BattleHUD : public UIPanelCanvas
 {
 public:
@@ -15,9 +12,16 @@ public:
 	//void draw() override;
 
 public:
-	UISprite* uis;
-	UISprite* uis2;
-	UIFont* uif;
-	UIFont* uif2;
+	class UIStandardPanel* buttonPanel;
+	class UIStandardPanel* button01;
+	class UISprite* button01Sprite;
+	class UIFont* button01Font;
+	class UIStandardPanel* button02;
+	class UISprite* button02Sprite;
+	class UIFont* button02Font;
+	//UISprite* uis;
+	class UISprite* uis2;
+	//UIFont* uif;
+	//UIFont* uif2;
 };
 
