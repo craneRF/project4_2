@@ -13,7 +13,7 @@ protected:
 	GameActor* mp_operationFontactor;	// 操作方法を表示するアクター
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
-	
+	GameActor* mp_itemlist;
 
 public:
 	GameState() {};
@@ -24,6 +24,7 @@ public:
 
 
 	shared_ptr<Parameter> m_prmInState = make_shared<Parameter>();
+
 };
 
 // タイトルシーン
@@ -36,10 +37,10 @@ public:
 	virtual GameState* update();
 	virtual void exit(Parameter& _pprm);
 
-	class UIPanelCanvas* mp_BHUD;
 	class GameActor* mp_rect;
 	class GameActor* mp_rect2;
 	class GameActor* mp_marin;
+
 };
 
 class MapComponent;
@@ -62,6 +63,7 @@ class GameStateBattle final : public GameState {
 private:
 	// 戦闘システム
 	BattleComponent* mp_BattleComp;
+	class UIPanelCanvas* mp_BHUD;
 	GameActor* mp_hpFontActor;
 
 public:

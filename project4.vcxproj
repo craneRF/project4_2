@@ -185,10 +185,15 @@
     <ClCompile Include="src\BulletComponent.cpp" />
     <ClCompile Include="src\BulletObject.cpp" />
     <ClCompile Include="src\BoxComponent.cpp" />
+    <ClCompile Include="src\CreateActor.cpp" />
+    <ClCompile Include="src\Effect.cpp" />
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
     <ClCompile Include="src\EnemyObject.cpp" />
+    <ClCompile Include="src\ItemComponent.cpp" />
+    <ClCompile Include="src\ItemManager.cpp" />
+    <ClCompile Include="src\ItemObject.cpp" />
     <ClCompile Include="src\MapComponent.cpp" />
     <ClCompile Include="src\MapState.cpp" />
     <ClCompile Include="src\Parameter.cpp" />
@@ -230,18 +235,25 @@
     <ClCompile Include="src\UIPanel.cpp" />
     <ClCompile Include="src\UIPanelCanvas.cpp" />
     <ClCompile Include="src\UISprite.cpp" />
+    <ClCompile Include="src\UIStandardPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ItemManager.h" />
+    <ClInclude Include="src\ItemType.h" />
     <ClInclude Include="src\BattleState.h" />
     <ClInclude Include="src\BulletActor.h" />
     <ClInclude Include="src\BulletComponent.h" />
     <ClInclude Include="src\BulletObject.h" />
     <ClInclude Include="src\BoxComponent.h" />
+    <ClInclude Include="src\CreateActor.h" />
+    <ClInclude Include="src\Effect.h" />
     <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />
     <ClInclude Include="src\BattleComponent.h" />
     <ClInclude Include="src\EnemyObject.h" />
+    <ClInclude Include="src\ItemComponent.h" />
+    <ClInclude Include="src\ItemObject.h" />
     <ClInclude Include="src\MapComponent.h" />
     <ClInclude Include="src\MapState.h" />
     <ClInclude Include="src\Parameter.h" />
@@ -290,6 +302,7 @@
     <ClInclude Include="src\UIPanel.h" />
     <ClInclude Include="src\UIPanelCanvas.h" />
     <ClInclude Include="src\UISprite.h" />
+    <ClInclude Include="src\UIStandardPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

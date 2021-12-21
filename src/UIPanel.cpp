@@ -28,9 +28,9 @@ void UIPanel::caluculateWorldTransform()
 			mp_UIPanelParent->WorldScale();
 	}
 	else {
-		this->WorldScale() = this->Scale();
-		this->WorldRotAngle() = this->RotAngle();
-		this->WorldPos() = this->Pos().getRotated(-(this->RotAngle()), ofVec3f(0, 0, 1)) * this->Scale();
+		this->WorldScale() = this->Scale()* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
+ 		this->WorldRotAngle() = this->RotAngle();
+		this->WorldPos() = this->Pos().getRotated(-(this->RotAngle()), ofVec3f(0, 0, 1)) * this->Scale()* ((float)ofGetHeight() / (float)Define::FULLWIN_H);
 	}
 }
 
@@ -58,7 +58,11 @@ void UIPanel::update()
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
-				uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
+				for (auto& uf : uic->UIupdatefuncVec) {
+					assert(uf != nullptr);
+					uf();
+				}
+				//uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
 	}
@@ -82,6 +86,9 @@ void UIPanel::update()
 		for (auto& uic : m_UIPanelChildList)
 		{
 			if (uic->GetActorState() != ActorState::EPause) {
+				/*for (auto& uipcu : UIupdatefuncVec) {
+					uipcu();
+				}*/
 				uic->update();  //•`‰æ‚É‰e‹¿‚·‚éˆ—‚È‚Ç‚ÍEActiveó‘Ô‚ÆEDrawingó‘Ô‚ÌŽž‚És‚¤
 			}
 		}
@@ -94,7 +101,7 @@ void UIPanel::input()
 		for (auto& uic : m_UICommonChildList)
 		{
 			if (uic->GetActorState() == ActorState::EActive) {
-				uic->UIinputfunc();  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
+				uic->input();  //‘€ìˆ—‚ÍEActiveó‘Ô‚ÌUIScreen‚µ‚©s‚í‚È‚¢
 			}
 		}
 	}
@@ -114,14 +121,19 @@ void UIPanel::draw()
 	if (!m_UICommonChildList.empty()) {
 		for (auto& uic : m_UICommonChildList) {
 			if (uic->GetActorDrawState() == ActorDrawState::EVisible) {
-				ofPushMatrix();
-				ofTranslate(uic->WorldPos());
-				ofRotateDeg(-(uic->WorldRotAngle()));
-				ofScale(uic->WorldScale());
+				for (auto& df : uic->UIdrawfuncVec) {
+					assert(df != nullptr);
+					ofPushMatrix();
+					ofTranslate(uic->WorldPos());
+					ofRotateDeg(-(uic->WorldRotAngle()));
+					ofScale(uic->WorldScale());
 
-				assert(uic->UIdrawfunc != nullptr);
-				uic->UIdrawfunc();
-				ofPopMatrix();
+					df();
+					ofPopMatrix();
+				}
+				//uic->draw();
+				/*assert(uic->UIdrawfunc != nullptr);
+				uic->UIdrawfunc();*/
 			}
 		}
 	}
