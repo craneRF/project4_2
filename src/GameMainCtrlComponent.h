@@ -8,6 +8,7 @@ class GameMainCtrlComponent final : public Component
 	friend class GameStateTitle;
 	friend class GameStateMap;
 	friend class GameStateBattle;
+	friend class GameStateEvent;
 
 private:
 	Parameter m_playerprm;
@@ -15,6 +16,7 @@ private:
 	static GameStateTitle m_gameStateTitle;
 	static GameStateMap m_gameStateMap;
 	static GameStateBattle m_gameStateBattle;
+	static GameStateEvent m_gameStateEvent;
 public:
 	GameMainCtrlComponent(GameActor*m_gActor);
 	virtual ~GameMainCtrlComponent();

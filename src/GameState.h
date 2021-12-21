@@ -10,10 +10,10 @@ private:
 
 protected:
 	GameActor* mp_fontActor;
-	GameActor* mp_actor;
+	GameActor* mp_operationFontactor;	// 操作方法を表示するアクター
 	GameActor* mp_actor1;
 	GameActor* mp_actor2;
-	
+	GameActor* mp_itemlist;
 
 public:
 	GameState() {};
@@ -24,6 +24,7 @@ public:
 
 
 	shared_ptr<Parameter> m_prmInState = make_shared<Parameter>();
+
 };
 
 // タイトルシーン
@@ -62,6 +63,7 @@ class GameStateBattle final : public GameState {
 private:
 	// 戦闘システム
 	BattleComponent* mp_BattleComp;
+	GameActor* mp_hpFontActor;
 
 public:
 	virtual void enter(Parameter _pprm);
@@ -71,4 +73,24 @@ public:
 	float m_angle;
 	class MoveComponent* m_move;
 
+};
+
+// イベントシーン
+class GameStateEvent final : public GameState {
+private:
+	enum class EVENT_INDEX
+	{
+		NONE,
+		HEAL,
+		DAMAGE,
+		ATTACK_UP,
+		INDEX_NUM,
+	};
+
+	bool m_isDead = false;
+
+public:
+	virtual void enter(Parameter _pprm);
+	virtual GameState* update();
+	virtual void exit(Parameter& _pprm);
 };

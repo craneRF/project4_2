@@ -6,12 +6,14 @@ class MoveComponent;
 
 struct BulletParam
 {
-	string bulletName;
-	string imageName;
-	ofVec3f scale;
-	float speed;
-	float rotVal;
-	int damage;
+	string bulletName;			// 名前
+	string imageName;			// 画像名
+	int generationSoundIndex;	// 生成時に鳴らす音声ファイルのインデックス
+	int destroySoundIndex;		// 消滅時に鳴らす音声ファイルのインデックス
+	ofVec3f scale;				// 大きさ
+	float speed;				// 移動の速さ
+	float rotVal;				// 回転の速さ
+	int damage;					// ダメージ
 };
 
 class BulletObject

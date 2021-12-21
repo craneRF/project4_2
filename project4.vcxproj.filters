@@ -165,6 +165,10 @@
     <ClCompile Include="src\BoxComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Effect.cpp" />
+    <ClCompile Include="src\ItemObject.cpp" />
+    <ClCompile Include="src\ItemComponent.cpp" />
+    <ClCompile Include="src\ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -248,6 +252,11 @@
     <ClInclude Include="src\BoxComponent.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Effect.h" />
+    <ClInclude Include="src\ItemObject.h" />
+    <ClInclude Include="src\ItemComponent.h" />
+    <ClInclude Include="src\ItemType.h" />
+    <ClInclude Include="src\ItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">

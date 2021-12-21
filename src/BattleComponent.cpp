@@ -20,7 +20,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 
 	// プレイヤー
 	{
-		mp_charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W * 3 / 4.f, Define::FULLWIN_H * 1.f / 4 });
+		mp_charaActor = PlayerActor::createPlayer(_gactor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.9f });
 		mp_charaActor->getComponent<BoxComponent>()->m_onCollisionFunc = [this](CollisionComponent* _other)
 		{
 			if (_other->gActor()->GetActorState() == Actor::ActorState::EErace)
@@ -39,6 +39,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 			if (res != m_bulletList.end())
 			{
 				int damage = BulletComponent::getBullet((*res)->getComponent<BulletComponent>()->getBulletType()).damage;
+
 				mp_Command.reset(new Command());
 				mp_Command->fromIndex = 1;
 				mp_Command->toIndex = 0;
@@ -48,18 +49,17 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 				// 当たった弾をリストから削除
 				m_bulletList.erase(res);
 
-				cout << "ガード判定：" << "本体の範囲で押されました。\n";
+				cout << "ガード判定：本体の範囲で押されました。\n";
 				_other->gActor()->StateErace();
 			}
 		};
 
-		auto imageSize = mp_charaActor->getComponent<PlayerComponent>()->GetImageSize() * 0.6f;
-		ofVec3f incrementSize = imageSize * 0.2f;
+		auto imageSize = mp_charaActor->getComponent<PlayerComponent>()->GetImageSize();
+		ofVec3f incrementSize = imageSize * 0.3f;
+		imageSize *= 0.4f;
+		// ガード判定
 		for (int i = 1; i <= 2; ++i)
 		{
-			/*auto collisionComp = mp_charaActor->addComponent<CollisionComponent>();
-			collisionComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
-			collisionComp->m_onCollisionFunc = [this, i](CollisionComponent* _other)*/
 			auto boxComp = mp_charaActor->addComponent<BoxComponent>();
 			boxComp->initialize({ 0,0 }, imageSize.x + i * incrementSize.x, imageSize.y + i * incrementSize.y, CollisionType::PLAYER_OBJECT);
 			boxComp->m_onCollisionFunc = [this, i](CollisionComponent* _other)
@@ -200,7 +200,7 @@ void BattleComponent::ExcuteCommand()
 
 void BattleComponent::InitEnemyList()
 {
-	auto enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W / 4.f * 1,Define::FULLWIN_H * 3 / 4.f }, EnemyType::Nomal);
+	auto enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f,Define::FULLWIN_H * 0.3f }, EnemyType::Nomal);
 	m_EnemyList.emplace_back(enemyActor);
 
 	auto enemyCpnt = enemyActor->getComponent<EnemyComponent>();
@@ -218,6 +218,7 @@ void BattleComponent::InitEnemyList()
 			if (res != m_bulletList.end())
 			{
 				int damage = BulletComponent::getBullet((*res)->getComponent<BulletComponent>()->getBulletType()).damage;
+				int playerAttack = mp_Player->getPlayerParam("ATTACK");
 
 				// 当たった弾をリストから削除
 				m_bulletList.erase(res);
@@ -226,7 +227,7 @@ void BattleComponent::InitEnemyList()
 				mp_Command->fromIndex = 0;
 				mp_Command->toIndex = 1;
 				mp_Command->commandType = 0;
-				mp_Command->commandval = damage;
+				mp_Command->commandval = damage * playerAttack;
 
 				cout << "敵に当たりました。\n";
 				_other->gActor()->StateErace();

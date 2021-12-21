@@ -65,9 +65,9 @@ void NomalEnemy::initialize()
 	m_eParam.ImageName = "enemy_robot_body1.png";
 	setEnemySkill("NomalAttack", 10);
 
-	setEnemyParts("arm_right", { -75,0 }, "enemy_robot_arm_R1.png", 1, 0, { 1.f,1.f }, -20);
+	setEnemyParts("arm_right", { -75,-10 }, "enemy_robot_arm_R1.png", 1, 0, { 1.f,1.f }, -20);
 	//setEnemyParts("body", { 0,0 }, "enemy_robot_body1.png", 1, 0, { 1.f,1.f });
-	setEnemyParts("arm_left", { 55,0 }, "enemy_robot_arm_L1.png", 1, 0, { 1.f,1.f }, 20);
+	setEnemyParts("arm_left", { 55,-10 }, "enemy_robot_arm_L1.png", 1, 0, { 1.f,1.f }, 20);
 }
 
 //SmalleEnemy

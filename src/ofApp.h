@@ -47,7 +47,6 @@ public:
 
 	unique_ptr<Font> mp_font;
 	unique_ptr<Texture> mp_texture;
-	
 
 	unique_ptr<GameActor> hierarchyRoot_;
 	//vector<unique_ptr<UIScreen>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
@@ -60,6 +59,9 @@ public:
 	unique_ptr< SoundManager> mp_soundManager;
 	unique_ptr< InputManager> mp_inputManager;
 	unique_ptr< ResourceManager<ofImage>> mp_imageManager;
+	
+	unique_ptr<Parameter>mp_prm;
+	unique_ptr<ItemManager> mp_itemManager;
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 

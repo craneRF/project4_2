@@ -4,6 +4,7 @@
 GameStateTitle GameMainCtrlComponent::m_gameStateTitle;
 GameStateMap GameMainCtrlComponent::m_gameStateMap;
 GameStateBattle GameMainCtrlComponent::m_gameStateBattle;
+GameStateEvent GameMainCtrlComponent::m_gameStateEvent;
 
 GameMainCtrlComponent::GameMainCtrlComponent(GameActor* _gActor) :
 	Component(_gActor, "GameMainCtrlComponent")

@@ -14,6 +14,9 @@ const string SoundManager::soundList[] = {
 		"explosion.mp3",
 		"UnicornBGM.mp3",
 		"SnakeBeep.mp3",
+		"explosion.mp3",
+		"missile.mp3",
+		"beam-gun.mp3",
 };
 
 SoundManager::SoundManager()
