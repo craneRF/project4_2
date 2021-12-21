@@ -13,8 +13,10 @@ UIFont::UIFont(string _name)
 	, m_sizeBuffer(m_size)
 	, m_fontNameBuffer(m_fontName)
 {
-	UIupdatefunc = std::bind(&UIFont::update, this);
-	UIdrawfunc = std::bind(&UIFont::draw, this);
+	//UIupdatefunc = std::bind(&UIFont::update, this);
+	UIupdatefuncVec.emplace_back(bind(&UIFont::update, this));
+	//UIdrawfunc = std::bind(&UIFont::draw, this);
+	UIdrawfuncVec.emplace_back(bind(&UIFont::draw, this));
 }
 
 UIFont::~UIFont()

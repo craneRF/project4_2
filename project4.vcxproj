@@ -185,6 +185,7 @@
     <ClCompile Include="src\BulletComponent.cpp" />
     <ClCompile Include="src\BulletObject.cpp" />
     <ClCompile Include="src\BoxComponent.cpp" />
+    <ClCompile Include="src\CreateActor.cpp" />
     <ClCompile Include="src\EnemyComponent.cpp" />
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="src\UIPanel.cpp" />
     <ClCompile Include="src\UIPanelCanvas.cpp" />
     <ClCompile Include="src\UISprite.cpp" />
+    <ClCompile Include="src\UIStandardPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BattleState.h" />
@@ -237,6 +239,7 @@
     <ClInclude Include="src\BulletComponent.h" />
     <ClInclude Include="src\BulletObject.h" />
     <ClInclude Include="src\BoxComponent.h" />
+    <ClInclude Include="src\CreateActor.h" />
     <ClInclude Include="src\EnemyType.h" />
     <ClInclude Include="src\EnemyComponent.h" />
     <ClInclude Include="src\EnemyActor.h" />
@@ -290,6 +293,7 @@
     <ClInclude Include="src\UIPanel.h" />
     <ClInclude Include="src\UIPanelCanvas.h" />
     <ClInclude Include="src\UISprite.h" />
+    <ClInclude Include="src\UIStandardPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

@@ -7,6 +7,7 @@
 #include "LoadCSVFile.h"
 #include "MapState.h"
 #include "BattleState.h"
+#include "CreateActor.h"
 
 /*
 * 1.hierarchyRoot_のGameMainCtrlComponent内でシーン制御をし、アクターの生成を行うことから、
@@ -39,6 +40,8 @@ void GameStateTitle::enter(Parameter _pprm)
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
+
+	//auto player = CreateActor::CreatePlayer("aaa");
 
 	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	//ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
@@ -192,7 +195,7 @@ void GameStateBattle::enter(Parameter _pprm)
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofToString(0));
 
-	// mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 
 	mp_actor2->findActor(mp_actor2, "");
 	// 戦闘システム初期化
@@ -229,4 +232,5 @@ void GameStateBattle::exit(Parameter& _pprm)
 	ofApp::getInstance()->mp_soundManager->stop(0);
 	//m_EnemyList.clear();
 	_pprm = *m_prmInState;
+	mp_BHUD->StateErace();
 }

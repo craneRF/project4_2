@@ -62,6 +62,7 @@ class GameStateBattle final : public GameState {
 private:
 	// í“¬ƒVƒXƒeƒ€
 	BattleComponent* mp_BattleComp;
+	UIPanelCanvas* mp_BHUD;
 
 public:
 	virtual void enter(Parameter _pprm);

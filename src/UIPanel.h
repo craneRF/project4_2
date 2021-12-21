@@ -28,6 +28,10 @@ public:
 	UIPanel* mp_UIPanelParent;  //©g‚ª‚Ç‚ÌUIPanel‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
 	UIPanelCanvas* mp_UICanvasParent;  //©g‚ª‚Ç‚ÌUIScreen‚É‘¶İ‚µ‚Ä‚¢‚é‚Ì‚©‚ğŠi”[‚·‚é•Ï”
 
+	vector<function<void()>> UIupdatefuncVec;
+	vector<function<void()>> UIinputfuncVec;
+	vector<function<void()>> UIdrawfuncVec;
+
 public:
 	template <typename T>
 	inline T* addUICommon(string _name)
@@ -44,9 +48,9 @@ public:
 	{
 		auto uipanel = make_unique<T>(_name);
 		uipanel->mp_UIPanelParent = this;
-		uipanel->mp_UIScreenParent = this->mp_UIScreenParent;
+		uipanel->mp_UICanvasParent = this->mp_UICanvasParent;
 		auto res = uipanel.get();
-		m_UPanelChildAddQue.push(move(uipanel));
+		m_UIPanelChildAddQue.push(move(uipanel));
 		return res;
 	}
 };
