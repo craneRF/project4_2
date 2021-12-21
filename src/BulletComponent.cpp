@@ -8,20 +8,18 @@ BoundBullet BulletComponent::m_boundBullet;
 
 BulletComponent::BulletComponent(GameActor * _gactor) :
 	Component(_gactor, "Bullet"),
-	m_target(0,0),
+	m_target(0, 0),
 	m_bulletType(BulletType::Nomal),
-	m_vec(1,1)
+	m_vec(1, 1)
 {
 	m_vec.normalize();
 }
 
 BulletComponent::~BulletComponent()
 {
-	// 消滅時の音声ファイルを鳴らす
+	// 消滅時の音声ファイルを再生
 	int destroySoundIndex = getBullet(m_bulletType).destroySoundIndex;
 	ofApp::getInstance()->mp_soundManager->play(destroySoundIndex);
-
-	mp_gActor->mp_parent->getComponent<BattleComponent>()->DeleteBullet(mp_gActor);
 }
 
 void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const ofVec3f& _vec)
@@ -30,7 +28,7 @@ void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulle
 	m_bulletType = _bulletType;
 	m_vec = _vec;
 
-	// 生成時の音声ファイルを鳴らす
+	// 生成時の音声ファイルを再生
 	int generationSoundIndex = getBullet(m_bulletType).generationSoundIndex;
 	ofApp::getInstance()->mp_soundManager->play(generationSoundIndex);
 
@@ -96,6 +94,16 @@ void BulletComponent::input()
 
 void BulletComponent::onCollision(CollisionComponent * _other)
 {
+	auto enemyPartsCpnt = _other->gActor()->getComponent<EnemyPartsComponent>();
+	if (enemyPartsCpnt)
+	{
+		// ダメージを与える
+		enemyPartsCpnt->onDamage(mp_gActor->Name(), m_attack, getBullet(m_bulletType).damage);
+		//// 戦闘コンポーネントの弾リストから削除
+		mp_battleCpnt->DeleteBullet(mp_gActor);
+		// アクターの消去
+		mp_gActor->StateErace();
+	}
 }
 
 BulletParam BulletComponent::getBullet(BulletType _bulletType)

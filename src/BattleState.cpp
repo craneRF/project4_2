@@ -73,17 +73,22 @@ void SelectCommandState::exit(BattleComponent * _battleComponent)
 
 void JudgeState::enter(BattleComponent * _battleComponent)
 {
+	// プレイヤーの体力
 	int pHP = _battleComponent->GetPlayer()->getPlayerParam("HP");
-	int eHP = _battleComponent->GetEnemyHp();
+	// 残りの敵数
+	int eCount = _battleComponent->GetEnemyCount();
 
+	// プレイヤーの体力がなくなった
 	if (pHP <= 0)
 	{
 		result = Result::LOSE;
 	}
-	else if (eHP <= 0)
+	// 敵をすべて倒した
+	else if (eCount <= 0)
 	{
 		result = Result::WIN;
 	}
+	// 戦闘続行
 	else
 	{
 		result = Result::NONE;
@@ -171,19 +176,19 @@ void TurnState::exit(BattleComponent * _battleComponent)
 void AttackState::enter(BattleComponent * _battleComponent)
 {
 	// 弾アクター
-	BulletActor* actor = nullptr;
+	GameActor* actor = nullptr;
 	if (m_turnCharaIndex == 0)
 	{
-		actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemyPos(m_targetCharaIndex - 1), m_bulletType);
-		//for (int i = 0; i < 3; ++i)
-		//{
-			auto actor1 = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemyPos(m_targetCharaIndex - 1), BulletType::Small);
-			_battleComponent->AddBullet(actor1);
-//		}
+		actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemy(m_targetCharaIndex - 1)->Pos(), m_bulletType);
+		//auto actor1 = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemy(m_targetCharaIndex - 1)->Pos(), BulletType::Small);
+		//actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemy(m_targetCharaIndex - 1)->WorldPos(), m_bulletType);
+		//auto actor1 = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemy(m_targetCharaIndex - 1)->WorldPos(), BulletType::Small);
+		//_battleComponent->AddBullet(actor1);
 	}
 	else
 	{
-		actor = BulletActor::createEnemyBullet(_battleComponent->gActor(), _battleComponent->GetEnemyPos(m_turnCharaIndex - 1), _battleComponent->GetPlayerPos(), m_bulletType);
+		actor = BulletActor::createEnemyBullet(_battleComponent->gActor(), _battleComponent->GetEnemy(m_turnCharaIndex - 1)->Pos(), _battleComponent->GetPlayerPos(), m_bulletType);
+		//actor = BulletActor::createEnemyBullet(_battleComponent->gActor(), _battleComponent->GetEnemy(m_turnCharaIndex - 1)->WorldPos(), _battleComponent->GetPlayerPos(), m_bulletType);
 	}
 
 	// 作成したアクターを弾リストに追加

@@ -4,10 +4,7 @@
 #include "EnemyObject.h"
 
 class GameActor;
-class CollisionComponent;
-class BoxComponent;
-class SpriteComponent;
-class EnemyPartsComponent;
+class BattleComponent;
 
 enum EnemyType;
 struct EnemyParam;
@@ -17,7 +14,9 @@ class EnemyComponent  final : public Component
 {
 	friend class NomalEnemy;
 private:
-	SpriteComponent * mp_sprCpnt;
+	// この敵がいる戦闘コンポーネント
+	BattleComponent* mp_battleCpnt;
+	// 敵のタイプ
 	int m_EnemyType = 0;
 
 	static EnemyObject m_stdEnemy;
@@ -27,31 +26,41 @@ public:
 	EnemyComponent(GameActor* _gactor);
 	virtual ~EnemyComponent();
 
-	std::shared_ptr<EnemyPartsComponent>  mp_epCpnt;
+	void Initialize(BattleComponent* _battleCpnt, const int _enemytype);
 
 	virtual void update();
 	virtual void input();
-	void onCollision(CollisionComponent*);
+	// 死亡時に呼び出す関数
+	void onDestroy();
 
+	void AddCommand(const string _fromName, const string _toName, const int _commandType, const int _commandval);
 	EnemyParam getEnemy(int _enemytype);
 	void setEnemyType(int _enemytype) { m_EnemyType = _enemytype; }
-
-	//void setImage(GameActor* _parent, EnemyType _enemytype);
-
 };
 
 class EnemyPartsComponent : public Component
 {
-private:
-	void CreateParts(GameActor * _parent, ofVec3f _pos, EnemyType _enemytype);
-
 protected:
-	ofVec3f m_pos = { 0,0 };
-	EnemyComponent* enemyCpnt;
+	// この部位を持つ敵コンポーネント
+	EnemyComponent* mp_enemyCpnt;
+	// 体力
+	int m_hp = 10;
+	// 防御力
+	int m_def = 0;
+	// 胴体など重要な部位か
+	bool m_isCore = true;
+
 public:
+	EnemyPartsComponent(GameActor* _gactor);
+	virtual ~EnemyPartsComponent();
 
-	void setPos(ofVec3f _pos) { m_pos = _pos; }
-	ofVec3f getPos() { return m_pos; }
+	void Initialize(const EnemyParts& _enemyParts, EnemyComponent* _enemyCpnt);
 
-	void EnemyPartsComponent::CreateEnemyBody(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name = "EnemyBody");
+	virtual void update();
+	virtual void input();
+	void onCollision(CollisionComponent*);
+	// ダメージ処理（ダメージ）
+	void onDamage(const string& _fromName, const int _damage);
+	// ダメージ処理（キャラクターの攻撃力、弾の攻撃力）
+	void onDamage(const string& _fromName, const int _charaAttack, const int _bulletAttack);
 };

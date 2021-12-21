@@ -4,15 +4,14 @@
 
 enum EnemyType;
 class EnemyBodyActor;
+class BattleComponent;
 
 class EnemyActor : public GameActor
 {
 private:
-	static string m_EnemyName;
 
 public:
 	EnemyActor(string _name);
 
-	static EnemyActor* createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, string _name = "Enemy");
-	string getEnemyName() { return m_EnemyName; }
+	static EnemyActor* createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType _enemytype, BattleComponent* _battleCpnt);
 };

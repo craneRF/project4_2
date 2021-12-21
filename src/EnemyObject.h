@@ -14,6 +14,7 @@ struct EnemyParts {
 	ofVec3f Pos;
 	ofVec3f Scale;
 	float angle;
+	bool isCore;
 };
 
 struct EnemyParam
@@ -44,7 +45,7 @@ public:
 	void setEnemySkill(string key, int val);
 	EnemySkill getEnemySkill(string key) const;
 
-	void setEnemyParts(string partsname, ofVec3f pos, string imagename, int hp = 1, int def = 0, ofVec3f scale = { 1,1,1 }, float angle = 0.f);
+	void setEnemyParts(string partsname, ofVec3f pos, string imagename, bool _isCore,int hp = 1, int def = 0, ofVec3f scale = { 1,1,1 }, float angle = 0.f);
 
 	EnemyParam m_eParam;
 private:

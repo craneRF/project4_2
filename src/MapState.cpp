@@ -13,19 +13,6 @@ void InitMapState::Initialize(GameActor* _mapActor)
 		CreateRandomMap();
 	}
 
-	// ƒ}ƒbƒv‚Ì•`‰æ
-	//_mapActor->drawfuncVec.emplace_back([this]
-	//	{
-
-	//		for (auto & colStepList : MapComponent::m_Map)
-	//		{
-	//			for (auto & rowStep : colStepList)
-	//			{
-	//				//DrawLine(rowStep.get());
-	//			}
-	//		}
-	//	});
-
 	CreateLineActor(_mapActor);
 	CreateStepActor(_mapActor);
 
@@ -213,6 +200,10 @@ void InitMapState::CreateStepActor(GameActor * _mapActor)
 			spriteCpnt->AlignPivotCenter();
 			if (step->m_IsSelected)
 			{
+				spriteCpnt->Color() = ofColor::white;
+			}
+			else
+			{
 				spriteCpnt->Color() = ofColor::gray;
 			}
 		}
@@ -251,11 +242,11 @@ void InitMapState::CreateLineActor(GameActor * _mapActor)
 					{
 						if (step->m_IsSelected && (nextStep->m_IsFocused || nextStep->m_IsSelected))
 						{
-							spriteCpnt->Color() = ofColor::gray;
+							spriteCpnt->Color() = ofColor::white;
 						}
 						else
 						{
-							spriteCpnt->Color() = ofColor::white;
+							spriteCpnt->Color() = ofColor::gray;
 						}
 					}
 				);

@@ -5,14 +5,14 @@
 
 struct Command
 {
-	int fromIndex;
-	int toIndex;
+	string fromName;
+	string toName;
 	int commandType;
 	int commandval;
 
-	Command(const int _fromIndex,const int _toIndex,const int _commandType,const int _commandval) :
-		fromIndex(_fromIndex),
-		toIndex(_toIndex),
+	Command(const string _fromName, const string _toName, const int _commandType, const int _commandval) :
+		fromName(_fromName),
+		toName(_toName),
 		commandType(_commandType),
 		commandval(_commandval)
 	{}
@@ -36,14 +36,9 @@ private:
 	PlayerActor *mp_charaActor;
 	shared_ptr<Parameter> mp_Player;
 	// 敵リスト
-	vector<EnemyActor*> m_EnemyList;
-	// map<string, EnemyActor*>m_EnemyMap;
-
-	list<GameActor*> m_bulletList;
-
-	int m_EnemyHP = 0;
-
-	string m_Enemyname;
+	vector<GameActor*> m_EnemyList;
+	// 弾リスト
+	vector<GameActor*> m_bulletList;
 
 	// 動作確認文字列
 	string m_stateInfo = "";
@@ -57,22 +52,27 @@ public:
 	void SetPlayer(shared_ptr<Parameter> _player) { mp_Player = _player; }
 
 	// 弾を追加
-	void AddBullet(GameActor* _bulletActor) {m_bulletList.emplace_back(_bulletActor);};
+	void AddBullet(GameActor* _bulletActor);
 	// 弾を削除
-	void DeleteBullet(GameActor* _bulletActor) {
-		auto res = find_if(m_bulletList.begin(), m_bulletList.end(),
-			[&](const auto& c) {return c == _bulletActor; });
-		assert(res != m_bulletList.end());
-		m_bulletList.erase(res);
-	}
+	void DeleteBullet(GameActor* _bulletActor);
+
+	// 弾リストを取得
+	const std::vector <GameActor*>& GetBulletList() const { return m_bulletList; }
+
+	// コマンドを追加
+	void AddCommand(unique_ptr<Command>&& _command);
+
+	// 敵を削除
+	void DeleteEnemy(GameActor* _actor);
 
 	const ofVec3f& GetPlayerPos() { return mp_charaActor->Pos(); }
-	const ofVec3f& GetEnemyPos(const int _index) { return m_EnemyList.at(_index)->Pos(); }
+	GameActor* GetEnemy(const int _index) { return m_EnemyList.at(_index); }
+	const int GetEnemyCount() const { return m_EnemyList.size(); }
 	shared_ptr<Parameter> GetPlayer() { return mp_Player; }
-	const int GetEnemyHp() const { return m_EnemyHP; }
 	Result GetResult();
-	const string& GetInfo() const { return m_stateInfo; }
+	const string GetInfo() const { return m_stateInfo; }
 	const int GetBulletCount() const { return m_bulletList.size(); }
+	//const int GetBulletCount() const { return m_bulletList.size(); }
 private:
 	void ExcuteCommand();
 	// 敵リストの初期化

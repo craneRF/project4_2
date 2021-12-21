@@ -8,7 +8,7 @@ BulletActor::BulletActor(string _name)
 {
 }
 
-BulletActor * BulletActor::createBullet(GameActor * _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
+GameActor * BulletActor::createBullet(GameActor * _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
 {
 	// 弾パラメータ取得
 	BulletParam param = BulletComponent::getBullet(_bulletType);
@@ -27,7 +27,7 @@ BulletActor * BulletActor::createBullet(GameActor * _parent, ofVec3f _pos, ofVec
 	return actor;
 }
 
-BulletActor* BulletActor::createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
+GameActor* BulletActor::createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
 {
 	// 弾アクター作成
 	auto actor = createBullet(_parent, _pos, _target, _bulletType);
@@ -38,7 +38,7 @@ BulletActor* BulletActor::createPlayerBullet(GameActor* _parent, ofVec3f _pos, o
 	return actor;
 }
 
-BulletActor* BulletActor::createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
+GameActor* BulletActor::createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, BulletType _bulletType)
 {
 	// 弾アクター作成
 	auto actor = createBullet(_parent, _pos, _target, _bulletType);

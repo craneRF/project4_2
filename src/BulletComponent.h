@@ -22,10 +22,17 @@ private:
 	SpriteComponent * mp_sprCpnt;
 	MoveComponent * mp_moveCpnt;
 	CollisionComponent * mp_collisionCpnt;
+	// この弾を管理している戦闘コンポーネント
+	BattleComponent* mp_battleCpnt;
 
+	// 弾のタイプ
 	BulletType m_bulletType;
+	// ターゲットの座標
 	ofVec3f m_target;
+	// 弾の向き
 	ofVec3f m_vec;
+	// この弾を出したキャラクターの攻撃力
+	int m_attack = 1;
 
 	static BulletObject m_stdBullet;
 	static NomalBullet m_nomalBullet;
@@ -43,6 +50,7 @@ public:
 	void onCollision(CollisionComponent*);
 
 	void SetVec(const ofVec3f& _vec) { m_vec = _vec; }
+	void SetBattleComponent(BattleComponent* _battleCpnt) { mp_battleCpnt = _battleCpnt; }
 
 	BulletType getBulletType() { return m_bulletType; }
 	static BulletParam getBullet(BulletType _bulletType);
