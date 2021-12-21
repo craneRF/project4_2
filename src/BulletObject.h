@@ -22,7 +22,7 @@ public:
 	BulletObject();
 	virtual ~BulletObject() {};
 
-	virtual void initialize() {};
+	virtual void initialize(BulletComponent * _bulletComponent) {};
 	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent) {};
 
 	BulletParam m_bParam;
@@ -30,20 +30,34 @@ public:
 protected:
 	void MoveToTarget(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
 	void RotateToTarget(BulletComponent* _bulletComponent, MoveComponent* _moveComponent, bool _isImmediately);
+	void ReflectRect(BulletComponent* _bulletComponent, MoveComponent* _moveComponent, const ofRectangle& _rect);
 };
 
 class NomalBullet : public BulletObject
 {
 public:
 	NomalBullet();
-	virtual void initialize();
+	virtual void initialize(BulletComponent * _bulletComponent);
 	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
 };
 
-class SmallBullet final : public NomalBullet
+class SmallBullet final : public BulletObject
 {
+private:
+
 public:
 	SmallBullet();
-	virtual void initialize();
+	virtual void initialize(BulletComponent * _bulletComponent);
+	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
+};
+
+class BoundBullet final : public BulletObject
+{
+private:
+	ofRectangle m_reflectRect;
+
+public:
+	BoundBullet();
+	virtual void initialize(BulletComponent * _bulletComponent);
 	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
 };

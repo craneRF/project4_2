@@ -9,6 +9,13 @@ struct Command
 	int toIndex;
 	int commandType;
 	int commandval;
+
+	Command(const int _fromIndex,const int _toIndex,const int _commandType,const int _commandval) :
+		fromIndex(_fromIndex),
+		toIndex(_toIndex),
+		commandType(_commandType),
+		commandval(_commandval)
+	{}
 };
 enum class Result
 {
@@ -23,7 +30,7 @@ class BattleComponent :public Component
 {
 private:
 	unique_ptr<BattleState> mp_battleState;
-	unique_ptr<Command> mp_Command;
+	queue<unique_ptr<Command>> m_commandList;
 
 	// êÌì¨ÉLÉÉÉâ
 	PlayerActor *mp_charaActor;
@@ -48,9 +55,16 @@ public:
 	virtual void input();
 
 	void SetPlayer(shared_ptr<Parameter> _player) { mp_Player = _player; }
-	void SetCommand(Command* _command) { mp_Command.reset(_command); }
 
-	void AddBullet(GameActor* _bulletActor) { m_bulletList.emplace_back(_bulletActor); }
+	// íeÇí«â¡
+	void AddBullet(GameActor* _bulletActor) {m_bulletList.emplace_back(_bulletActor);};
+	// íeÇçÌèú
+	void DeleteBullet(GameActor* _bulletActor) {
+		auto res = find_if(m_bulletList.begin(), m_bulletList.end(),
+			[&](const auto& c) {return c == _bulletActor; });
+		assert(res != m_bulletList.end());
+		m_bulletList.erase(res);
+	}
 
 	const ofVec3f& GetPlayerPos() { return mp_charaActor->Pos(); }
 	const ofVec3f& GetEnemyPos(const int _index) { return m_EnemyList.at(_index)->Pos(); }

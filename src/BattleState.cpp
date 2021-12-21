@@ -175,6 +175,11 @@ void AttackState::enter(BattleComponent * _battleComponent)
 	if (m_turnCharaIndex == 0)
 	{
 		actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemyPos(m_targetCharaIndex - 1), m_bulletType);
+		//for (int i = 0; i < 3; ++i)
+		//{
+			auto actor1 = BulletActor::createPlayerBullet(_battleComponent->gActor(), _battleComponent->GetPlayerPos(), _battleComponent->GetEnemyPos(m_targetCharaIndex - 1), BulletType::Small);
+			_battleComponent->AddBullet(actor1);
+//		}
 	}
 	else
 	{

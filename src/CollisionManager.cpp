@@ -5,11 +5,11 @@
 
 bool CollisionManager::CollisionMatrix[CollisionTypeMax][CollisionTypeMax] = {
 	//DEFAULT POBJECT PBULLET EOBJECT EBULLET
-	{true, true, true, true, true}, //DEFAULT
-	{true, false, false, true, true}, //PLAYER_OBJECT
-	{true, false, false, true, false}, //PLAYER_BULLET
-	{true, true, true, false, false}, //ENEMY_OBJECT
-	{true, true, false, false, false}, //ENEMY_BULLET
+	{false, false, false, false, false}, //DEFAULT
+	{false, false, false, true, true}, //PLAYER_OBJECT
+	{false, false, false, true, false}, //PLAYER_BULLET
+	{false, true, true, false, false}, //ENEMY_OBJECT
+	{false, true, false, false, false}, //ENEMY_BULLET
 };
 
 CollisionManager::CollisionManager() {
