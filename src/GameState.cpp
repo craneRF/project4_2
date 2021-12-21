@@ -41,11 +41,9 @@ void GameStateTitle::enter(Parameter _pprm)
 		initialize(u8"タイトルシーン", 18);
 	*m_prmInState = _pprm;
 
-	//auto player = CreateActor::CreatePlayer("aaa");
-
-	//ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
-	//ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
-	//ofApp::getInstance()->mp_soundManager->loop(0);
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
+	ofApp::getInstance()->mp_soundManager->loop(0);
 
 	// FPS表示
 	//mp_actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -54,13 +52,26 @@ void GameStateTitle::enter(Parameter _pprm)
 	//	initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_actor1->Pos() = { 500,300 };
+
+	//タイトル背景
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_title_1.jpg");
+	}
+
+	//タイトルロゴ
+	{
+		auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_title->initialize("title.png");
+		spriteCpnt_title->AlignPivotCenter();
+		spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
+	}
+
 	mp_actor1->addComponent<FontRendererComponent>()->
 		initialize(ofToString(m_prmInState->getPlayerParam("HP")), 18);
 
 	//PlayerActor::createPlayer(ofApp::getInstance()->hierarchyRoot_.get(), { 400,50 });
 	//EnemyActor::createEnemy(ofApp::getInstance()->hierarchyRoot_.get(), { 200,50 },NONE);
-	
 //	mp_marin = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>("Arrow");
 //	mp_marin->Pos() = { 750, 400 };
 //	mp_marin->Scale() = { 1.0f, 1.0f };
@@ -97,8 +108,6 @@ void GameStateTitle::enter(Parameter _pprm)
 //	mp_rect->addComponent<MoveComponent>()->AddMovePos({ 4.0f, 0.0f });
 //
 //	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
-	
 }
 
 GameState* GameStateTitle::update()
@@ -137,19 +146,26 @@ void GameStateTitle::exit(Parameter& _pprm)
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(0);
 	_pprm = *m_prmInState;
+	ofApp::getInstance()->mp_soundManager->play(4);
 }
 
 void GameStateMap::enter(Parameter _pprm)
 {
+
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
 	//mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"マップシーン");
 
+	ofApp::getInstance()->mp_soundManager->loop(1);
+
 	auto mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	mp_mapComp = mapActor->getComponent<MapComponent>();
 	mp_mapComp->Initialize();
+
+	auto spriteCpnt_bg = mapActor->addComponent<SpriteComponent>();
+	spriteCpnt_bg->initialize("backGround_map_2.jpg");
 
 	*m_prmInState = _pprm;
 }
@@ -177,6 +193,7 @@ void GameStateMap::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	_pprm = *m_prmInState;
+	ofApp::getInstance()->mp_soundManager->stop(1);
 }
 
 
@@ -229,7 +246,7 @@ GameState * GameStateBattle::update()
 void GameStateBattle::exit(Parameter& _pprm)
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
-	ofApp::getInstance()->mp_soundManager->stop(0);
+	ofApp::getInstance()->mp_soundManager->stop(2);
 	//m_EnemyList.clear();
 	_pprm = *m_prmInState;
 	mp_BHUD->StateErace();
