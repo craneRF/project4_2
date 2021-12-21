@@ -34,7 +34,7 @@ private:
 
 	// í“¬ƒLƒƒƒ‰
 	PlayerActor *mp_charaActor;
-	shared_ptr<Parameter> mp_Player;
+	Parameter* mp_Player;
 	// “GƒŠƒXƒg
 	vector<GameActor*> m_EnemyList;
 	// ’eƒŠƒXƒg
@@ -49,7 +49,7 @@ public:
 	virtual void update();
 	virtual void input();
 
-	void SetPlayer(shared_ptr<Parameter> _player) { mp_Player = _player; }
+	void SetPlayer(Parameter* _player) { mp_Player = _player; }
 
 	// ’e‚ğ’Ç‰Á
 	void AddBullet(GameActor* _bulletActor);
@@ -68,7 +68,7 @@ public:
 	const ofVec3f& GetPlayerPos() { return mp_charaActor->Pos(); }
 	GameActor* GetEnemy(const int _index) { return m_EnemyList.at(_index); }
 	const int GetEnemyCount() const { return m_EnemyList.size(); }
-	shared_ptr<Parameter> GetPlayer() { return mp_Player; }
+	Parameter* GetPlayer() { return mp_Player; }
 	Result GetResult();
 	const string GetInfo() const { return m_stateInfo; }
 	const int GetBulletCount() const { return m_bulletList.size(); }

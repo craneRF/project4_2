@@ -34,15 +34,18 @@
 	例に書かれているような設計にしてください、ということです。
 */
 
-void GameStateTitle::enter(Parameter _pprm)
+void GameStateTitle::enter()
 {
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
 		initialize(u8"タイトルシーン", 18);
-	*m_prmInState = _pprm;
+
 	// タイトルなので、プレイヤーのパラメータを初期化
-	m_prmInState->initialize();
+	ofApp::getInstance()->mp_prm->initialize();
+	//*m_prmInState = _pprm;
+	//// タイトルなので、プレイヤーのパラメータを初期化
+	//m_prmInState->initialize();
 
 	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
@@ -157,15 +160,14 @@ GameState* GameStateTitle::update()
 	return nullptr;
 }
 
-void GameStateTitle::exit(Parameter& _pprm)
+void GameStateTitle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(0);
-	_pprm = *m_prmInState;
 	ofApp::getInstance()->mp_soundManager->play(4);
 }
 
-void GameStateMap::enter(Parameter _pprm)
+void GameStateMap::enter()
 {
 	ofApp::getInstance()->mp_soundManager->loop(1);
 
@@ -187,8 +189,6 @@ void GameStateMap::enter(Parameter _pprm)
 		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
 		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:決定\nWSキー:マス選択");
 	}
-
-	*m_prmInState = _pprm;
 }
 GameState * GameStateMap::update()
 {
@@ -210,23 +210,21 @@ GameState * GameStateMap::update()
 	return nullptr;
 }
 
-void GameStateMap::exit(Parameter& _pprm)
+void GameStateMap::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
-	_pprm = *m_prmInState;
 	ofApp::getInstance()->mp_soundManager->stop(1);
 }
 
 
-void GameStateBattle::enter(Parameter _pprm)
+void GameStateBattle::enter()
 {
-	*m_prmInState = _pprm;
-	m_prmInState->getPlayerParam("HP");
 	// 戦闘システム初期化
 	{
 		// 戦闘コンポーネント
 		mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
-		mp_BattleComp->SetPlayer(m_prmInState);
+		mp_BattleComp->SetPlayer(ofApp::getInstance()->mp_prm.get());
+		//mp_BattleComp->SetPlayer(m_prmInState);
 	}
 
 	// 「戦闘シーン」と表示するアクター
@@ -264,7 +262,7 @@ GameState * GameStateBattle::update()
 {
 	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
 
-	int playerHP = m_prmInState->getPlayerParam("HP");
+	int playerHP = ofApp::getInstance()->mp_prm->getPlayerParam("HP");
 	mp_hpFontActor->getComponent<FontRendererComponent>()->String() = u8"プレイヤーのHP:" + to_string(playerHP);
 
 	// 勝敗の結果に応じてシーン遷移
@@ -283,18 +281,15 @@ GameState * GameStateBattle::update()
 	return nullptr;
 }
 
-void GameStateBattle::exit(Parameter& _pprm)
+void GameStateBattle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(2);
-	//m_EnemyList.clear();
-	_pprm = *m_prmInState;
 	mp_BHUD->StateErace();
 }
 
-void GameStateEvent::enter(Parameter _pprm)
+void GameStateEvent::enter()
 {
-	*m_prmInState = _pprm;
 	m_isDead = false;
 
 	auto eventIndex = static_cast<EVENT_INDEX>(rand() % static_cast<int>(EVENT_INDEX::INDEX_NUM));
@@ -306,15 +301,15 @@ void GameStateEvent::enter(Parameter _pprm)
 		break;
 	case GameStateEvent::EVENT_INDEX::HEAL:
 	{
-		int hp = m_prmInState->getPlayerParam("HP") + 1;
-		m_prmInState->setPlayerParam("HP", hp);
+		Effect::healHP(1);
+		int hp = ofApp::getInstance()->mp_prm->getPlayerParam("HP");
 		eventStrInfo = u8"体力が1回復した。\n現在のHP:" + to_string(hp) + "\n";
 		break;
 	}
 	case GameStateEvent::EVENT_INDEX::DAMAGE:
 	{
-		int hp = m_prmInState->getPlayerParam("HP") - 1;
-		m_prmInState->setPlayerParam("HP", hp);
+		Effect::healHP(-1);
+		int hp = ofApp::getInstance()->mp_prm->getPlayerParam("HP");
 		eventStrInfo = u8"1ダメージを受けた\n";
 		// ダメージを受けた後も生きているか
 		if (hp <= 0)
@@ -330,8 +325,8 @@ void GameStateEvent::enter(Parameter _pprm)
 	}
 	case GameStateEvent::EVENT_INDEX::ATTACK_UP:
 	{
-		int attack = m_prmInState->getPlayerParam("ATTACK") + 1;
-		m_prmInState->setPlayerParam("ATTACK", attack);
+		Effect::increaseATK(1);
+		int attack = ofApp::getInstance()->mp_prm->getPlayerParam("ATTACK");
 		eventStrInfo = u8"攻撃力が1上がった。\n現在の攻撃力:" + to_string(attack) + "\n";
 		break;
 	}
@@ -378,9 +373,8 @@ GameState * GameStateEvent::update()
 	return nullptr;
 }
 
-void GameStateEvent::exit(Parameter & _pprm)
+void GameStateEvent::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
-	_pprm = *m_prmInState;
 	//ofApp::getInstance()->mp_soundManager->stop(1);
 }

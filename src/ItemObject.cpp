@@ -5,7 +5,7 @@ Potion::Potion() {
 	m_iParam.itemName = u8"ポーション";
 	m_iParam.itemText = "HPを20回復する";
 	m_iParam.itemEffect = [=]() {
-		m_effect.healHP(20);
+		Effect::healHP(20);
 	};
 }
 
@@ -13,6 +13,6 @@ HiPower::HiPower(){
 	m_iParam.itemName = u8"ハイパワー";
 	m_iParam.itemText = "攻撃力の基礎値を1上昇する";
 	m_iParam.itemEffect = [=]() {
-		m_effect.increaseATK(1);
+		Effect::increaseATK(1);
 	};
 }

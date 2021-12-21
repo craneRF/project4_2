@@ -1,5 +1,6 @@
 #include  "GameMainCtrlComponent.h"
 #include "GameState.h"
+#include "ofApp.h"
 
 GameStateTitle GameMainCtrlComponent::m_gameStateTitle;
 GameStateMap GameMainCtrlComponent::m_gameStateMap;
@@ -17,18 +18,17 @@ GameMainCtrlComponent::~GameMainCtrlComponent()
 
 void GameMainCtrlComponent::GameStateStart()
 {
-	//mp_gameState = &m_gameStateBattle;
 	mp_gameState = &m_gameStateTitle;
-	mp_gameState->enter(m_playerprm);
+	mp_gameState->enter();
 }
 
 void GameMainCtrlComponent::update()
 {
 	auto res = mp_gameState->update();
 	if (res != nullptr) {
-		mp_gameState->exit(m_playerprm);
+		mp_gameState->exit();
 		mp_gameState = res;
-		mp_gameState->enter(m_playerprm);
+		mp_gameState->enter();
 	}
 }
 

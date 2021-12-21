@@ -8,12 +8,12 @@ public:
 	Effect();
 	~Effect();
 
-	void healHP(int val);
-	void increaseHP(int val);
+	static void healHP(int val);
+	static void increaseHP(int val);
 
-	void increaseATK(int val);
+	static void increaseATK(int val);
 
-	void increaseDEF(int val);
+	static void increaseDEF(int val);
 private:
 };
 

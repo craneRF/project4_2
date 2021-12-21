@@ -18,13 +18,9 @@ protected:
 public:
 	GameState() {};
 	virtual ~GameState() {};
-	virtual void enter(Parameter _pprm) = 0;
+	virtual void enter() = 0;
 	virtual GameState* update() = 0;
-	virtual void exit(Parameter& _pprm) = 0;
-
-
-	shared_ptr<Parameter> m_prmInState = make_shared<Parameter>();
-
+	virtual void exit() = 0;
 };
 
 // タイトルシーン
@@ -33,9 +29,9 @@ private:
 	ofPath path;
 
 public:
-	virtual void enter(Parameter _pprm);
+	virtual void enter();
 	virtual GameState* update();
-	virtual void exit(Parameter& _pprm);
+	virtual void exit();
 
 	class GameActor* mp_rect;
 	class GameActor* mp_rect2;
@@ -50,9 +46,9 @@ private:
 	MapComponent* mp_mapComp;
 
 public:
-	virtual void enter(Parameter _pprm);
+	virtual void enter();
 	virtual GameState* update();
-	virtual void exit(Parameter& _pprm);
+	virtual void exit();
 	
 
 };
@@ -67,9 +63,9 @@ private:
 	GameActor* mp_hpFontActor;
 
 public:
-	virtual void enter(Parameter _pprm);
+	virtual void enter();
 	virtual GameState* update();
-	virtual void exit(Parameter& _pprm);
+	virtual void exit();
 
 	float m_angle;
 	class MoveComponent* m_move;
@@ -91,7 +87,7 @@ private:
 	bool m_isDead = false;
 
 public:
-	virtual void enter(Parameter _pprm);
+	virtual void enter();
 	virtual GameState* update();
-	virtual void exit(Parameter& _pprm);
+	virtual void exit();
 };

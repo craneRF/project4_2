@@ -11,7 +11,7 @@ class GameMainCtrlComponent final : public Component
 	friend class GameStateEvent;
 
 private:
-	Parameter m_playerprm;
+	//Parameter m_playerprm;
 	GameState* mp_gameState;
 	static GameStateTitle m_gameStateTitle;
 	static GameStateMap m_gameStateMap;

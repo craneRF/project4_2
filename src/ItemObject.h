@@ -17,8 +17,6 @@ public:
 
 	virtual void initialize() {};
 	ItemParam m_iParam;
-protected:
-	Effect m_effect;
 };
 
 class Potion :public ItemObject
