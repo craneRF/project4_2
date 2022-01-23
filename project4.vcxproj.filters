@@ -175,6 +175,9 @@
     <ClCompile Include="src\ItemObject.cpp" />
     <ClCompile Include="src\ItemComponent.cpp" />
     <ClCompile Include="src\ItemManager.cpp" />
+    <ClCompile Include="src\HitEffectComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -269,6 +272,9 @@
     <ClInclude Include="src\ItemComponent.h" />
     <ClInclude Include="src\ItemType.h" />
     <ClInclude Include="src\ItemManager.h" />
+    <ClInclude Include="src\HitEffectComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">

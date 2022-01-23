@@ -14,28 +14,38 @@ class EnemyComponent  final : public Component
 {
 	friend class NomalEnemy;
 private:
+	// パーツ配列
+	vector<class EnemyPartsComponent*> m_partsCpntList;
 	// この敵がいる戦闘コンポーネント
 	BattleComponent* mp_battleCpnt;
 	// 敵のタイプ
-	int m_EnemyType = 0;
+	EnemyType m_EnemyType;
+	bool m_isSelect;
 
 	static EnemyObject m_stdEnemy;
-	static NomalEnemy m_nomalEnemy;
-	static SmallEnemy m_smallEnemy;
+	static unordered_map<EnemyType, EnemyObject> m_enemyMap;
+
 public:
 	EnemyComponent(GameActor* _gactor);
 	virtual ~EnemyComponent();
 
-	void Initialize(BattleComponent* _battleCpnt, const int _enemytype);
+	void Initialize(BattleComponent* _battleCpnt, const EnemyType _enemytype);
 
 	virtual void update();
 	virtual void input();
 	// 死亡時に呼び出す関数
 	void onDestroy();
+	// スキル選択
+	const EnemySkill SelectSkill();
 
+	void AddParts(class EnemyPartsComponent* _partsCpnt) { m_partsCpntList.emplace_back(_partsCpnt); }
+	void DeleteParts(class EnemyPartsComponent* _partsCpnt);
+	const vector<class EnemyPartsComponent*>& GetPartsCpntList()const { return m_partsCpntList; }
 	void AddCommand(const string _fromName, const string _toName, const int _commandType, const int _commandval);
-	EnemyParam getEnemy(int _enemytype);
-	void setEnemyType(int _enemytype) { m_EnemyType = _enemytype; }
+	const EnemyParam& getEnemy() const;
+	EnemyParam getEnemy(EnemyType _enemytype);
+	void setEnemyType(EnemyType _enemytype) { m_EnemyType = _enemytype; }
+	void SetColor(const ofColor _color);
 };
 
 class EnemyPartsComponent : public Component

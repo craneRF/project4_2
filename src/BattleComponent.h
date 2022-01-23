@@ -22,6 +22,8 @@ enum class Result
 	NONE,
 	WIN,
 	LOSE,
+	LOSE_CONTINUE,
+	LOSE_OVER,
 };
 
 class Parameter;
@@ -34,23 +36,27 @@ private:
 
 	// 戦闘キャラ
 	PlayerActor *mp_charaActor;
-	Parameter* mp_Player;
 	// 敵リスト
 	vector<GameActor*> m_EnemyList;
 	// 弾リスト
 	vector<GameActor*> m_bulletList;
+	// 攻撃順
+	list<GameActor*> m_attackList;
 
 	// 動作確認文字列
 	string m_stateInfo = "";
-
+	// メッセージ配列
+	queue<string> m_messageList;
+	// ボス戦かどうか
+	bool m_isBossBattle = false;
 public:
 	BattleComponent(GameActor* _gator);
 	virtual ~BattleComponent();
 	virtual void update();
 	virtual void input();
 
-	void SetPlayer(Parameter* _player) { mp_Player = _player; }
-
+	// 初期化
+	void Initialize(const bool _isBossBattle);
 	// 弾を追加
 	void AddBullet(GameActor* _bulletActor);
 	// 弾を削除
@@ -61,21 +67,31 @@ public:
 
 	// コマンドを追加
 	void AddCommand(unique_ptr<Command>&& _command);
-
+	// メッセージを追加
+	void AddMessage(string& _message) { m_messageList.emplace(_message); }
+	// メッセージを上書き
+	void SetMessage(string& _message) { m_stateInfo = _message; }
 	// 敵を削除
 	void DeleteEnemy(GameActor* _actor);
 
-	const ofVec3f& GetPlayerPos() { return mp_charaActor->Pos(); }
+	// 行動順設定
+	void InitAttackOrder();
+	// 次に行動するキャラのアクターを取得
+	GameActor* GetNextAttackChara() {
+		auto res = m_attackList.front();
+		m_attackList.pop_front();
+		return res; 
+	}
+
+	GameActor* GetPlayer() { return mp_charaActor; }
 	GameActor* GetEnemy(const int _index) { return m_EnemyList.at(_index); }
 	const int GetEnemyCount() const { return m_EnemyList.size(); }
-	Parameter* GetPlayer() { return mp_Player; }
 	Result GetResult();
-	const string GetInfo() const { return m_stateInfo; }
+	const string& GetInfo() const { return m_stateInfo; }
 	const int GetBulletCount() const { return m_bulletList.size(); }
-	//const int GetBulletCount() const { return m_bulletList.size(); }
+
 private:
 	void ExcuteCommand();
 	// 敵リストの初期化
 	void InitEnemyList();
-
 };

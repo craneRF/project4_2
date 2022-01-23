@@ -148,7 +148,7 @@ BoundBullet::BoundBullet()
 	m_bParam.speed = 400.f;
 	m_bParam.generationSoundIndex = 12;
 	m_bParam.damage = 2;
-	m_bParam.imageName = "Missile.png";
+	m_bParam.imageName = "TargetScope2.png";
 }
 
 void BoundBullet::initialize(BulletComponent * _bulletComponent)
@@ -162,7 +162,40 @@ void BoundBullet::Move(BulletComponent * _bulletComponent, MoveComponent * _move
 	ReflectRect(_bulletComponent, _moveComponent, m_reflectRect);
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire"))
 	{
-		_bulletComponent->gActor()->StateErace();
+		_bulletComponent->Destroy();
 		_bulletComponent->getCollisionComponent()->mp_cobj->m_ctype = CollisionType::PLAYER_BULLET;
+	}
+}
+
+KeyGuardBullet::KeyGuardBullet()
+{
+	m_bParam.bulletName = "KeyGuardBullet";
+	m_bParam.scale = { 0.2,0.2 };
+	m_bParam.speed = 100.f;
+	//m_bParam.speed = 400.f;
+	m_bParam.rotVal = 200.f;
+	m_bParam.generationSoundIndex = 12;
+	m_bParam.damage = 2;
+	m_bParam.imageName = "Missile.png";
+}
+
+void KeyGuardBullet::initialize(BulletComponent * _bulletComponent)
+{
+	int number = rand() % 10;
+	auto needKey = to_string(number);
+	// 弾を破壊するために必要なキーの表示
+	_bulletComponent->gActor()->addComponent<FontRendererComponent>()->initialize(needKey, 18, { 0,0,0 }, ofColor::white, {10,10,1});
+	// 0～359度からランダムに初期の向きを決定する
+	_bulletComponent->gActor()->RotAngle() = rand() % 360;
+	_bulletComponent->SetNeedKey(move(needKey));
+}
+
+void KeyGuardBullet::Move(BulletComponent * _bulletComponent, MoveComponent * _moveComponent)
+{
+	RotateToTarget(_bulletComponent, _moveComponent, false);
+	_moveComponent->FrontMove(m_bParam.speed);
+
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown(_bulletComponent->GetNeedKey())) {
+		_bulletComponent->Destroy();
 	}
 }

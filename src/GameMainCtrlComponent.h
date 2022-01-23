@@ -6,6 +6,8 @@ class GameState;
 class GameMainCtrlComponent final : public Component
 {
 	friend class GameStateTitle;
+	friend class GameStateClear;
+	friend class GameStateOver;
 	friend class GameStateMap;
 	friend class GameStateBattle;
 	friend class GameStateEvent;
@@ -14,6 +16,8 @@ private:
 	//Parameter m_playerprm;
 	GameState* mp_gameState;
 	static GameStateTitle m_gameStateTitle;
+	static GameStateClear m_gameStateClear;
+	static GameStateOver m_gameStateOver;
 	static GameStateMap m_gameStateMap;
 	static GameStateBattle m_gameStateBattle;
 	static GameStateEvent m_gameStateEvent;

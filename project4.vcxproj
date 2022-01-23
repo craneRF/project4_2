@@ -191,6 +191,7 @@
     <ClCompile Include="src\EnemyActor.cpp" />
     <ClCompile Include="src\BattleComponent.cpp" />
     <ClCompile Include="src\EnemyObject.cpp" />
+    <ClCompile Include="src\HitEffectComponent.cpp" />
     <ClCompile Include="src\ItemComponent.cpp" />
     <ClCompile Include="src\ItemManager.cpp" />
     <ClCompile Include="src\ItemObject.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="src\UIStandardPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\HitEffectComponent.h" />
     <ClInclude Include="src\ItemManager.h" />
     <ClInclude Include="src\ItemType.h" />
     <ClInclude Include="src\BattleState.h" />

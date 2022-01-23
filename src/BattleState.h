@@ -6,12 +6,28 @@ class Parameter;
 class BattleComponent;
 enum class Result;
 enum class BulletType;
+
 class BattleState
 {
 private:
 
 protected:
-	static queue<int> m_attackQueue;
+	enum class CommandType
+	{
+		SKILL,
+		ITEM,
+		TYPE_NUM,
+	};
+
+	struct CommandInfo
+	{
+		int commandTypeIndex = 0;
+		int bulletTypeIndex = 0;
+		int fromIndex = 0;
+		int targetIndex = 0;
+		int partsIndex = 0;
+	};
+
 	string stateName = "";
 public:
 	static Result result;
@@ -36,7 +52,12 @@ public:
 // コマンド選択
 class SelectCommandState final : public BattleState {
 private:
-	int m_bulletTypeIndex = 0;
+	CommandInfo m_commandInfo;
+	bool m_isSelectCommandType = false;
+	bool m_isSelectBulletType = false;
+	bool m_isSelectTarget = false;
+	bool m_isSelectParts = false;
+
 public:
 	virtual void enter(BattleComponent* _battleComponent);
 	virtual BattleState* update(BattleComponent* _battleComponent);
@@ -66,7 +87,7 @@ public:
 // ターン判断
 class TurnState final : public BattleState {
 private:
-	int m_turnIndex;
+	GameActor* m_turnChara;
 public:
 	virtual void enter(BattleComponent* _battleComponent);
 	virtual BattleState* update(BattleComponent* _battleComponent);
@@ -76,19 +97,36 @@ public:
 // 攻撃アクター作成
 class AttackState final : public BattleState {
 private:
-	int m_turnCharaIndex;
-	int m_targetCharaIndex;
+	ofVec3f m_fromPos;
+	ofVec3f m_targetPos;
 	BulletType m_bulletType;
+	int m_bulletCount = 1;
+	int m_attack = 1;
+	bool m_isPlayer = true;
 
 public:
 	virtual void enter(BattleComponent* _battleComponent);
 	virtual BattleState* update(BattleComponent* _battleComponent);
 	virtual void exit(BattleComponent* _battleComponent);
 
-	void initialize(const int _turnCharaIndex, const int _targetCharaIndex, const BulletType _bulletType)
+	void initialize(const ofVec3f _fromPos, const ofVec3f _targetPos, const BulletType _bulletType, const int _bulletCount, const int _attack, bool _isPlayer)
 	{
-		m_turnCharaIndex = _turnCharaIndex;
-		m_targetCharaIndex = _targetCharaIndex;
+		m_fromPos = _fromPos;
+		m_targetPos = _targetPos;
 		m_bulletType = _bulletType;
+		m_bulletCount = _bulletCount;
+		m_attack = _attack;
+		m_isPlayer = _isPlayer;
 	}
+};
+
+// 敗北後の選択
+class LoseState final : public BattleState {
+private:
+
+public:
+	virtual void enter(BattleComponent* _battleComponent);
+	virtual BattleState* update(BattleComponent* _battleComponent);
+	virtual void exit(BattleComponent* _battleComponent);
+
 };

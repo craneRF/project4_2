@@ -4,6 +4,15 @@
 class BulletComponent;
 class MoveComponent;
 
+enum class BulletType
+{
+	Nomal,
+	Small,
+	Big,
+	KeyGuard,
+	TypeNum,
+};
+
 struct BulletParam
 {
 	string bulletName;			// –¼‘O
@@ -58,6 +67,17 @@ private:
 
 public:
 	BoundBullet();
+	virtual void initialize(BulletComponent * _bulletComponent);
+	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
+};
+
+class KeyGuardBullet final : public BulletObject
+{
+private:
+	string m_needKey = "Bomb";
+
+public:
+	KeyGuardBullet();
 	virtual void initialize(BulletComponent * _bulletComponent);
 	virtual void Move(BulletComponent* _bulletComponent, MoveComponent* _moveComponent);
 };

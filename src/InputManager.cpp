@@ -11,6 +11,16 @@ InputManager::KeyDefine InputManager::keyMap_[] = {
 	{"Down",'s',0},
 	{"Up",'w',0},
 	{"HUD",'e',0},
+	{"0",'0',0},
+	{"1",'1',0},
+	{"2",'2',0},
+	{"3",'3',0},
+	{"4",'4',0},
+	{"5",'5',0},
+	{"6",'6',0},
+	{"7",'7',0},
+	{"8",'8',0},
+	{"9",'9',0},
 };
 size_t InputManager::keyListSize_ = sizeof(keyMap_) / sizeof(keyMap_[0]);
 
