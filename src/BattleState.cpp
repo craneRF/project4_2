@@ -90,7 +90,9 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 			case BattleState::CommandType::ITEM:
 			{
 				auto itemCpnt = _battleComponent->gActor()->getComponent<ItemComponent>();
-				_battleComponent->SetMessage(u8"アイテム:" + itemCpnt->getItemName(0));
+				//_battleComponent->SetMessage(u8"アイテム:" + itemCpnt->getItemName(ItemType::POTION) + to_string(ofApp::getInstance()->mp_itemManager->getItemNum(ItemType::POTION)) + u8"個");
+				_battleComponent->SetMessage(itemCpnt->getItemName(ItemType::POTION) + ":" + to_string(ofApp::getInstance()->mp_itemManager->getItemNum(ItemType::POTION)) + u8"個");
+
 				break;
 			}
 			default:
@@ -160,7 +162,8 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 					{
 						itemIndex = 0;
 					}
-					string itemInfo = u8"アイテム:" + itemCpnt->getItemName(itemIndex);
+					string itemInfo = itemCpnt->getItemName(itemIndex) + ":" + to_string(ofApp::getInstance()->mp_itemManager->getItemNum(itemIndex)) + u8"個";
+					//string itemInfo = u8"アイテム:" + itemCpnt->getItemName(itemIndex);
 					_battleComponent->SetMessage(move(itemInfo));
 				}
 				else if (up)
@@ -171,7 +174,7 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 					{
 						itemIndex = ItemType::NumItems - 1;
 					}
-					string itemInfo = u8"アイテム:" + itemCpnt->getItemName(itemIndex);
+					string itemInfo = itemCpnt->getItemName(itemIndex) + ":" + to_string(ofApp::getInstance()->mp_itemManager->getItemNum(itemIndex)) + u8"個";
 					_battleComponent->SetMessage(move(itemInfo));
 				}
 			}

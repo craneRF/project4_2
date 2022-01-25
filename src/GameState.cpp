@@ -39,6 +39,9 @@ void GameStateTitle::enter()
 	// タイトルなので、プレイヤーのパラメータを初期化
 	ofApp::getInstance()->mp_prm->initialize();
 
+	// アイテム所持数も初期化
+	ofApp::getInstance()->mp_itemManager->Initialize();
+
 	// マップのクリア
 	MapComponent::ClearMap();
 

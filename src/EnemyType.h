@@ -4,8 +4,8 @@ enum  EnemyType {
 	Slime,
 	Totem,
 	Crab,
-	Boss,
 	TYPE_NUM,
+	Boss,
 };
 
 struct StrEnemyType : public string {

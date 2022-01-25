@@ -3,6 +3,10 @@
 #include "ItemComponent.h"
 
 ItemManager::ItemManager() {
+}
+
+void ItemManager::Initialize()
+{
 	setItem(ItemType::POTION, 3);
 	setItem(ItemType::ATKUp, 1);
 }

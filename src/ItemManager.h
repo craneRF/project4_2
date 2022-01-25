@@ -7,6 +7,9 @@ public:
 	ItemManager();
 	~ItemManager() {};
 
+	// ‰Šú‰»
+	void Initialize();
+
 	//vector<int> _itemlist;
 	map<string,int> _itemlist;
 
