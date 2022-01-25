@@ -50,13 +50,11 @@ void EnemyComponent::Initialize(BattleComponent* _battleCpnt, const EnemyType _e
 		enemyPartsCpnt->Initialize(parts, this);
 		// パーツを追加
 		m_partsCpntList.emplace_back(enemyPartsCpnt);
-
 	}
 }
 
 void EnemyComponent::update()
 {
-
 }
 
 void EnemyComponent::input()
@@ -65,26 +63,30 @@ void EnemyComponent::input()
 
 void EnemyComponent::onDestroy()
 {
+	m_isAlive = false;
 	// 戦闘コンポーネントの敵リストから自身を消去
 	mp_battleCpnt->DeleteEnemy(mp_gActor);
 	// アクターの消去
-	mp_gActor->StateErace();
+	// mp_gActor->StateErace();
 
 	mp_battleCpnt->AddMessage(mp_gActor->Name() + u8"は倒れた\n");
 }
 
 const Skill EnemyComponent::SelectSkill()
 {
-	//const auto& skillMap = m_enemyMap[m_EnemyType]..
-	//int number = rand() % skillMap.size();
-	//auto it = skillMap.begin();
-	//for (int i = 0; i < number; ++i) {
-	//	it++;
-	//}
-
-	//return it->second;
-
 	return m_enemyMap[m_EnemyType].getEnemySkill(1);
+}
+
+void EnemyComponent::CheckIsAlive()
+{
+	for (auto& parts : m_partsCpntList) {
+		parts->CheckIsAlive();
+	}
+	m_partsCpntList.erase(
+		remove_if(m_partsCpntList.begin(), m_partsCpntList.end(),
+			[](const auto& parts) { return !parts->GetIsAlive(); }),
+		m_partsCpntList.end()
+	);
 }
 
 void EnemyComponent::DeleteParts(EnemyPartsComponent * _partsCpnt)
@@ -176,11 +178,31 @@ void EnemyPartsComponent::onCollision(CollisionComponent * _other)
 {
 }
 
+void EnemyPartsComponent::CheckIsAlive()
+{
+	// 体力チェック
+	if (m_hp <= 0) {
+		m_hp = 0;
+
+		m_isAlive = false;
+
+		// パーツ破壊メッセージ
+		mp_enemyCpnt->GetBattleCpnt()->AddMessage(mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name() + u8"を破壊した");
+
+		// 重要な部位だったら、本体に消去命令を出す
+		if (m_isCore) {
+			mp_enemyCpnt->onDestroy();
+		}
+		else {
+			mp_gActor->StateErace();
+		}
+	}
+}
+
 bool EnemyPartsComponent::onDamage(const string& _fromName, const int _damage)
 {
 	if (mp_enemyCpnt->getEnemy().isPowerByParts) {
 		if(mp_enemyCpnt->GetPartsCpntList().size() != 1 && m_isCore){
-			//mp_enemyCpnt->GetBattleCpnt()->AddMessage(string(u8"ミス"));
 			return false;
 		}
 	}
@@ -188,27 +210,26 @@ bool EnemyPartsComponent::onDamage(const string& _fromName, const int _damage)
 	m_hp -= _damage;
 
 	// コマンド追加
-	mp_enemyCpnt->GetBattleCpnt()->AddCommand(make_unique<Command>(_fromName, mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name(), 0, _damage));
+	mp_enemyCpnt->GetBattleCpnt()->AddCommand(make_unique<Command>(_fromName, mp_enemyCpnt->gActor()->Name(), 0, _damage));
 
-	// 体力チェック
-	if (m_hp <= 0) {
-		m_hp = 0;
+	//// 体力チェック
+	//if (m_hp <= 0) {
+	//	m_hp = 0;
 
-		// 敵コンポーネントから自身（パーツ）を削除
-		mp_enemyCpnt->DeleteParts(this);
+	//	// 敵コンポーネントから自身（パーツ）を削除
+	//	mp_enemyCpnt->DeleteParts(this);
 
-		// パーツ破壊メッセージ
-		mp_enemyCpnt->GetBattleCpnt()->AddMessage(mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name() + u8"を破壊した");
+	//	// パーツ破壊メッセージ
+	//	mp_enemyCpnt->GetBattleCpnt()->AddMessage(mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name() + u8"を破壊した");
 
-		// 重要な部位だったら、本体に消去命令を出す
-		if (m_isCore) {
-
-			mp_enemyCpnt->onDestroy();
-		}
-		else {
-			mp_gActor->StateErace();
-		}
-	}
+	//	// 重要な部位だったら、本体に消去命令を出す
+	//	if (m_isCore) {
+	//		mp_enemyCpnt->onDestroy();
+	//	}
+	//	else {
+	//		mp_gActor->StateErace();
+	//	}
+	//}
 
 	return true;
 }

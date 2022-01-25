@@ -61,7 +61,9 @@ public:
 	void AddBullet(GameActor* _bulletActor);
 	// 弾を削除
 	void DeleteBullet(GameActor* _bulletActor);
-
+	// 弾リストのクリア
+	void ClearBulletList();
+	
 	// 弾リストを取得
 	const std::vector <GameActor*>& GetBulletList() const { return m_bulletList; }
 
@@ -73,6 +75,8 @@ public:
 	void SetMessage(string& _message) { m_stateInfo = _message; }
 	// 敵を削除
 	void DeleteEnemy(GameActor* _actor);
+	// 生存チェック
+	void CheckIsAlive();
 
 	// 行動順設定
 	void InitAttackOrder();

@@ -144,10 +144,6 @@ void PlayerPartsComponent::onDamage(const string & _fromName, const int _damage)
 	if (hp < 0) {
 		ofApp::getInstance()->mp_prm->setPlayerParam("HP", 0);
 	}
-
-#ifdef _DEBUG
-	std::cout << "Player‚Ì" << mp_gActor->Name() << "‚É“–‚½‚è‚Ü‚µ‚½B\n";
-#endif // _DEBUG
 }
 
 void PlayerPartsComponent::onDamage(const string & _fromName, const int _charaAttack, const int _bulletAttack)

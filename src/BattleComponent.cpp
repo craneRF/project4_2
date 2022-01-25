@@ -18,19 +18,15 @@ BattleComponent::~BattleComponent() {
 
 void BattleComponent::update()
 {
-	static bool isAllMessageCheck = true;
-
-	// コマンドが入っていない && 弾が全て削除済み
+	// コマンドが入っている && 弾が全て削除済み
 	if (!m_commandList.empty() && m_bulletList.empty()) {
 		ExcuteCommand();
-		isAllMessageCheck = false;
 	}
 	else if (!m_messageList.empty()) {
 		// 決定
 		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 			m_stateInfo = m_messageList.front();
 			m_messageList.pop();
-			isAllMessageCheck = false;
 		}
 	}
 	else {
@@ -93,6 +89,14 @@ void BattleComponent::DeleteBullet(GameActor * _bulletActor)
 	}
 }
 
+void BattleComponent::ClearBulletList()
+{
+	for (auto& bullet : m_bulletList) {
+		bullet->StateErace();
+	}
+	m_bulletList.clear();
+}
+
 void BattleComponent::AddCommand(unique_ptr<Command>&& _command)
 {
 	m_commandList.push(move(_command));
@@ -111,6 +115,22 @@ void BattleComponent::DeleteEnemy(GameActor * _actor)
 	if (attackRes != m_attackList.end()) {
 		m_attackList.erase(attackRes);
 	}
+}
+
+void BattleComponent::CheckIsAlive()
+{
+	for (auto& enemy : m_EnemyList) {
+		enemy->getComponent<EnemyComponent>()->CheckIsAlive();
+		if (!enemy->getComponent<EnemyComponent>()->GetIsAlive()) {
+			enemy->StateErace();
+		}
+	}
+
+	m_EnemyList.erase(
+		remove_if(m_EnemyList.begin(), m_EnemyList.end(),
+			[](const auto& enemy) { return !enemy->getComponent<EnemyComponent>()->GetIsAlive(); }),
+		m_EnemyList.end()
+	);
 }
 
 void BattleComponent::InitAttackOrder()
@@ -169,8 +189,9 @@ void BattleComponent::InitEnemyList()
 {
 	EnemyActor* enemyActor = nullptr;
 
-	if (m_isBossBattle) {
-		enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Boss, this);
+	if (true) {
+		enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Totem, this);
+		//enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Boss, this);
 		m_EnemyList.emplace_back(enemyActor);
 	}
 	else {

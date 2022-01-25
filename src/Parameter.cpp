@@ -12,7 +12,7 @@ void Parameter::initialize()
 	m_playermap["MAXHP"] = 50;
 	m_playermap["HP"] = 1;
 	//m_playermap["HP"] = 15;
-	m_playermap["ATTACK"] = 1;
+	m_playermap["ATTACK"] = 0;
 	m_playermap["DEF"] = 1;
 	m_playermap["LIFE"] = 0;
 

@@ -323,6 +323,9 @@ void SelectCommandState::exit(BattleComponent * _battleComponent)
 
 void JudgeState::enter(BattleComponent * _battleComponent)
 {
+	// 敵の生存チェック
+	_battleComponent->CheckIsAlive();
+
 	// プレイヤーの体力
 	const int pHP = ofApp::getInstance()->mp_prm->getPlayerParam("HP");
 

@@ -103,9 +103,10 @@ void TotemEnemy::initialize()
 	m_eParam.isPowerByParts = true;
 	setEnemySkill("NomalAttack", 10, BulletType::KeyGuard, 3);
 
-	setEnemyParts("body1", { 0,-20 }, "enemy_pole_body1.png", true, 1, 0, { 1.f,1.f }, 0);
-	setEnemyParts("body2", { 0,350 }, "enemy_pole_body2.png", false, 1, 0, { 1.f,1.f }, 0);
-	setEnemyParts("body3", { 0,279 + 350 }, "enemy_pole_body3.png", false, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("body1", { 0,-20 }, "enemy_pole_body2.png", true, 1, 0, { 2.f,4.f }, 45);
+	//setEnemyParts("body1", { 0,-20 }, "enemy_pole_body1.png", true, 1, 0, { 1.f,1.f }, 0);
+	//setEnemyParts("body2", { 0,350 }, "enemy_pole_body2.png", false, 1, 0, { 1.f,1.f }, 0);
+	//setEnemyParts("body3", { 0,279 + 350 }, "enemy_pole_body3.png", false, 1, 0, { 1.f,1.f }, 0);
 }
 
 CrabEnemy::CrabEnemy()
