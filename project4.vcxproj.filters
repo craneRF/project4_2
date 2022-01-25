@@ -176,6 +176,9 @@
     <ClCompile Include="src\UICanvasComponent.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BattleHUDComponent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InputManager.h" />
@@ -272,6 +275,9 @@
     <ClInclude Include="src\ItemManager.h" />
     <ClInclude Include="src\UIComponent.h" />
     <ClInclude Include="src\UICanvasComponent.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleHUDComponent.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

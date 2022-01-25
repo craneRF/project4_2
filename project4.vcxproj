@@ -180,6 +180,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BattleHUDComponent.cpp" />
     <ClCompile Include="src\BattleState.cpp" />
     <ClCompile Include="src\BulletActor.cpp" />
     <ClCompile Include="src\BulletComponent.cpp" />
@@ -239,6 +240,7 @@
     <ClCompile Include="src\UIStandardPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BattleHUDComponent.h" />
     <ClInclude Include="src\ItemManager.h" />
     <ClInclude Include="src\ItemType.h" />
     <ClInclude Include="src\BattleState.h" />
