@@ -1,10 +1,8 @@
 #include "ofApp.h"
 #include "stdComponent.h"
+#include "HitEffectComponent.h"
 
-BulletObject BulletComponent::m_stdBullet;
-NomalBullet BulletComponent::m_nomalBullet;
-SmallBullet BulletComponent::m_smallBullet;
-BoundBullet BulletComponent::m_boundBullet;
+unordered_map<BulletType, unique_ptr<BulletObject>> BulletComponent::m_bulletMap;
 
 BulletComponent::BulletComponent(GameActor * _gactor) :
 	Component(_gactor, "Bullet"),
@@ -22,11 +20,12 @@ BulletComponent::~BulletComponent()
 	ofApp::getInstance()->mp_soundManager->play(destroySoundIndex);
 }
 
-void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const ofVec3f& _vec)
+void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const int _attack, const ofVec3f& _vec)
 {
 	m_target = _target;
 	m_bulletType = _bulletType;
 	m_vec = _vec;
+	m_attack = _attack;
 
 	// 生成時の音声ファイルを再生
 	int generationSoundIndex = getBullet(m_bulletType).generationSoundIndex;
@@ -49,40 +48,12 @@ void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulle
 	mp_collisionCpnt = boxCpnt;
 
 	// 弾タイプに応じた初期化を行う
-	switch (m_bulletType)
-	{
-	case BulletType::Nomal:
-		m_nomalBullet.initialize(this);
-		break;
-	case BulletType::Small:
-		m_smallBullet.initialize(this);
-		break;
-	case BulletType::Big:
-		m_boundBullet.initialize(this);
-		break;
-	default:
-		m_stdBullet.initialize(this);
-		break;
-	}
+	m_bulletMap[m_bulletType]->initialize(this);
 }
 
 void BulletComponent::update()
 {
-	switch (m_bulletType)
-	{
-	case BulletType::Nomal:
-		m_nomalBullet.Move(this, mp_moveCpnt);
-		break;
-	case BulletType::Small:
-		m_smallBullet.Move(this, mp_moveCpnt);
-		break;
-	case BulletType::Big:
-		m_boundBullet.Move(this, mp_moveCpnt);
-		break;
-	default:
-		m_stdBullet.Move(this, mp_moveCpnt);
-		break;
-	}
+	m_bulletMap[m_bulletType]->Move(this, mp_moveCpnt);
 
 	// 応急処置
 	mp_gActor->caluculateWorldTransform();
@@ -94,29 +65,63 @@ void BulletComponent::input()
 
 void BulletComponent::onCollision(CollisionComponent * _other)
 {
+	if (m_isHit) {
+		return;
+	}
 	auto enemyPartsCpnt = _other->gActor()->getComponent<EnemyPartsComponent>();
+	auto playerPartsCpnt = _other->gActor()->getComponent<PlayerPartsComponent>();
+
 	if (enemyPartsCpnt)
 	{
+		m_isHit = true;
 		// ダメージを与える
 		enemyPartsCpnt->onDamage(mp_gActor->Name(), m_attack, getBullet(m_bulletType).damage);
-		//// 戦闘コンポーネントの弾リストから削除
-		mp_battleCpnt->DeleteBullet(mp_gActor);
-		// アクターの消去
-		mp_gActor->StateErace();
+		Destroy();
 	}
+	else if (playerPartsCpnt)
+	{
+		if (playerPartsCpnt->GetIsCore() || ofApp::getInstance()->mp_inputManager->getButtonDown("Fire")) {
+			m_isHit = true;
+			// ダメージを与える
+			playerPartsCpnt->onDamage(mp_gActor->Name(), m_attack, getBullet(m_bulletType).damage);
+			Destroy();
+		}
+	}
+
+
+}
+
+void BulletComponent::Destroy()
+{
+	if (mp_gActor->GetActorState() == Actor::ActorState::EErace)
+	{
+		return;
+	}
+
+	// エフェクトアクター作成
+	{
+		auto actor = mp_battleCpnt->gActor()->addChild<GameActor>();
+		actor->Pos() = mp_gActor->Pos();
+		actor->addComponent<HitEffectComponent>()->Initialize("ATKeffect.png", 200);
+	}
+
+	// 戦闘コンポーネントの弾リストから削除
+	mp_battleCpnt->DeleteBullet(mp_gActor);
+	// アクターの消去
+	mp_gActor->StateErace();
 }
 
 BulletParam BulletComponent::getBullet(BulletType _bulletType)
 {
-	switch (_bulletType)
-	{
-	case BulletType::Nomal:
-		return m_nomalBullet.m_bParam;
-	case BulletType::Small:
-		return m_smallBullet.m_bParam;
-	case BulletType::Big:
-		return m_boundBullet.m_bParam;
-	default:
-		return m_stdBullet.m_bParam;
+	return m_bulletMap[_bulletType]->m_bParam;
+}
+
+void BulletComponent::InitBulletMap()
+{
+	if (m_bulletMap.empty()) {
+		m_bulletMap[BulletType::Nomal] = make_unique<NomalBullet>();
+		m_bulletMap[BulletType::Small] = make_unique<SmallBullet>();
+		m_bulletMap[BulletType::Big] = make_unique<BoundBullet>();
+		m_bulletMap[BulletType::KeyGuard] = make_unique<KeyGuardBullet>();
 	}
 }

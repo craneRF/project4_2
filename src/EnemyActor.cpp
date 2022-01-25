@@ -15,7 +15,6 @@ EnemyActor* EnemyActor::createEnemy(GameActor* _parent, ofVec3f _pos, EnemyType 
 
 	auto enemyCpnt = actor->addComponent<EnemyComponent>();
 	enemyCpnt->Initialize(_battleCpnt, _enemytype);
-	enemyCpnt->setEnemyType(_enemytype);
 
 	const auto& enemyParam = enemyCpnt->getEnemy(_enemytype);
 	actor->SetParam(_pos, enemyParam.scale);

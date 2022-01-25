@@ -3,34 +3,32 @@
 #include "SpriteComponent.h"
 #include "ofApp.h"
 
+ofVec3f MapState::m_golaPos = { 0,0,0 };
+
 void InitMapState::Initialize(GameActor* _mapActor)
 {
-	// 確率は1%以上であること
-	assert(m_ConnectPercent > 0);
+	auto& mapInfo = MapComponent::GetMapInfo();
 
 	if (MapComponent::m_Map.empty())
 	{
-		CreateRandomMap();
+		CreateRandomMap(mapInfo);
 	}
 
-	CreateLineActor(_mapActor);
-	CreateStepActor(_mapActor);
+	CreateLineActor(_mapActor, mapInfo);
+	CreateStepActor(_mapActor, mapInfo);
+	CreateIconActor(_mapActor, mapInfo);
 
 	ofApp::getInstance()->mp_soundManager->setVolume(3, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(4, 0.4f);
 }
 
-void InitMapState::CreateRandomMap()
+void InitMapState::CreateRandomMap(const MapInfo& _mapInfo)
 {
-	MapComponent::ClearMap();
-
-	assert(m_maxRowNum > 0 && m_maxColNum > 0 && m_minRowNum > 0 && m_minColNum > 0);
-
 	// カウント変数
 	int count = 0;
 
 	// 列数のランダム生成
-	const int randColNum = max(rand() % m_maxColNum, m_minColNum);
+	const int randColNum = max(rand() % _mapInfo.m_maxColNum, _mapInfo.m_minColNum);
 
 
 	// X座標決定に使用する割合
@@ -41,7 +39,7 @@ void InitMapState::CreateRandomMap()
 
 	isConnectedList.resize(randColNum);
 	MapComponent::m_Map.resize(randColNum);
-	int preRandRowNum = max(rand() % m_maxRowNum, m_minRowNum);
+	int preRandRowNum = max(rand() % _mapInfo.m_maxRowNum, _mapInfo.m_minRowNum);
 	for (int c = 0; c < randColNum; ++c)
 	{
 		// スタートマス＆ゴールマス
@@ -57,18 +55,18 @@ void InitMapState::CreateRandomMap()
 			if (rand() % 2 == 0)
 			{
 				++preRandRowNum;
-				if (preRandRowNum > m_maxRowNum)
+				if (preRandRowNum > _mapInfo.m_maxRowNum)
 				{
-					preRandRowNum = m_maxRowNum;
+					preRandRowNum = _mapInfo.m_maxRowNum;
 				}
 			}
 			// 減らすか
 			else
 			{
 				--preRandRowNum;
-				if (preRandRowNum < m_minRowNum)
+				if (preRandRowNum < _mapInfo.m_minRowNum)
 				{
-					preRandRowNum = m_minRowNum;
+					preRandRowNum = _mapInfo.m_minRowNum;
 				}
 			}
 			isConnectedList[c].resize(preRandRowNum, false);
@@ -95,7 +93,7 @@ void InitMapState::CreateRandomMap()
 				step->m_kind = StepKind::START;
 				step->m_IsSelected = true;
 				step->m_pos = { WPR * (c + 1), Define::FULLWIN_H * 0.5f };
-				MapComponent::mp_currentStep = step.get();
+				MapComponent::m_passedStepStack.push(step.get());
 			}
 			// ゴールマス
 			else if (c == randColNum - 1)
@@ -103,6 +101,7 @@ void InitMapState::CreateRandomMap()
 				step->m_kind = StepKind::GOAL;
 				step->m_IsSelected = false;
 				step->m_pos = { WPR * (c + 1), Define::FULLWIN_H * 0.5f };
+				m_golaPos = step->m_pos;
 			}
 			// 道中マス
 			else
@@ -154,7 +153,7 @@ void InitMapState::CreateRandomMap()
 					}
 
 					// 確率で線をつながない
-					if (rand() % 100 >= m_ConnectPercent)
+					if (rand() % 100 >= _mapInfo.m_ConnectPercent)
 					{
 						// すでに一つ以上のマスとつながっている OR 今回のループはまだ最後ではない(次のループでマスとつながる可能性が残っている)
 						if (!isNeverSet || i + 1 < r + 1)
@@ -181,9 +180,9 @@ void InitMapState::CreateRandomMap()
 	}
 }
 
-void InitMapState::CreateStepActor(GameActor * _mapActor)
+void InitMapState::CreateStepActor(GameActor * _mapActor, const MapInfo& _mapInfo)
 {
-	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + m_stepImageFile)->getWidth();
+	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + _mapInfo.m_stepImageFile)->getWidth();
 	// スケール
 	const float scale = m_stepScale / width;
 
@@ -196,23 +195,28 @@ void InitMapState::CreateStepActor(GameActor * _mapActor)
 			actor->SetParam(step->m_pos, { scale,scale }, 0.0);
 
 			auto spriteCpnt = actor->addComponent<SpriteComponent>();
-			spriteCpnt->initialize(m_stepImageFile);
+			spriteCpnt->initialize(_mapInfo.m_stepImageFile);
 			spriteCpnt->AlignPivotCenter();
-			if (step->m_IsSelected)
-			{
-				spriteCpnt->Color() = ofColor::white;
-			}
-			else
-			{
-				spriteCpnt->Color() = ofColor::gray;
-			}
+
+			actor->drawfuncVec.emplace_back([spriteCpnt, &step]
+				{
+					if (step->m_IsSelected || step->m_IsFocused)
+					{
+						spriteCpnt->Color() = ofColor::white;
+					}
+					else
+					{
+						spriteCpnt->Color() = ofColor::gray;
+					}
+				}
+			);
 		}
 	}
 }
 
-void InitMapState::CreateLineActor(GameActor * _mapActor)
+void InitMapState::CreateLineActor(GameActor * _mapActor, const MapInfo& _mapInfo)
 {
-	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + m_lineImageFile)->getWidth();
+	auto width = ofApp::getInstance()->mp_texture->GetImage("images/" + _mapInfo.m_lineImageFile)->getWidth();
 
 	int colCount = 0;
 	int rowCount = 0;
@@ -235,7 +239,7 @@ void InitMapState::CreateLineActor(GameActor * _mapActor)
 
 				// スプライトコンポーネント
 				auto spriteCpnt = actor->addComponent<SpriteComponent>();
-				spriteCpnt->initialize(m_lineImageFile);
+				spriteCpnt->initialize(_mapInfo.m_lineImageFile);
 				spriteCpnt->AlignPivotCenter();
 
 				actor->drawfuncVec.emplace_back([spriteCpnt, &step, nextStep]
@@ -256,6 +260,101 @@ void InitMapState::CreateLineActor(GameActor * _mapActor)
 		}
 
 		++colCount;
+	}
+}
+
+void InitMapState::CreateIconActor(GameActor * _mapActor, const MapInfo& _mapInfo)
+{
+	// オフセット
+	const ofVec3f offset = ofVec3f(0, -20, 0);
+
+	// 道中アイコン
+	{
+		int colCount = 0;
+		int rowCount = 0;
+		for (const auto & mapColList : MapComponent::m_Map)
+		{
+			for (const auto & step : mapColList)
+			{
+				// ここでは道中マスだけ対応
+				if (static_cast<int>(step->m_kind) >= static_cast<int>(StepKind::MAXNUM)) {
+					continue;
+				}
+
+				const string& imageFile = _mapInfo.m_iconImageFileList.at(static_cast<int>(step->m_kind));
+				const auto size = min(ofApp::getInstance()->mp_texture->GetImage("images/" + imageFile)->getWidth(),
+					ofApp::getInstance()->mp_texture->GetImage("images/" + imageFile)->getHeight());
+				// スケール
+				const float scale = m_iconScale / size;
+
+				// アクター作成
+				auto actor = _mapActor->addChild<GameActor>();
+				actor->initialize({}, "eventIcon" + to_string(colCount) + "_" + to_string(rowCount));
+				actor->SetParam(step->m_pos + offset, { scale,scale });
+
+				// スプライトコンポーネント
+				auto spriteCpnt = actor->addComponent<SpriteComponent>();
+				spriteCpnt->initialize(imageFile);
+				spriteCpnt->AlignPivotCenter();
+
+				actor->drawfuncVec.emplace_back([spriteCpnt, &step]
+					{
+						if (step->m_IsSelected || step->m_IsFocused)
+						{
+							spriteCpnt->Color() = ofColor::white;
+						}
+						else
+						{
+							spriteCpnt->Color() = ofColor::gray;
+						}
+					}
+				);
+				++rowCount;
+			}
+			++colCount;
+		}
+	}
+
+	// ゴールアイコン
+	{
+		const auto size = min(ofApp::getInstance()->mp_texture->GetImage("images/" + _mapInfo.m_goalIconImageFile)->getWidth(),
+			ofApp::getInstance()->mp_texture->GetImage("images/" + _mapInfo.m_goalIconImageFile)->getHeight());
+		// スケール
+		const float scale = m_iconScale / size;
+
+		// アクター作成
+		auto actor = _mapActor->addChild<GameActor>();
+		actor->initialize({}, "goalIcon");
+		actor->SetParam(m_golaPos + offset, { scale,scale }, 0);
+
+		// スプライトコンポーネント
+		auto spriteCpnt = actor->addComponent<SpriteComponent>();
+		spriteCpnt->initialize(_mapInfo.m_goalIconImageFile);
+		spriteCpnt->AlignPivotCenter();
+	}
+
+	// キャラアイコン
+	{
+		const auto size = min(ofApp::getInstance()->mp_texture->GetImage("images/" + m_charaIconImageFile)->getWidth(),
+			ofApp::getInstance()->mp_texture->GetImage("images/" + m_charaIconImageFile)->getHeight());
+		// スケール
+		const float scale = m_iconScale / size;
+
+		// アクター作成
+		auto actor = _mapActor->addChild<GameActor>();
+		actor->initialize({}, "charaIcon");
+		actor->SetParam(MapComponent::m_passedStepStack.top()->m_pos + offset, { scale,scale }, 0);
+
+		// 現在マスの座標を設定
+		actor->drawfuncVec.emplace_back([offset, actor] {
+			actor->Pos() = MapComponent::m_passedStepStack.top()->m_pos + offset;
+			}
+		);
+
+		// スプライトコンポーネント
+		auto spriteCpnt = actor->addComponent<SpriteComponent>();
+		spriteCpnt->initialize(m_charaIconImageFile);
+		spriteCpnt->AlignPivotCenter();
 	}
 }
 
@@ -289,7 +388,7 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 		ofApp::getInstance()->mp_soundManager->play(3);
 
 		m_selectIndex++;
-		if (m_selectIndex >= MapComponent::mp_currentStep->m_nextStepList.size())
+		if (m_selectIndex >= MapComponent::m_passedStepStack.top()->m_nextStepList.size())
 		{
 			m_selectIndex = 0;
 		}
@@ -301,26 +400,25 @@ MapState * SelectMapState::update(MapComponent* _mapComponent)
 		m_selectIndex--;
 		if (m_selectIndex < 0)
 		{
-			m_selectIndex = MapComponent::mp_currentStep->m_nextStepList.size() - 1;
+			m_selectIndex = MapComponent::m_passedStepStack.top()->m_nextStepList.size() - 1;
 		}
 	}
 
-	for (auto & nextStep : MapComponent::mp_currentStep->m_nextStepList)
+	for (auto & nextStep : MapComponent::m_passedStepStack.top()->m_nextStepList)
 	{
 		nextStep->m_IsFocused = false;
 	}
-	MapComponent::mp_currentStep->m_nextStepList[m_selectIndex]->m_IsFocused = true;
-
+	MapComponent::m_passedStepStack.top()->m_nextStepList[m_selectIndex]->m_IsFocused = true;
 
 	// 決定
 	if (start)
 	{
 		ofApp::getInstance()->mp_soundManager->play(4);
 
-		MapComponent::mp_currentStep = MapComponent::mp_currentStep->m_nextStepList[m_selectIndex];
-		MapComponent::mp_currentStep->m_IsSelected = true;
-		MapComponent::mp_currentStep->m_IsFocused = false;
-		_mapComponent->SetResKind(MapComponent::mp_currentStep->m_kind);
+		MapComponent::m_passedStepStack.push(MapComponent::m_passedStepStack.top()->m_nextStepList[m_selectIndex]);
+		MapComponent::m_passedStepStack.top()->m_IsSelected = true;
+		MapComponent::m_passedStepStack.top()->m_IsFocused = false;
+		_mapComponent->SetResKind(MapComponent::m_passedStepStack.top()->m_kind);
 		m_selectIndex = 0;
 	}
 
@@ -333,13 +431,13 @@ void SelectMapState::exit(MapComponent* _mapComponent)
 
 void InitMapState::DrawLine(Step * _step)
 {
-	if (MapComponent::mp_currentStep->m_nextStepList.empty())
+	if (MapComponent::m_passedStepStack.top()->m_nextStepList.empty())
 	{
 		return;
 	}
 
 	// 現在カーソルを当てているマス
-	auto focusStep = MapComponent::mp_currentStep->m_nextStepList[m_selectIndex];
+	auto focusStep = MapComponent::m_passedStepStack.top()->m_nextStepList[m_selectIndex];
 
 	auto pos1 = _step->m_pos;
 

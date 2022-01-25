@@ -3,6 +3,8 @@
 #include "ofApp.h"
 
 GameStateTitle GameMainCtrlComponent::m_gameStateTitle;
+GameStateClear GameMainCtrlComponent::m_gameStateClear;
+GameStateOver GameMainCtrlComponent::m_gameStateOver;
 GameStateMap GameMainCtrlComponent::m_gameStateMap;
 GameStateBattle GameMainCtrlComponent::m_gameStateBattle;
 GameStateEvent GameMainCtrlComponent::m_gameStateEvent;

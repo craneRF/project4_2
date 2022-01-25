@@ -45,9 +45,9 @@ void GameStateTitle::enter()
 
 	// タイトルなので、プレイヤーのパラメータを初期化
 	ofApp::getInstance()->mp_prm->initialize();
-	//*m_prmInState = _pprm;
-	//// タイトルなので、プレイヤーのパラメータを初期化
-	//m_prmInState->initialize();
+
+	// マップのクリア
+	MapComponent::ClearMap();
 
 	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
 	ofApp::getInstance()->mp_soundManager->setVolume(1, 0.4f);
@@ -60,24 +60,24 @@ void GameStateTitle::enter()
 	//	initialize(ofToString(ofGetFrameRate()), 18, { 0,0,0 }, ofColor::white, {3, 3, 3}, "keifont.ttf");
 
 	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_itemlist = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	////タイトル背景
-	//{
-	//	auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
-	//	spriteCpnt_bg->initialize("backGround_title_1.jpg");
-	//}
+	//タイトル背景
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_title_1.jpg");
+	}
 
-	////タイトルロゴ
-	//{
-	//	auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
-	//	spriteCpnt_title->initialize("title.png");
-	//	spriteCpnt_title->AlignPivotCenter();
-	//	spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
-	//}
+	//タイトルロゴ
+	{
+		auto spriteCpnt_title = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_title->initialize("title.png");
+		spriteCpnt_title->AlignPivotCenter();
+		spriteCpnt_title->Offset() += {(float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 - 200.f};
+	}
 
 	mp_actor1->addComponent<FontRendererComponent>()->
 		initialize(ofToString(ofApp::getInstance()->mp_prm->getPlayerParam("HP")), 18, { 300,400 });
 
+	mp_itemlist = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_itemlist->addComponent<FontRendererComponent>()->
 		initialize(ofApp::getInstance()->mp_itemManager->DisplayItemList(), 18, { 400,600 });
 
@@ -169,6 +169,155 @@ void GameStateTitle::exit()
 	ofApp::getInstance()->mp_soundManager->play(4);
 }
 
+void GameStateClear::enter()
+{
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	ofApp::getInstance()->mp_soundManager->loop(0);
+
+	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	//背景
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_gaemclear_1.jpg");
+	}
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:タイトルに戻る");
+	}
+}
+
+GameState * GameStateClear::update()
+{
+	// タイトルシーンへ遷移
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+		return &GameMainCtrlComponent::m_gameStateTitle;
+	}
+
+	return nullptr;
+}
+
+void GameStateClear::exit()
+{
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
+	ofApp::getInstance()->mp_soundManager->stop(0);
+	ofApp::getInstance()->mp_soundManager->play(4);
+}
+
+void GameStateOver::enter()
+{
+	ofApp::getInstance()->mp_soundManager->setVolume(0, 0.4f);
+	ofApp::getInstance()->mp_soundManager->loop(0);
+
+	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	//背景
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_gaemover_1.jpg");
+	}
+
+	// 選択肢を表示するアクター
+	{
+		// 選択肢カウント
+		int count = 0;
+		mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_actor2->Pos() = { (float)Define::FULLWIN_W * 0.5f, (float)Define::FULLWIN_H * 0.8f };
+		{
+			// 選択肢１
+			if (ofApp::getInstance()->mp_prm->getPlayerParam("LIFE") != 0) {
+				// フォント
+				auto fontCpnt = mp_actor2->addComponent<FontRendererComponent>();
+				fontCpnt->initialize(u8"復活する", 18, { 0,0,0 }, ofColor::gray);
+				m_selectFontCpntList.emplace_back(fontCpnt);
+
+				m_funcList.emplace_back([] {
+					// 残機を減らす
+					ofApp::getInstance()->mp_prm->setPlayerParam("LIFE", ofApp::getInstance()->mp_prm->getPlayerParam("LIFE") - 1);
+					// マップへ
+					MapComponent::BackStep();
+					return &GameMainCtrlComponent::m_gameStateMap;
+					}
+				);
+
+				++count;
+			}
+			// 選択肢２
+			{
+				// フォント
+				auto fontCpnt = mp_actor2->addComponent<FontRendererComponent>();
+				fontCpnt->initialize(u8"タイトルに戻る", 18, { 0,36.f * count,0 }, ofColor::gray);
+				m_selectFontCpntList.emplace_back(fontCpnt);
+
+				m_funcList.emplace_back([] {
+					MapComponent::ClearMap();
+					return &GameMainCtrlComponent::m_gameStateTitle;
+					}
+				);
+			}
+		}
+	}
+
+	// 操作方法を表示するアクター
+	{
+		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
+		if (ofApp::getInstance()->mp_prm->getPlayerParam("LIFE") != 0) {
+			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:決定\nWSキー:選択");
+		}
+		else {
+			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:決定");
+		}
+	}
+}
+
+GameState * GameStateOver::update()
+{
+	m_selectFontCpntList.at(m_selectIndex)->Color() = ofColor::gray;
+
+	// 選択
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Up"))
+	{
+		ofApp::getInstance()->mp_soundManager->play(3);
+
+		if (--m_selectIndex < 0)
+		{
+			m_selectIndex = m_selectFontCpntList.size() - 1;
+		}
+	}
+	else if (ofApp::getInstance()->mp_inputManager->getButtonDown("Down"))
+	{
+		ofApp::getInstance()->mp_soundManager->play(3);
+
+		if (++m_selectIndex >= m_selectFontCpntList.size())
+		{
+			m_selectIndex = 0;
+		}
+	}
+
+	m_selectFontCpntList.at(m_selectIndex)->Color() = ofColor::white;
+
+	// 決定
+	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+		return m_funcList.at(m_selectIndex)();
+	}
+
+	return nullptr;
+}
+
+
+void GameStateOver::exit()
+{
+	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
+	ofApp::getInstance()->mp_soundManager->stop(0);
+	ofApp::getInstance()->mp_soundManager->play(4);
+
+	m_selectIndex = 0;
+	m_funcList.clear();
+	m_selectFontCpntList.clear();
+}
+
 void GameStateMap::enter()
 {
 	ofApp::getInstance()->mp_soundManager->loop(1);
@@ -209,8 +358,9 @@ GameState * GameStateMap::update()
 	case StepKind::BATTLE:
 		return &GameMainCtrlComponent::m_gameStateBattle;
 	case StepKind::GOAL:
-		MapComponent::ClearMap();
-		return &GameMainCtrlComponent::m_gameStateTitle;
+		GameMainCtrlComponent::m_gameStateBattle.SetIsBossBattle(true);
+		return &GameMainCtrlComponent::m_gameStateBattle;
+		//return &GameMainCtrlComponent::m_gameStateClear;
 		break;
 	default:
 		break;
@@ -231,29 +381,40 @@ void GameStateBattle::enter()
 	{
 		// 戦闘コンポーネント
 		mp_BattleComp = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>()->addComponent<BattleComponent>();
-		mp_BattleComp->SetPlayer(ofApp::getInstance()->mp_prm.get());
-		//mp_BattleComp->SetPlayer(m_prmInState);
+		mp_BattleComp->Initialize(m_isBossBattle);
 	}
 
 	// 「戦闘シーン」と表示するアクター
-	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { 0, 20 };
-	mp_fontActor->addComponent<FontRendererComponent>()->
-		initialize(u8"戦闘シーン");
+	{
+		mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_fontActor->Pos() = { 0, 20 };
+		mp_fontActor->addComponent<FontRendererComponent>()->
+			initialize(u8"戦闘シーン");
+	}
 
 	// プレイヤーのHPを表示するアクター
-	mp_hpFontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_hpFontActor->Pos() = { (float)Define::FULLWIN_W * 0.3f, (float)Define::FULLWIN_H * 0.9f };
-	mp_hpFontActor->addComponent<FontRendererComponent>()->
-		initialize(u8"");
+	{
+		mp_hpFontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_hpFontActor->Pos() = { (float)Define::FULLWIN_W * 0.3f, (float)Define::FULLWIN_H * 0.9f };
+		mp_hpFontActor->addComponent<FontRendererComponent>()->
+			initialize(u8"");
+	}
 
 	// 戦闘のメッセージを表示するアクター
-	mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_actor2->Pos() = { (float)Define::FULLWIN_W * 0.7f, (float)Define::FULLWIN_H * 0.8f };
-	mp_actor2->addComponent<FontRendererComponent>()->
-		initialize(ofToString(0));
+	{
+		mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_actor2->Pos() = { (float)Define::FULLWIN_W * 0.7f, (float)Define::FULLWIN_H * 0.8f };
 
-	//mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+		// フレーム
+		auto spriteCpnt = mp_actor2->addComponent<SpriteComponent>();
+		spriteCpnt->initialize("button1.png", { 0,0,0 }, { 0.8f,0.5f });
+		spriteCpnt->AlignPivotCenter();
+		spriteCpnt->Offset().x *= 0.2f;
+		// メッセージ
+		mp_actor2->addComponent<FontRendererComponent>()->
+			initialize(ofToString(""));
+	}
+
 	// 操作方法を表示するアクター
 	{
 		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -261,27 +422,38 @@ void GameStateBattle::enter()
 		mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:攻撃\nWSキー:弾切り替え");
 	}
 
-	// mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
-
-	mp_actor2->findActor(mp_actor2, "");
+	mp_prePrameter = make_unique<Parameter>(*ofApp::getInstance()->mp_prm);
 }
 
 GameState * GameStateBattle::update()
 {
+	// メッセージ表示
 	mp_actor2->getComponent<FontRendererComponent>()->String() = mp_BattleComp->GetInfo();
 
+	// HP表示
 	int playerHP = ofApp::getInstance()->mp_prm->getPlayerParam("HP");
 	mp_hpFontActor->getComponent<FontRendererComponent>()->String() = u8"プレイヤーのHP:" + to_string(playerHP);
 
-	// 勝敗の結果に応じてシーン遷移
+	// 勝敗の結果
 	auto result = mp_BattleComp->GetResult();
 	switch (result)
 	{
 	case Result::WIN:
-		return &GameMainCtrlComponent::m_gameStateMap;
+		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")){
+			if (m_isBossBattle) {
+				// クリアシーンへ
+				return &GameMainCtrlComponent::m_gameStateClear;
+			}
+			else {
+				// マップシーンへ
+				return &GameMainCtrlComponent::m_gameStateMap;
+			}
+		}
 	case Result::LOSE:
-		MapComponent::ClearMap();
-		return &GameMainCtrlComponent::m_gameStateTitle;
+		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+			ofApp::getInstance()->mp_prm.swap(mp_prePrameter);
+			return &GameMainCtrlComponent::m_gameStateOver;
+		}
 	default:
 		break;
 	}
@@ -293,12 +465,21 @@ void GameStateBattle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(2);
-	//mp_BHUD->StateErace();
+	m_isBossBattle = false;
 }
 
 void GameStateEvent::enter()
 {
+	mp_actor1 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+	//背景
+	{
+		auto spriteCpnt_bg = mp_actor1->addComponent<SpriteComponent>();
+		spriteCpnt_bg->initialize("backGround_title_1.jpg");
+	}
+
 	m_isDead = false;
+
+	mp_prePrameter = make_unique<Parameter>(*ofApp::getInstance()->mp_prm);
 
 	auto eventIndex = static_cast<EVENT_INDEX>(rand() % static_cast<int>(EVENT_INDEX::INDEX_NUM));
 	string eventStrInfo = "";
@@ -324,6 +505,7 @@ void GameStateEvent::enter()
 		{
 			eventStrInfo += u8"HPが0になった。\n";
 			m_isDead = true;
+			ofApp::getInstance()->mp_prm.swap(mp_prePrameter);
 		}
 		else
 		{
@@ -344,9 +526,20 @@ void GameStateEvent::enter()
 		break;
 	}
 
-	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
-	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 2, (float)Define::FULLWIN_H / 2 };
-	mp_fontActor->addComponent<FontRendererComponent>()->initialize(u8"イベントシーン\n" + eventStrInfo);
+	// メッセージを表示するアクター
+	{
+		mp_actor2 = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		mp_actor2->Pos() = { (float)Define::FULLWIN_W * 0.7f, (float)Define::FULLWIN_H * 0.8f };
+
+		// フレーム
+		auto spriteCpnt = mp_actor2->addComponent<SpriteComponent>();
+		spriteCpnt->initialize("button1.png", { 0,0,0 }, { 0.8f,0.5f });
+		spriteCpnt->AlignPivotCenter();
+		spriteCpnt->Offset().x *= 0.2f;
+		// メッセージ
+		mp_actor2->addComponent<FontRendererComponent>()->
+			initialize(u8"イベントシーン\n" + eventStrInfo);
+	}
 
 	// 操作方法を表示するアクター
 	{
@@ -354,7 +547,7 @@ void GameStateEvent::enter()
 		mp_operationFontactor->Pos() = { 0.f, (float)Define::FULLWIN_H * 0.9f };
 		if (m_isDead)
 		{
-			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:タイトルシーンへ移動");
+			mp_operationFontactor->addComponent<FontRendererComponent>()->initialize(u8"Spaceキー:ゲームオーバーシーンへ移動");
 		}
 		else
 		{
@@ -369,8 +562,7 @@ GameState * GameStateEvent::update()
 	{
 		if (m_isDead)
 		{
-			MapComponent::ClearMap();
-			return &GameMainCtrlComponent::m_gameStateTitle;
+			return &GameMainCtrlComponent::m_gameStateOver;
 		}
 		else
 		{
