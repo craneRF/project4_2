@@ -93,7 +93,7 @@ void BulletComponent::onCollision(CollisionComponent * _other)
 
 void BulletComponent::Destroy()
 {
-	if (mp_gActor->GetActorState() == Actor::ActorState::EErace)
+	if (mp_gActor->GetActorState() == GameActor::ActorState::EErace)
 	{
 		return;
 	}

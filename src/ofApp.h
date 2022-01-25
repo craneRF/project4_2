@@ -7,7 +7,7 @@
 #include "stdMgr.h"
 #include "Font.h"
 #include "Texture.h"
-#include "UICanvas.h"
+//#include "UICanvas.h"
 
 enum ScaleDir { //window scaling directions
 
@@ -73,29 +73,29 @@ public:
 
 	GameActor* addUICanvas(string _name = "");
 
-	template <typename T>
-	inline UICanvas* addUICanvas()
-	{
-		auto canvas = make_unique<T>();
-		canvas->SetParam();
-		//canvas->mp_UIPanelParent = nullptr;
-		auto res = canvas.get();
-		canvas->mp_UICanvasParent = res;
-		m_UICanvasAddQue.push(move(canvas));
-		return res;
-	}
+	//template <typename T>
+	//inline UICanvas* addUICanvas()
+	//{
+	//	auto canvas = make_unique<T>();
+	//	canvas->SetParam();
+	//	//canvas->mp_UIPanelParent = nullptr;
+	//	auto res = canvas.get();
+	//	canvas->mp_UICanvasParent = res;
+	//	m_UICanvasAddQue.push(move(canvas));
+	//	return res;
+	//}
 
-	template <typename T>
-	inline GameActor* addUICanvas()
-	{
-		auto canvas = make_unique<T>();
-		canvas->SetParam();
-		//canvas->mp_UIPanelParent = nullptr;
-		auto res = canvas.get();
-		canvas->mp_UICanvasParent = res;
-		m_UICanvasAddQue.push(move(canvas));
-		return res;
-	}
+	//template <typename T>
+	//inline GameActor* addUICanvas()
+	//{
+	//	auto canvas = make_unique<T>();
+	//	canvas->SetParam();
+	//	//canvas->mp_UIPanelParent = nullptr;
+	//	auto res = canvas.get();
+	//	canvas->mp_UICanvasParent = res;
+	//	m_UICanvasAddQue.push(move(canvas));
+	//	return res;
+	//}
 
 	ScaleDir scaleDir;
 
