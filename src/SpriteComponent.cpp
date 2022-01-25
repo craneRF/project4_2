@@ -28,11 +28,15 @@ void SpriteComponent::initialize(const string& _texname, ofVec3f _offset, ofVec3
 	m_col = _col;
 
 	m_offset = _offset / m_scale;
+	gActor()->m_fboPoint += m_offset;
 
 	m_texName = _texname;
 
 	mp_TexRenderer->SetTexture(m_texName);
 	m_texNameBuffer = m_texName;
+
+	gActor()->m_fboPoint.x += mp_TexRenderer->GetTexture()->getWidth() / 2 * m_scale.x;
+	gActor()->m_fboPoint.y += mp_TexRenderer->GetTexture()->getHeight() / 2 * m_scale.y;
 }
 
 void SpriteComponent::update()

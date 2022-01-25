@@ -36,6 +36,8 @@
 
 void GameStateTitle::enter()
 {
+	ofApp::getInstance()->hierarchyRoot_->m_fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+
 	mp_fontActor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
 	mp_fontActor->Pos() = { (float)Define::FULLWIN_W / 5, (float)Define::FULLWIN_H / 5 };
 	mp_fontActor->addComponent<FontRendererComponent>()->
@@ -171,6 +173,12 @@ void GameStateMap::enter()
 {
 	ofApp::getInstance()->mp_soundManager->loop(1);
 
+	/*for (int i = 0; i < 900; i++) {
+		auto actor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
+		actor->Pos() = { float(i), float(i) };
+		actor->addComponent<SpriteComponent>();
+	}*/
+
 	auto mapActor = GameActor::createMap(ofApp::getInstance()->hierarchyRoot_.get(), { 0.f, 0.f, 0.f });
 	mp_mapComp = mapActor->getComponent<MapComponent>();
 	mp_mapComp->Initialize();
@@ -245,7 +253,7 @@ void GameStateBattle::enter()
 	mp_actor2->addComponent<FontRendererComponent>()->
 		initialize(ofToString(0));
 
-	mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
+	//mp_BHUD = ofApp::getInstance()->addUICanvas<BattleHUD>();
 	// 操作方法を表示するアクター
 	{
 		mp_operationFontactor = ofApp::getInstance()->hierarchyRoot_->addChild<GameActor>();
@@ -285,7 +293,7 @@ void GameStateBattle::exit()
 {
 	ofApp::getInstance()->hierarchyRoot_->RemoveAllChild<GameActor>();
 	ofApp::getInstance()->mp_soundManager->stop(2);
-	mp_BHUD->StateErace();
+	//mp_BHUD->StateErace();
 }
 
 void GameStateEvent::enter()

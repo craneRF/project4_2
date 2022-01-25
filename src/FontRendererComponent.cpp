@@ -37,6 +37,9 @@ void FontRendererComponent::initialize(const string & _str, int _size, ofVec3f _
 
 	m_sizeBuffer = m_size;
 	m_fontNameBuffer = m_fontName;
+
+	gActor()->m_fboPoint.x += mp_fontRenderer->GetFont()->stringWidth(_str) / 2 * m_scale.x;
+	gActor()->m_fboPoint.y += mp_fontRenderer->GetFont()->stringHeight(_str) / 2 * m_scale.y;
 }
 
 void FontRendererComponent::update()

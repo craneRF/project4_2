@@ -230,10 +230,11 @@
     <ClCompile Include="src\SpriteComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\UIButton.cpp" />
+    <ClCompile Include="src\UICanvasComponent.cpp" />
     <ClCompile Include="src\UICommon.cpp" />
+    <ClCompile Include="src\UIComponent.cpp" />
     <ClCompile Include="src\UIFont.cpp" />
     <ClCompile Include="src\UIPanel.cpp" />
-    <ClCompile Include="src\UIPanelCanvas.cpp" />
     <ClCompile Include="src\UISprite.cpp" />
     <ClCompile Include="src\UIStandardPanel.cpp" />
   </ItemGroup>
@@ -297,10 +298,11 @@
     <ClInclude Include="src\stdMgr.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\UIButton.h" />
+    <ClInclude Include="src\UICanvasComponent.h" />
     <ClInclude Include="src\UICommon.h" />
+    <ClInclude Include="src\UIComponent.h" />
     <ClInclude Include="src\UIFont.h" />
     <ClInclude Include="src\UIPanel.h" />
-    <ClInclude Include="src\UIPanelCanvas.h" />
     <ClInclude Include="src\UISprite.h" />
     <ClInclude Include="src\UIStandardPanel.h" />
   </ItemGroup>

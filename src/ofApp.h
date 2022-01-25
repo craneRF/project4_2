@@ -7,7 +7,7 @@
 #include "stdMgr.h"
 #include "Font.h"
 #include "Texture.h"
-#include "UIPanelCanvas.h"
+#include "UICanvas.h"
 
 enum ScaleDir { //window scaling directions
 
@@ -49,11 +49,17 @@ public:
 	unique_ptr<Texture> mp_texture;
 
 	unique_ptr<GameActor> hierarchyRoot_;
+	unique_ptr<GameActor> UICanvas_;
 	//vector<unique_ptr<UIScreen>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
 	//queue<unique_ptr<UIScreen>> m_UIPanelAddQue;
 
-	vector<unique_ptr<UIPanelCanvas>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
-	queue<unique_ptr<UIPanelCanvas>> m_UIPanelAddQue;
+	//vector<unique_ptr<UIPanelCanvas>> m_UIPanelStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	//queue<unique_ptr<UIPanelCanvas>> m_UIPanelAddQue;
+
+	//vector<unique_ptr<UICanvas>> m_UICanvasStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	//queue<unique_ptr<UICanvas>> m_UICanvasAddQue;
+	vector<unique_ptr<GameActor>> m_UICanvasStack;  //hierarchyRoot_‚ÌUI”Å‚ðŠi”[‚·‚é”z—ñ
+	queue<unique_ptr<GameActor>> m_UICanvasAddQue;
 
 	unique_ptr< CollisionManager> mp_collisionManager;
 	unique_ptr< SoundManager> mp_soundManager;
@@ -65,15 +71,29 @@ public:
 
 	GameMainCtrlComponent* mp_gameMainCtrlComponent;
 
+	GameActor* addUICanvas(string _name = "");
+
 	template <typename T>
-	inline UIPanelCanvas* addUICanvas()
+	inline UICanvas* addUICanvas()
 	{
 		auto canvas = make_unique<T>();
 		canvas->SetParam();
-		canvas->mp_UIPanelParent = nullptr;
-		canvas->mp_UICanvasParent = canvas.get();
+		//canvas->mp_UIPanelParent = nullptr;
 		auto res = canvas.get();
-		m_UIPanelAddQue.push(move(canvas));
+		canvas->mp_UICanvasParent = res;
+		m_UICanvasAddQue.push(move(canvas));
+		return res;
+	}
+
+	template <typename T>
+	inline GameActor* addUICanvas()
+	{
+		auto canvas = make_unique<T>();
+		canvas->SetParam();
+		//canvas->mp_UIPanelParent = nullptr;
+		auto res = canvas.get();
+		canvas->mp_UICanvasParent = res;
+		m_UICanvasAddQue.push(move(canvas));
 		return res;
 	}
 

@@ -17,6 +17,11 @@ private:
 	string m_fontName;
 
 	shared_ptr<ofTrueTypeFont> mp_currentFont;
+public:
+	inline const shared_ptr<ofTrueTypeFont> GetFont()
+	{
+		return mp_currentFont;
+	}
 };
 
 class TextureRenderer

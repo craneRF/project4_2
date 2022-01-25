@@ -30,6 +30,8 @@ void ofApp::setup() {
 	hierarchyRoot_->mp_parent = nullptr;
 	hierarchyRoot_->Pos() = { 0, 0, 0 };
 	hierarchyRoot_->Name() = "World";
+	//hierarchyRoot_->m_fbo.clear();
+	//hierarchyRoot_->m_fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 
 	mp_gameMainCtrlComponent = hierarchyRoot_->addComponent<GameMainCtrlComponent>();
 	mp_gameMainCtrlComponent->GameStateStart();
@@ -55,35 +57,34 @@ void ofApp::update() {
 	m_deltaTime = 1 / 60.f;
 	for (int i = 0; i < updateCount; i++) {
 
-		if (hierarchyRoot_->GetActorState() != Actor::ActorState::EPause) {
-			if (hierarchyRoot_->GetActorState() == Actor::ActorState::EActive) {
+		if (hierarchyRoot_->GetActorState() != GameActor::ActorState::EPause) {
+			if (hierarchyRoot_->GetActorState() == GameActor::ActorState::EActive) {
 				hierarchyRoot_->input();  //hierarchyRoot_がEActive状態なら行う
 			}
 			hierarchyRoot_->update();  //hierarchyRoot_がEPause状態でないなら行う
 		}
 	
 
-		//追加待ちUIScreenの追加処理
-		while (!m_UIPanelAddQue.empty()) {
-			m_UIPanelStack.push_back(move(m_UIPanelAddQue.front()));
-			m_UIPanelAddQue.pop();
+		//追加待ちUICanvasの追加処理
+		while (!m_UICanvasAddQue.empty()) {
+			m_UICanvasStack.push_back(move(m_UICanvasAddQue.front()));
+			m_UICanvasAddQue.pop();
 		}
 
-		for (auto iter = m_UIPanelStack.begin(); iter != m_UIPanelStack.end();) {
-			if ((*iter)->GetActorState() == Actor::ActorState::EErace) {
-				//delete *iter;
-				iter = m_UIPanelStack.erase(iter);  //EErace状態のUIScreenを削除し、その後のイテレーター全てを前に持ってくる
+		for (auto iter = m_UICanvasStack.begin(); iter != m_UICanvasStack.end();) {
+			if ((*iter)->GetActorState() == GameActor::ActorState::EErace) {
+				iter = m_UICanvasStack.erase(iter);  //EErace状態のUICanvasを削除し、その後のイテレーター全てを前に持ってくる
 			}
 			else {
 				++iter;
 			}
 		}
 
-		if (!m_UIPanelStack.empty()) {
-			for (auto& ui : m_UIPanelStack)
+		if (!m_UICanvasStack.empty()) {
+			for (auto& ui : m_UICanvasStack)
 			{
-				if (ui->GetActorState() != Actor::ActorState::EPause) {
-					if (ui->GetActorState() == Actor::ActorState::EActive) {
+				if (ui->GetActorState() != GameActor::ActorState::EPause) {
+					if (ui->GetActorState() == GameActor::ActorState::EActive) {
 						ui->input();  //操作処理はEActive状態の時しか行わない
 					}
 					ui->update();  //操作処理以外はEActive状態とEUnControl状態の時に行う
@@ -99,17 +100,19 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	if (hierarchyRoot_->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
+	if (hierarchyRoot_->GetActorDrawState() == GameActor::ActorDrawState::EVisible) {
 		hierarchyRoot_->draw();
 	}
 
-	if (!m_UIPanelStack.empty()) {
-		for (auto& ui : m_UIPanelStack) {
-			if (ui->GetActorDrawState() == Actor::ActorDrawState::EVisible) {
+	if (!m_UICanvasStack.empty()) {
+		for (auto& ui : m_UICanvasStack) {
+			if (ui->GetActorDrawState() == GameActor::ActorDrawState::EVisible) {
 				ui->draw();  //Visible状態のUIScreenを描画
 			}
 		}
 	}
+
+
 	//ofPushMatrix();
 	//ofSetColor(ofColor::white);
 	//for (auto c : draworderset_) {
@@ -124,11 +127,21 @@ void ofApp::exit()
 	mp_texture.reset();
 
 	hierarchyRoot_.reset();
-	m_UIPanelStack.clear();
+	//m_UIPanelStack.clear();
 
 	mp_collisionManager.reset();
 	mp_soundManager.reset();
 	mp_inputManager.reset();
+}
+
+GameActor * ofApp::addUICanvas(string _name)
+{
+	auto canvas = make_unique<GameActor>(_name);
+	canvas->SetParam();
+	auto res = canvas.get();
+	canvas->mp_parent = res;
+	m_UICanvasAddQue.push(move(canvas));
+	return res;
 }
 
 //UIScreen* ofApp::addUIScreen(string _name, UIPanelCanvas* _canvas)
