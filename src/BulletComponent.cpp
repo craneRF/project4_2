@@ -20,12 +20,13 @@ BulletComponent::~BulletComponent()
 	ofApp::getInstance()->mp_soundManager->play(destroySoundIndex);
 }
 
-void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const int _attack, const ofVec3f& _vec)
+void BulletComponent::initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const int _bulletAttack, const int _charaAttack, const ofVec3f& _vec)
 {
 	m_target = _target;
 	m_bulletType = _bulletType;
 	m_vec = _vec;
-	m_attack = _attack;
+	m_charaAttack = _charaAttack;
+	m_bulletAttack = _bulletAttack;
 
 	// 生成時の音声ファイルを再生
 	int generationSoundIndex = getBullet(m_bulletType).generationSoundIndex;
@@ -73,22 +74,37 @@ void BulletComponent::onCollision(CollisionComponent * _other)
 
 	if (enemyPartsCpnt)
 	{
-		m_isHit = true;
-		// ダメージを与える
-		enemyPartsCpnt->onDamage(mp_gActor->Name(), m_attack, getBullet(m_bulletType).damage);
 		Destroy();
+
+		// ダメージを与える
+		if (enemyPartsCpnt->onDamage(mp_gActor->Name(), m_charaAttack, m_bulletAttack)) {
+			m_isHit = true;
+		}
+
+		//// エフェクトアクター作成
+		//{
+		//	auto actor = mp_battleCpnt->gActor()->addChild<GameActor>();
+		//	actor->Pos() = _other->gActor()->Pos() + _other->gActor()->mp_parent->Pos();
+		//	actor->addComponent<HitEffectComponent>()->Initialize("ATKeffect.png", 200);
+		//}
+
 	}
 	else if (playerPartsCpnt)
 	{
-		if (playerPartsCpnt->GetIsCore() || ofApp::getInstance()->mp_inputManager->getButtonDown("Fire")) {
+		if (playerPartsCpnt->GetIsCore() || (ofApp::getInstance()->mp_inputManager->getButtonDown("Fire") && m_needKey.empty())) {
 			m_isHit = true;
 			// ダメージを与える
-			playerPartsCpnt->onDamage(mp_gActor->Name(), m_attack, getBullet(m_bulletType).damage);
+			playerPartsCpnt->onDamage(mp_gActor->Name(), m_charaAttack, m_bulletAttack);
 			Destroy();
+
+			//// エフェクトアクター作成
+			//{
+			//	auto actor = mp_battleCpnt->gActor()->addChild<GameActor>();
+			//	actor->Pos() = mp_gActor->Pos();
+			//	actor->addComponent<HitEffectComponent>()->Initialize("ATKeffect.png", 200);
+			//}
 		}
 	}
-
-
 }
 
 void BulletComponent::Destroy()

@@ -1,4 +1,6 @@
 #include "Parameter.h"
+#include "EnemyObject.h"
+#include "BulletObject.h"
 
 Parameter::Parameter()
 {
@@ -12,7 +14,16 @@ void Parameter::initialize()
 	//m_playermap["HP"] = 15;
 	m_playermap["ATTACK"] = 1;
 	m_playermap["DEF"] = 1;
-	m_playermap["LIFE"] = 2;
+	m_playermap["LIFE"] = 0;
+
+	// スキルリスト初期化
+	{
+		m_skillList.clear();
+		m_skillList.emplace_back(5, "NormalSkill", BulletType::Nomal, 1);
+		m_skillList.emplace_back(3, "SmallSkill", BulletType::Small, 1);
+		m_skillList.emplace_back(6, "BigSkill", BulletType::Big, 1);
+		m_skillList.emplace_back(6, "aaaa", BulletType::KeyGuard, 3);
+	}
 }
 
 void Parameter::setInt(string key, int val) {
@@ -41,4 +52,14 @@ int Parameter::getPlayerParam(string key)const {
 	else {
 		return it->second;
 	}
+}
+
+void Parameter::AddSkill(Skill _skill)
+{
+	m_skillList.emplace_back(_skill);
+}
+
+const vector<Skill>& Parameter::GetSkillList() const
+{
+	return m_skillList;
 }

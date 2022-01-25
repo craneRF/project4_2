@@ -31,7 +31,7 @@ void EnemyObject::setEnemySkill(string key, int val, BulletType type, int bullet
 	m_enemySkill[key] = { val,key, type, bulletCount };
 }
 
-EnemySkill EnemyObject::getEnemySkill(string key) const
+Skill EnemyObject::getEnemySkill(string key) const
 {
 	auto it = m_enemySkill.find(key);
 	if (m_enemySkill.end() == it) {
@@ -42,7 +42,7 @@ EnemySkill EnemyObject::getEnemySkill(string key) const
 	}
 }
 
-EnemySkill EnemyObject::getEnemySkill(int elem) const
+Skill EnemyObject::getEnemySkill(int elem) const
 {
 	elem = rand() % m_enemySkill.size();
 
@@ -76,28 +76,18 @@ NomalEnemy::NomalEnemy() {
 
 void NomalEnemy::initialize()
 {
+	m_eParam.EnemyName = u8"ロボット";
 	m_eParam.scale = { 2.0f,2.0f };
 	m_eParam.HP = 20;
 	m_eParam.Attack = 2;
 
-	setEnemySkill("SmallAttack", 10, BulletType::Small, 1);
-	setEnemySkill("NomalAttack", 10, BulletType::Nomal, 1);
+	//setEnemySkill("SmallAttack", 10, BulletType::Small, 1);
+	//setEnemySkill("NomalAttack", 10, BulletType::Nomal, 1);
 	setEnemySkill("KeyAttack", 10, BulletType::KeyGuard, 3);
 	
 	setEnemyParts("1_arm_right", { -85,-40 }, "enemy_robot_arm_R1.png", false, 1, 0, { 1.f,1.f }, -20);
 	setEnemyParts("2_body", { 0,0 }, "enemy_robot_body1.png", true,1, 0, { 1.f,1.f });
 	setEnemyParts("3_arm_left", { 60,-45 }, "enemy_robot_arm_L1.png", false, 1, 0, { 1.f,1.f }, 20);
-}
-
-//SmalleEnemy
-SmallEnemy::SmallEnemy()
-{
-	initialize();
-}
-
-void SmallEnemy::initialize()
-{
-	m_eParam.scale = { 0.2,0.2 };
 }
 
 TotemEnemy::TotemEnemy()
@@ -107,6 +97,7 @@ TotemEnemy::TotemEnemy()
 
 void TotemEnemy::initialize()
 {
+	m_eParam.EnemyName = u8"トーテム";
 	m_eParam.scale = { 0.5f,0.5f };
 	m_eParam.HP = 20;
 	m_eParam.isPowerByParts = true;
@@ -124,6 +115,7 @@ CrabEnemy::CrabEnemy()
 
 void CrabEnemy::initialize()
 {
+	m_eParam.EnemyName = u8"かに";
 	m_eParam.scale = { 1.0f,1.0f };
 	m_eParam.HP = 20;
 	setEnemySkill("NomalAttack", 10, BulletType::Nomal, 1);
@@ -140,9 +132,31 @@ SlimeEnemy::SlimeEnemy()
 
 void SlimeEnemy::initialize()
 {
+	m_eParam.EnemyName = u8"スライム";
 	m_eParam.scale = { 1.0f,1.0f };
 	m_eParam.HP = 20;
 	setEnemySkill("NomalAttack", 10, BulletType::Nomal, 1);
 
 	setEnemyParts("body", { 0,0 }, "enemy_slime.png", true, 1, 0, { 1.f,1.f });
+}
+
+BossEnemy::BossEnemy()
+{
+	initialize();
+}
+
+void BossEnemy::initialize()
+{
+	m_eParam.EnemyName = u8"ボス";
+	m_eParam.scale = { 1.f,1.f };
+	m_eParam.HP = 20;
+	m_eParam.isPowerByParts = true;
+	setEnemySkill("NomalAttack", 10, BulletType::Nomal, 1);
+
+	setEnemyParts("0_body", { 0,0 }, "enemy_boss_body.png", true, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("5_head1", { 45,-240 }, "enemy_boss_head1.png", false, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("4_head2", { -15,-225 }, "enemy_boss_head2.png", false, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("3_head3", { 105,-225 }, "enemy_boss_head3.png", false, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("2_head4", { -75,-200 }, "enemy_boss_head4.png", false, 1, 0, { 1.f,1.f }, 0);
+	setEnemyParts("1_head5", { 165,-200 }, "enemy_boss_head5.png", false, 1, 0, { 1.f,1.f }, 0);
 }

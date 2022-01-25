@@ -9,6 +9,6 @@ private:
 public:
 	BulletActor(string _name = "");
 
-	static GameActor* createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _attack, BulletType _bulletType);
-	static GameActor* createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _attack, BulletType _bulletType);
+	static GameActor* createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _bulletAttack, const int _charaAttack, BulletType _bulletType);
+	static GameActor* createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _bulletAttack, const int _charaAttack, BulletType _bulletType);
 };

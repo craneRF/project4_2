@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "EnemyObject.h"
 
 class GameActor;
 class Parameter;
@@ -28,7 +29,6 @@ protected:
 		int partsIndex = 0;
 	};
 
-	string stateName = "";
 public:
 	static Result result;
 
@@ -99,8 +99,8 @@ class AttackState final : public BattleState {
 private:
 	ofVec3f m_fromPos;
 	ofVec3f m_targetPos;
+	Skill m_skill;
 	BulletType m_bulletType;
-	int m_bulletCount = 1;
 	int m_attack = 1;
 	bool m_isPlayer = true;
 
@@ -109,24 +109,12 @@ public:
 	virtual BattleState* update(BattleComponent* _battleComponent);
 	virtual void exit(BattleComponent* _battleComponent);
 
-	void initialize(const ofVec3f _fromPos, const ofVec3f _targetPos, const BulletType _bulletType, const int _bulletCount, const int _attack, bool _isPlayer)
+	void initialize(const ofVec3f _fromPos, const ofVec3f _targetPos, const Skill _skill, const int _attack, bool _isPlayer)
 	{
 		m_fromPos = _fromPos;
 		m_targetPos = _targetPos;
-		m_bulletType = _bulletType;
-		m_bulletCount = _bulletCount;
+		m_skill = _skill;
 		m_attack = _attack;
 		m_isPlayer = _isPlayer;
 	}
-};
-
-// ”s–kŒã‚Ì‘I‘ð
-class LoseState final : public BattleState {
-private:
-
-public:
-	virtual void enter(BattleComponent* _battleComponent);
-	virtual BattleState* update(BattleComponent* _battleComponent);
-	virtual void exit(BattleComponent* _battleComponent);
-
 };

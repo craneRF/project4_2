@@ -1,6 +1,6 @@
 #include "BattleState.h"
 #include "stdComponent.h"
-#include "EnemyType.h"
+#include "EnemyObject.h"
 #include "BulletActor.h"
 #include "ofApp.h"
 #include "ItemType.h"
@@ -23,7 +23,18 @@ void InitBattleState::exit(BattleComponent * _battleComponent)
 
 void SelectCommandState::enter(BattleComponent * _battleComponent)
 {
-	_battleComponent->AddMessage("Select:" + to_string(m_commandInfo.commandTypeIndex) + "\n");
+	auto commandType = static_cast<CommandType>(m_commandInfo.commandTypeIndex);
+	switch (commandType)
+	{
+	case BattleState::CommandType::SKILL:
+		_battleComponent->AddMessage(string(u8"Select:スキル"));
+		break;
+	case BattleState::CommandType::ITEM:
+		_battleComponent->AddMessage(string(u8"Select:アイテム"));
+		break;
+	default:
+		break;
+	}
 }
 
 BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
@@ -36,48 +47,57 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 	{
 		if (down)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (++m_commandInfo.commandTypeIndex >= static_cast<int>(CommandType::TYPE_NUM))
 			{
 				m_commandInfo.commandTypeIndex = 0;
 			}
-			string info = "Select:" + to_string(m_commandInfo.commandTypeIndex) + "\n";
-			_battleComponent->SetMessage(info);
 		}
 		else if (up)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (--m_commandInfo.commandTypeIndex < 0)
 			{
 				m_commandInfo.commandTypeIndex = static_cast<int>(CommandType::TYPE_NUM) - 1;
 			}
-			string info = "Select:" + to_string(m_commandInfo.commandTypeIndex) + "\n";
-			_battleComponent->SetMessage(info);
+		}
+
+		auto commandType = static_cast<CommandType>(m_commandInfo.commandTypeIndex);
+		switch (commandType)
+		{
+		case BattleState::CommandType::SKILL:
+			_battleComponent->SetMessage(string(u8"Select:スキル"));
+			break;
+		case BattleState::CommandType::ITEM:
+			_battleComponent->SetMessage(string(u8"Select:アイテム"));
+			break;
+		default:
+			break;
 		}
 
 		// 決定
 		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 			m_isSelectCommandType = true;
+			ofApp::getInstance()->mp_soundManager->play(4);
 
-			auto commandType = static_cast<CommandType>(m_commandInfo.commandTypeIndex);
 			switch (commandType)
 			{
 			case BattleState::CommandType::SKILL:
-				_battleComponent->SetMessage("Select Skill:" + BulletComponent::getBullet(static_cast<BulletType>(m_commandInfo.bulletTypeIndex)).bulletName);
+				_battleComponent->SetMessage(u8"スキル:" + ofApp::getInstance()->mp_prm->GetSkillList().at(0).attackStatement);
 				break;
 			case BattleState::CommandType::ITEM:
 			{
 				auto itemCpnt = _battleComponent->gActor()->getComponent<ItemComponent>();
-				_battleComponent->SetMessage("Select Item:" + itemCpnt->getItemName(0) + "\n");
+				_battleComponent->SetMessage(u8"アイテム:" + itemCpnt->getItemName(0));
 				break;
 			}
 			default:
 				break;
 			}
-
-			return nullptr;
 		}
-		else {
-			return nullptr;
-		}
+		return nullptr;
 	}
 
 	if (!m_isSelectBulletType) {
@@ -86,37 +106,40 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 		{
 		case BattleState::CommandType::SKILL:	// スキル選択
 		{
+			// スキルリスト
+			auto& skillList = ofApp::getInstance()->mp_prm->GetSkillList();
+
 			if (down)
 			{
-				if (++m_commandInfo.bulletTypeIndex >= static_cast<int>(BulletType::TypeNum))
+				ofApp::getInstance()->mp_soundManager->play(3);
+
+				if (++m_commandInfo.bulletTypeIndex >= skillList.size())
 				{
 					m_commandInfo.bulletTypeIndex = 0;
 				}
-				string bulletInfo = "Select Skill:";
-				bulletInfo.append(BulletComponent::getBullet(static_cast<BulletType>(m_commandInfo.bulletTypeIndex)).bulletName.c_str());
+				string bulletInfo = u8"スキル:";
+				bulletInfo.append(skillList.at(m_commandInfo.bulletTypeIndex).attackStatement);
 				_battleComponent->SetMessage(bulletInfo);
 			}
 			else if (up)
 			{
+				ofApp::getInstance()->mp_soundManager->play(3);
+
 				if (--m_commandInfo.bulletTypeIndex < 0)
 				{
-					m_commandInfo.bulletTypeIndex = static_cast<int>(BulletType::TypeNum) - 1;
+					m_commandInfo.bulletTypeIndex = skillList.size() - 1;
 				}
-				string bulletInfo = "Select Skill:";
-				bulletInfo.append(BulletComponent::getBullet(static_cast<BulletType>(m_commandInfo.bulletTypeIndex)).bulletName.c_str());
-				_battleComponent->SetMessage(bulletInfo);
+				string skillInfo = u8"スキル:";
+				skillInfo.append(skillList.at(m_commandInfo.bulletTypeIndex).attackStatement);
+				_battleComponent->SetMessage(move(skillInfo));
 			}
 
 			// 決定
 			if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 				m_isSelectBulletType = true;
-				string targetInfo = "Select Target:" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name() + "\n";
-				_battleComponent->SetMessage(targetInfo);
-
-				return nullptr;
-			}
-			else {
-				return nullptr;
+				ofApp::getInstance()->mp_soundManager->play(4);
+				string targetInfo = u8"ターゲット(敵):" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name();
+				_battleComponent->SetMessage(move(targetInfo));
 			}
 
 			break;
@@ -124,43 +147,58 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 		case BattleState::CommandType::ITEM:	// アイテム
 		{
 			auto itemCpnt = _battleComponent->gActor()->getComponent<ItemComponent>();
-
 			static int itemIndex = 0;
-			if (down)
+
+			// 選択
+			/*
 			{
-				if (++itemIndex >= ItemType::NumItems)
+				if (down)
 				{
-					itemIndex = 0;
+					ofApp::getInstance()->mp_soundManager->play(3);
+
+					if (++itemIndex >= ItemType::NumItems)
+					{
+						itemIndex = 0;
+					}
+					string itemInfo = u8"アイテム:" + itemCpnt->getItemName(itemIndex);
+					_battleComponent->SetMessage(move(itemInfo));
 				}
-				string itemInfo = "Select Item:" + itemCpnt->getItemName(itemIndex) + "\n";
-				_battleComponent->SetMessage(itemInfo);
-			}
-			else if (up)
-			{
-				if (--itemIndex < 0)
+				else if (up)
 				{
-					itemIndex = ItemType::NumItems - 1;
+					ofApp::getInstance()->mp_soundManager->play(3);
+
+					if (--itemIndex < 0)
+					{
+						itemIndex = ItemType::NumItems - 1;
+					}
+					string itemInfo = u8"アイテム:" + itemCpnt->getItemName(itemIndex);
+					_battleComponent->SetMessage(move(itemInfo));
 				}
-				string itemInfo = "Select Item:" + itemCpnt->getItemName(itemIndex) + "\n";
-				_battleComponent->SetMessage(itemInfo);
 			}
+			*/
 
 			// 決定
 			if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
-				itemCpnt->useItem(itemIndex);
-				itemIndex = 0;
-				_battleComponent->SetMessage(itemCpnt->getItem(itemIndex).m_iParam.itemName + u8"を使用した\n");
+				itemCpnt->useItem(ItemType::POTION);
+				ofApp::getInstance()->mp_soundManager->play(4);
+				_battleComponent->SetMessage(itemCpnt->getItem(ItemType::POTION).m_iParam.itemName + u8"を使用した\n");
 				return new JudgeState();
 			}
-			else {
-				return nullptr;
-			}
+			//if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
+			//	itemCpnt->useItem(itemIndex);
+			//	itemIndex = 0;
+			//	ofApp::getInstance()->mp_soundManager->play(4);
+			//	_battleComponent->SetMessage(itemCpnt->getItem(itemIndex).m_iParam.itemName + u8"を使用した\n");
+			//	return new JudgeState();
+			//}
 
 			break;
 		}
 		default:
 			break;
 		}
+
+		return nullptr;
 	}
 
 	// 敵選択
@@ -171,23 +209,27 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 
 		if (down)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (++m_commandInfo.targetIndex >= _battleComponent->GetEnemyCount())
 			{
 				m_commandInfo.targetIndex = 0;
 			}
 
-			string targetInfo = "Select Target:" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name() + "\n";
-			_battleComponent->SetMessage(targetInfo);
+			string targetInfo = u8"ターゲット(敵):" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name();
+			_battleComponent->SetMessage(move(targetInfo));
 		}
 		else if (up)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (--m_commandInfo.targetIndex < 0)
 			{
 				m_commandInfo.targetIndex = _battleComponent->GetEnemyCount() - 1;
 			}
 
-			string targetInfo = "Select Target:" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name() + "\n";
-			_battleComponent->SetMessage(targetInfo);
+			string targetInfo = u8"ターゲット(敵):" + _battleComponent->GetEnemy(m_commandInfo.targetIndex)->Name();
+			_battleComponent->SetMessage(move(targetInfo));
 		}
 
 		enemyCpnt = _battleComponent->GetEnemy(m_commandInfo.targetIndex)->getComponent<EnemyComponent>();
@@ -197,17 +239,15 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 		// 決定
 		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")){
 			m_isSelectTarget = true;
+			ofApp::getInstance()->mp_soundManager->play(4);
 
 			// 色変更
 			enemyCpnt->SetColor(ofColor::white);
 
-			string targetInfo = "Select Target:" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name() + "\n";
-			_battleComponent->SetMessage(targetInfo);
-			return nullptr;
+			string targetInfo = u8"ターゲット(部位):" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name();
+			_battleComponent->SetMessage(move(targetInfo));
 		}
-		else {
-			return nullptr;
-		}
+		return nullptr;
 	}
 
 	// 部位選択
@@ -220,21 +260,25 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 
 		if (down)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (++m_commandInfo.partsIndex >= enemyCpnt->GetPartsCpntList().size())
 			{
 				m_commandInfo.partsIndex = 0;
 			}
-			string targetInfo = "Select Target:" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name() + "\n";
-			_battleComponent->SetMessage(targetInfo);
+			string targetInfo = u8"ターゲット(部位):" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name();
+			_battleComponent->SetMessage(move(targetInfo));
 		}
 		else if (up)
 		{
+			ofApp::getInstance()->mp_soundManager->play(3);
+
 			if (--m_commandInfo.partsIndex < 0)
 			{
 				m_commandInfo.partsIndex = enemyCpnt->GetPartsCpntList().size() - 1;
 			}
-			string targetInfo = "Select Target:" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name() + "\n";
-			_battleComponent->SetMessage(targetInfo);
+			string targetInfo = u8"ターゲット(部位):" + enemyCpnt->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor()->Name();
+			_battleComponent->SetMessage(move(targetInfo));
 		}
 
 		// 色変更
@@ -245,6 +289,7 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 		if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start")) {
 			// 色変更
 			spriteCpnt->Color() = ofColor::white;
+			ofApp::getInstance()->mp_soundManager->play(4);
 
 			m_isSelectParts = true;
 		}
@@ -256,11 +301,13 @@ BattleState * SelectCommandState::update(BattleComponent * _battleComponent)
 	// 決定
 	if (ofApp::getInstance()->mp_inputManager->getButtonDown("Start"))
 	{
+		ofApp::getInstance()->mp_soundManager->play(4);
+
 		auto state = new AttackState();
 		auto target = _battleComponent->GetEnemy(m_commandInfo.targetIndex)->getComponent<EnemyComponent>()->GetPartsCpntList().at(m_commandInfo.partsIndex)->gActor();
 		auto targetPos = target->mp_parent->Pos() + target->Pos();;
 		auto attack = ofApp::getInstance()->mp_prm->getPlayerParam("ATTACK");
-		state->initialize(_battleComponent->GetPlayer()->Pos(), targetPos, static_cast<BulletType>(m_commandInfo.bulletTypeIndex), 1, attack, true);
+		state->initialize(_battleComponent->GetPlayer()->Pos(), targetPos, ofApp::getInstance()->mp_prm->GetSkillList().at(m_commandInfo.bulletTypeIndex), attack, true);
 		return state;
 	}
 
@@ -282,13 +329,13 @@ void JudgeState::enter(BattleComponent * _battleComponent)
 	// プレイヤーの体力がなくなった
 	if (pHP <= 0)
 	{
-		_battleComponent->AddMessage(string(u8"敗北\n"));
+		_battleComponent->AddMessage(string(u8"敗北"));
 		result = Result::LOSE;
 	}
 	// 敵をすべて倒した
 	else if (eCount <= 0)
 	{
-		_battleComponent->AddMessage(string(u8"勝利\n"));
+		_battleComponent->AddMessage(string(u8"勝利"));
 		result = Result::WIN;
 	}
 	// 戦闘続行
@@ -340,7 +387,7 @@ void TurnState::enter(BattleComponent * _battleComponent)
 	_battleComponent->InitAttackOrder();
 	// 次行動するアクターを取得
 	m_turnChara = _battleComponent->GetNextAttackChara();
-	_battleComponent->AddMessage(m_turnChara->Name() + u8"のターン\n");
+	_battleComponent->AddMessage(m_turnChara->Name() + u8"のターン");
 }
 
 BattleState * TurnState::update(BattleComponent * _battleComponent)
@@ -355,8 +402,7 @@ BattleState * TurnState::update(BattleComponent * _battleComponent)
 		auto state = new AttackState();
 
 		auto enemyCpnt = m_turnChara->getComponent<EnemyComponent>();
-		 auto skill = enemyCpnt->SelectSkill();
-		state->initialize(m_turnChara->Pos(), _battleComponent->GetPlayer()->Pos(), skill.type,skill.bulletCount, enemyCpnt->getEnemy().Attack,false);
+		state->initialize(m_turnChara->Pos(), _battleComponent->GetPlayer()->Pos(), enemyCpnt->SelectSkill(), enemyCpnt->getEnemy().Attack,false);
 		
 		return state;
 	}
@@ -375,16 +421,16 @@ void AttackState::enter(BattleComponent * _battleComponent)
 	// プレイヤーの攻撃の場合
 	if (m_isPlayer)
 	{
-		for (int i = 0; i < m_bulletCount; ++i) {
-			actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), m_fromPos, m_targetPos, m_attack,m_bulletType);
+		for (int i = 0; i < m_skill.bulletCount ; ++i) {
+			actor = BulletActor::createPlayerBullet(_battleComponent->gActor(), m_fromPos, m_targetPos, m_skill.attackpower , m_attack, m_skill.type);
 			_battleComponent->AddBullet(actor);
 		}
 	}
 	// 敵の攻撃の場合
 	else
 	{
-		for (int i = 0; i < m_bulletCount; ++i) {
-			actor = BulletActor::createEnemyBullet(_battleComponent->gActor(), m_fromPos, m_targetPos, m_attack, m_bulletType);
+		for (int i = 0; i < m_skill.bulletCount; ++i) {
+			actor = BulletActor::createEnemyBullet(_battleComponent->gActor(), m_fromPos, m_targetPos, m_skill.attackpower, m_attack, m_skill.type);
 			_battleComponent->AddBullet(actor);
 		}
 	}

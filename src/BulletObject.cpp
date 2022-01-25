@@ -11,7 +11,6 @@ BulletObject::BulletObject()
 	m_bParam.scale = { 1.f,1.f };
 	m_bParam.speed = 0.f;
 	m_bParam.rotVal = 0.f;
-	m_bParam.damage = 1;
 }
 
 void BulletObject::MoveToTarget(BulletComponent * _bulletComponent, MoveComponent * _moveComponent)
@@ -107,7 +106,6 @@ NomalBullet::NomalBullet()
 	m_bParam.speed = 600.f;
 	m_bParam.generationSoundIndex = 13;
 	m_bParam.rotVal = 100.f;
-	m_bParam.damage = 5;
 	m_bParam.imageName = "6b71416463520028.png";
 }
 
@@ -127,7 +125,6 @@ SmallBullet::SmallBullet()
 	m_bParam.scale = { 0.2,0.2 };
 	m_bParam.speed = 400.f;
 	m_bParam.generationSoundIndex = 12;
-	m_bParam.damage = 2;
 	m_bParam.imageName = "Missile.png";
 }
 
@@ -147,7 +144,6 @@ BoundBullet::BoundBullet()
 	m_bParam.scale = { 0.2,0.2 };
 	m_bParam.speed = 400.f;
 	m_bParam.generationSoundIndex = 12;
-	m_bParam.damage = 2;
 	m_bParam.imageName = "TargetScope2.png";
 }
 
@@ -171,11 +167,9 @@ KeyGuardBullet::KeyGuardBullet()
 {
 	m_bParam.bulletName = "KeyGuardBullet";
 	m_bParam.scale = { 0.2,0.2 };
-	m_bParam.speed = 100.f;
-	//m_bParam.speed = 400.f;
 	m_bParam.rotVal = 200.f;
+	m_bParam.speed = 300.f;
 	m_bParam.generationSoundIndex = 12;
-	m_bParam.damage = 2;
 	m_bParam.imageName = "Missile.png";
 }
 

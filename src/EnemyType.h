@@ -1,12 +1,10 @@
 #pragma once
 enum  EnemyType {
-	//NONE,
 	Nomal,
-	//Small,
-	//Big,
 	Slime,
 	Totem,
 	Crab,
+	Boss,
 	TYPE_NUM,
 };
 
@@ -14,18 +12,9 @@ struct StrEnemyType : public string {
 	StrEnemyType(EnemyType type) {
 		switch (type)
 		{
-		//case NONE:
-		//	assign("NONE");
-		//	break;
 		case Nomal:
 			assign("Nomal");
 			break;
-		//case Small:
-		//	assign("Small");
-		//	break;
-		//case Big:
-		//	assign("Big");
-		//	break;
 		case Slime:
 			assign("Slime");
 			break;
@@ -34,6 +23,9 @@ struct StrEnemyType : public string {
 			break;
 		case Crab:
 			assign("Crab");
+			break;
+		case Boss:
+			assign("Boss");
 			break;
 		default:
 			assign("");

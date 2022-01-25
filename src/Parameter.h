@@ -17,7 +17,10 @@ public:
 	void setPlayerParam(string key, int val);
 	int getPlayerParam(string key) const;
 
+	void AddSkill(struct Skill _skill);
+	const vector<Skill>& GetSkillList() const;
 private:
 	map<string, int> m_imap;
 	map<string, int> m_playermap;
+	vector<Skill> m_skillList;
 };

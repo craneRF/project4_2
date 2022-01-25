@@ -18,10 +18,12 @@ EnemyComponent::EnemyComponent(GameActor * _gactor) :
 {
 	// 敵マップの初期化
 	if (m_enemyMap.empty()) {
+		m_enemyMap.reserve(EnemyType::TYPE_NUM);
 		m_enemyMap[EnemyType::Nomal] = NomalEnemy();
 		m_enemyMap[EnemyType::Slime] = SlimeEnemy();
 		m_enemyMap[EnemyType::Totem] = TotemEnemy();
 		m_enemyMap[EnemyType::Crab] = CrabEnemy();
+		m_enemyMap[EnemyType::Boss] = BossEnemy();
 	}
 }
 
@@ -41,11 +43,14 @@ void EnemyComponent::Initialize(BattleComponent* _battleCpnt, const EnemyType _e
 
 		auto actor = mp_gActor->addChild<GameActor>();
 		actor->SetParam(parts.Pos, parts.Scale, parts.angle);
-		actor->initialize(parts.Pos, parts.PartsName);
+		actor->initialize(parts.Pos, parts.PartsName.substr(parts.PartsName.find('_') + 1));
 
 		// エネミーパーツコンポーネント
 		auto enemyPartsCpnt = actor->addComponent<EnemyPartsComponent>();
 		enemyPartsCpnt->Initialize(parts, this);
+		// パーツを追加
+		m_partsCpntList.emplace_back(enemyPartsCpnt);
+
 	}
 }
 
@@ -68,7 +73,7 @@ void EnemyComponent::onDestroy()
 	mp_battleCpnt->AddMessage(mp_gActor->Name() + u8"は倒れた\n");
 }
 
-const EnemySkill EnemyComponent::SelectSkill()
+const Skill EnemyComponent::SelectSkill()
 {
 	//const auto& skillMap = m_enemyMap[m_EnemyType]..
 	//int number = rand() % skillMap.size();
@@ -89,11 +94,6 @@ void EnemyComponent::DeleteParts(EnemyPartsComponent * _partsCpnt)
 	if (res != m_partsCpntList.end()) {
 		m_partsCpntList.erase(res);
 	}
-}
-
-void EnemyComponent::AddCommand(const string _fromName, const string _toName, const int _commandType, const int _commandval)
-{
-	mp_battleCpnt->AddCommand(make_unique<Command>(_fromName, mp_gActor->Name() + u8"の" + _toName, _commandType, _commandval));
 }
 
 const EnemyParam & EnemyComponent::getEnemy() const
@@ -136,9 +136,6 @@ void EnemyPartsComponent::Initialize(const EnemyParts & _enemyParts, EnemyCompon
 	// 部位を持つ敵のコンポーネントを取得
 	mp_enemyCpnt = _enemyCpnt;
 
-	// 部位を持つ敵のコンポーネントに自身を追加
-	mp_enemyCpnt->AddParts(this);
-
 	// スプライトコンポーネント
 	auto sprCpnt = mp_gActor->addComponent<SpriteComponent>();
 	sprCpnt->initialize(_enemyParts.ImageName);
@@ -160,6 +157,15 @@ void EnemyPartsComponent::Initialize(const EnemyParts & _enemyParts, EnemyCompon
 
 void EnemyPartsComponent::update()
 {
+	if (mp_enemyCpnt->getEnemy().isPowerByParts) {
+		auto boxCpnt = mp_gActor->getComponent<BoxComponent>();
+		if (mp_enemyCpnt->GetPartsCpntList().size() != 1 && m_isCore) {
+			boxCpnt->mp_cobj->m_ctype = CollisionType::DEFAULT;
+		}
+		else {
+			boxCpnt->mp_cobj->m_ctype = CollisionType::ENEMY_OBJECT;
+		}
+	}
 }
 
 void EnemyPartsComponent::input()
@@ -170,19 +176,19 @@ void EnemyPartsComponent::onCollision(CollisionComponent * _other)
 {
 }
 
-void EnemyPartsComponent::onDamage(const string& _fromName, const int _damage)
+bool EnemyPartsComponent::onDamage(const string& _fromName, const int _damage)
 {
 	if (mp_enemyCpnt->getEnemy().isPowerByParts) {
 		if(mp_enemyCpnt->GetPartsCpntList().size() != 1 && m_isCore){
-			cout << "miss\n";
-			return;
+			//mp_enemyCpnt->GetBattleCpnt()->AddMessage(string(u8"ミス"));
+			return false;
 		}
 	}
 
 	m_hp -= _damage;
 
 	// コマンド追加
-	mp_enemyCpnt->AddCommand(_fromName, mp_gActor->Name(), 0, _damage);
+	mp_enemyCpnt->GetBattleCpnt()->AddCommand(make_unique<Command>(_fromName, mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name(), 0, _damage));
 
 	// 体力チェック
 	if (m_hp <= 0) {
@@ -191,21 +197,27 @@ void EnemyPartsComponent::onDamage(const string& _fromName, const int _damage)
 		// 敵コンポーネントから自身（パーツ）を削除
 		mp_enemyCpnt->DeleteParts(this);
 
+		// パーツ破壊メッセージ
+		mp_enemyCpnt->GetBattleCpnt()->AddMessage(mp_enemyCpnt->gActor()->Name() + u8"の" + mp_gActor->Name() + u8"を破壊した");
+
 		// 重要な部位だったら、本体に消去命令を出す
 		if (m_isCore) {
+
 			mp_enemyCpnt->onDestroy();
 		}
 		else {
 			mp_gActor->StateErace();
 		}
 	}
+
+	return true;
 }
 
-void EnemyPartsComponent::onDamage(const string& _fromName, const int _charaAttack, const int _bulletAttack)
+bool EnemyPartsComponent::onDamage(const string& _fromName, const int _charaAttack, const int _bulletAttack)
 {
 	// ダメージ
 	int damage = (_charaAttack - m_def) * _bulletAttack;
 	// ダメージが0以下だったら、1にしておく
 	damage = damage > 0 ? damage : 1;
-	onDamage(_fromName, damage);
+	return onDamage(_fromName, damage);
 }
