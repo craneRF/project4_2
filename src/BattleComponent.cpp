@@ -13,7 +13,7 @@ BattleComponent::BattleComponent(GameActor* _gactor) :
 }
 
 BattleComponent::~BattleComponent() {
-
+	ofApp::getInstance()->mp_soundManager->stop(2);
 }
 
 void BattleComponent::update()
@@ -169,8 +169,12 @@ void BattleComponent::InitEnemyList()
 {
 	EnemyActor* enemyActor = nullptr;
 
-	if (m_isBossBattle) {
-		enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Crab, this);
+	if (true) {
+		enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.3f, Define::FULLWIN_H * 0.3f }, EnemyType::Nomal, this);
+		//enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Boss, this);
+		m_EnemyList.emplace_back(enemyActor);
+		enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.7f, Define::FULLWIN_H * 0.3f }, EnemyType::Nomal, this);
+		//enemyActor = EnemyActor::createEnemy(mp_gActor, { Define::FULLWIN_W * 0.5f, Define::FULLWIN_H * 0.3f }, EnemyType::Boss, this);
 		m_EnemyList.emplace_back(enemyActor);
 	}
 	else {

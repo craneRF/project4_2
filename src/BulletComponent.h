@@ -23,8 +23,10 @@ private:
 	ofVec3f m_target;
 	// ’e‚ÌŒü‚«
 	ofVec3f m_vec;
+	// ’e‚ÌUŒ‚—Í
+	int m_bulletAttack = 1;
 	// ‚±‚Ì’e‚ğo‚µ‚½ƒLƒƒƒ‰ƒNƒ^[‚ÌUŒ‚—Í
-	int m_attack = 1;
+	int m_charaAttack = 1;
 	// “–‚½‚Á‚½Œã‚©
 	bool m_isHit = false;
 	string m_needKey;
@@ -35,7 +37,7 @@ public:
 	BulletComponent(GameActor* _gactor);
 	virtual ~BulletComponent();
 
-	void initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const int _attack, const ofVec3f& _vec = {1,1});
+	void initialize(const ofVec3f& _target, const BulletType _bulletType, const CollisionType _colType, const int _bulletAttack, const int _charaAttack, const ofVec3f& _vec = {1,1});
 
 	virtual void update();
 	virtual void input();

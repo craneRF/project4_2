@@ -1,13 +1,19 @@
 #pragma once
 #include "ofMain.h"
+#include "BulletObject.h"
 
-enum class BulletType;
-
-struct EnemySkill {
+struct Skill {
 	int attackpower;
 	string attackStatement;
 	BulletType type;
 	int bulletCount;
+
+	Skill(int _attackPower = 1, string _attackStatement = "None", BulletType _type = BulletType::Nomal, int _bulletCount = 1) :
+		attackpower(_attackPower),
+		attackStatement(_attackStatement),
+		type(_type),
+		bulletCount(_bulletCount)
+	{}
 };
 
 struct EnemyParts {
@@ -36,7 +42,7 @@ class EnemyObject
 {
 public:
 	const static int Error = -1;
-	struct EnemySkill error_enemyskill = { -1,"Error" };
+	struct Skill error_enemyskill = { -1,"Error" };
 
 	EnemyObject();
 	virtual ~EnemyObject() {};
@@ -47,28 +53,21 @@ public:
 	int getEnemyStatus(string key) const;
 
 	void setEnemySkill(string key, int val, BulletType type, int bulletCount);
-	EnemySkill getEnemySkill(string key) const;
-	EnemySkill getEnemySkill(int elem) const;
+	Skill getEnemySkill(string key) const;
+	Skill getEnemySkill(int elem) const;
 
 	void setEnemyParts(string partsname, ofVec3f pos, string imagename, bool _isCore,int hp = 1, int def = 0, ofVec3f scale = { 1,1,1 }, float angle = 0.f);
 
 	EnemyParam m_eParam;
 private:
 	map<string, int> m_enemyStatus;
-	map<string, EnemySkill> m_enemySkill;
+	map<string, Skill> m_enemySkill;
 };
 
 class NomalEnemy : public EnemyObject
 {
 public:
 	NomalEnemy();
-	virtual void initialize();
-};
-
-class SmallEnemy final : public EnemyObject
-{
-public:
-	SmallEnemy();
 	virtual void initialize();
 };
 
@@ -90,5 +89,12 @@ class SlimeEnemy final : public EnemyObject
 {
 public:
 	SlimeEnemy();
+	virtual void initialize();
+};
+
+class BossEnemy final : public EnemyObject
+{
+public:
+	BossEnemy();
 	virtual void initialize();
 };

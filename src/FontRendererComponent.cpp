@@ -61,3 +61,9 @@ void FontRendererComponent::draw()
 		mp_fontRenderer->FontDraw(m_str, m_offset, m_col, m_scale);
 	}
 }
+
+void FontRendererComponent::AlignPivotCenter()
+{
+	auto fontPtr = ofApp::getInstance()->mp_font->GetFontMap().begin()->second.begin()->second;
+	m_offset = { fontPtr->stringWidth(m_str) * -0.5f * m_scale.x,fontPtr->stringHeight(m_str) * 0.25f * m_scale.y };
+}

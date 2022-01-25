@@ -27,24 +27,24 @@ GameActor * BulletActor::createBullet(GameActor * _parent, ofVec3f _pos, ofVec3f
 	return actor;
 }
 
-GameActor* BulletActor::createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _attack, BulletType _bulletType)
+GameActor* BulletActor::createPlayerBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _bulletAttack, const int _charaAttack, BulletType _bulletType)
 {
 	// 弾アクター作成
 	auto actor = createBullet(_parent, _pos, _target, _bulletType);
 	// 弾コンポーネント
 	auto bulletCpnt = actor->addComponent<BulletComponent>();
-	bulletCpnt->initialize(_target, _bulletType, CollisionType::PLAYER_BULLET, _attack);
+	bulletCpnt->initialize(_target, _bulletType, CollisionType::PLAYER_BULLET, _bulletAttack, _charaAttack);
 
 	return actor;
 }
 
-GameActor* BulletActor::createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _attack, BulletType _bulletType)
+GameActor* BulletActor::createEnemyBullet(GameActor* _parent, ofVec3f _pos, ofVec3f _target, const int _bulletAttack, const int _charaAttack, BulletType _bulletType)
 {
 	// 弾アクター作成
 	auto actor = createBullet(_parent, _pos, _target, _bulletType);
 	// 弾コンポーネント
 	auto bulletCpnt = actor->addComponent<BulletComponent>();
-	bulletCpnt->initialize(_target, _bulletType, CollisionType::ENEMY_BULLET, _attack);
+	bulletCpnt->initialize(_target, _bulletType, CollisionType::ENEMY_BULLET, _bulletAttack, _charaAttack);
 
 	return actor;
 }

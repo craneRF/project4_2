@@ -22,7 +22,6 @@ struct BulletParam
 	ofVec3f scale;				// ‘å‚«‚³
 	float speed;				// ˆÚ“®‚Ì‘¬‚³
 	float rotVal;				// ‰ñ“]‚Ì‘¬‚³
-	int damage;					// ƒ_ƒ[ƒW
 };
 
 class BulletObject

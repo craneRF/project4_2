@@ -29,7 +29,7 @@ public:
 	virtual void update();
 	void input() override;
 	void draw();
-
+	void AlignPivotCenter();
 
 	inline string& String()
 	{ 

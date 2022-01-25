@@ -36,12 +36,12 @@ public:
 	// 死亡時に呼び出す関数
 	void onDestroy();
 	// スキル選択
-	const EnemySkill SelectSkill();
+	const Skill SelectSkill();
 
 	void AddParts(class EnemyPartsComponent* _partsCpnt) { m_partsCpntList.emplace_back(_partsCpnt); }
 	void DeleteParts(class EnemyPartsComponent* _partsCpnt);
 	const vector<class EnemyPartsComponent*>& GetPartsCpntList()const { return m_partsCpntList; }
-	void AddCommand(const string _fromName, const string _toName, const int _commandType, const int _commandval);
+	BattleComponent* GetBattleCpnt() { return mp_battleCpnt; }
 	const EnemyParam& getEnemy() const;
 	EnemyParam getEnemy(EnemyType _enemytype);
 	void setEnemyType(EnemyType _enemytype) { m_EnemyType = _enemytype; }
@@ -70,7 +70,7 @@ public:
 	virtual void input();
 	void onCollision(CollisionComponent*);
 	// ダメージ処理（ダメージ）
-	void onDamage(const string& _fromName, const int _damage);
+	bool onDamage(const string& _fromName, const int _damage);
 	// ダメージ処理（キャラクターの攻撃力、弾の攻撃力）
-	void onDamage(const string& _fromName, const int _charaAttack, const int _bulletAttack);
+	bool onDamage(const string& _fromName, const int _charaAttack, const int _bulletAttack);
 };
